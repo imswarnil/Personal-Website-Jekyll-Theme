@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
-<body class="layout-{{ page.layout }}{% if page.collection %} is-{{ page.collection }}{% endif %}">
-  {% include header.html %}
+{%- comment -%}
+  Every collection has one colour, derived from the site accent (see
+  tokens/_tokens.scss). Publishing the CURRENT collection's colour on
+  <body> means a card, a chip, a rule or a cover inside a collection page
+  reads `var(--im-c-current)` and is automatically the right hue — no
+  per-collection CSS anywhere, and a new collection inherits the accent
+  until someone gives it a `color:` in _config.yml.
+{%- endcomment -%}
+{%- assign coll_label = page.collection | default: page.list_collection -%}
+<body
+  class="layout-{{ page.layout }}{% if page.collection %} is-{{ page.collection }}{% endif %}"
+  {% if coll_label %}data-collection="{{ coll_label }}" style="--im-c-current: var(--im-c-{{ coll_label }}, var(--im-accent));"{% endif %}>
+  {%- comment -%}
+    A page can stand on its own: `chrome: false` in its front matter drops
+    the site header and footer, and the page supplies whatever framing it
+    needs. /resume/ uses it — a CV is a document, not a page of a site.
+  {%- endcomment -%}
+  {%- assign chrome = true -%}{% if page.chrome == false %}{% assign chrome = false %}{% endif %}
+  {% if chrome %}{% include header.html %}{% endif %}
 
   {%- assign rails_on = false -%}
   {%- if site.layout.ad_rails and site.adsense.enabled and page.ad_rails != false %}{% assign rails_on = true %}{% endif -%}
@@ -14,13 +31,24 @@
     {%- if rails_on -%}<aside class="im-rail im-rail-right" aria-hidden="true">{% include ad.html type="vertical" %}</aside>{%- endif -%}
   </div>
 
-  {% include footer.html %}
+  {% if chrome %}{% include footer.html %}{% endif %}
   {% include ad-sticky.html %}
 
   {% if site.service_worker != false %}{% include site-sw.html %}{% endif %}
   {% include site-before-end.html %}
 
-  <script src="{{ '/assets/scripts/navbar.js' | relative_url }}" defer></script>
+  {% if chrome %}<script src="{{ '/assets/scripts/navbar.js' | relative_url }}" defer></script>{% endif %}
+  {%- if page.layout == 'resume' -%}<script src="{{ '/assets/scripts/resume.js' | relative_url }}" defer></script>{%- endif -%}
+  {%- comment -%}
+    GSAP + the hero choreography load only on pages that actually have a
+    hero (front matter sets hero_title) — no reason to ship an animation
+    library to a blog post. Both deferred, so they run in document order
+    and hero.js can count on window.gsap being there.
+  {%- endcomment -%}
+  {%- if page.hero_title -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{{ '/assets/scripts/hero.js' | relative_url }}" defer></script>
+  {%- endif -%}
   <script src="{{ '/assets/scripts/custom.js' | relative_url }}"></script>
 </body>
 </html>

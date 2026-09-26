@@ -3,7 +3,7 @@ title: "Adversarial PR Review Prompt"
 date: 2025-05-01
 category: prompt
 tags: [ai, review]
-model: "Claude / GPT"
+model: "Claude Sonnet"
 excerpt: "Make the model hunt for real bugs, not vibes."
 prompt: |
   You are a skeptical senior engineer. Review the diff below. For each issue give:

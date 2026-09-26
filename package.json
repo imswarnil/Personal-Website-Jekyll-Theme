@@ -1,0 +1,34 @@
+{
+  "name": "imprint-jekyll-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Imprint \u2014 a modular personal-site theme for Jekyll, built on the Im Design System. One accent colour, thirteen content collections composed from data, a browser setup wizard and no runtime dependencies.",
+  "keywords": [
+    "jekyll",
+    "jekyll-theme",
+    "personal-website",
+    "blog",
+    "portfolio",
+    "design-system",
+    "github-pages"
+  ],
+  "homepage": "https://dev.imswarnil.com",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "setup": "node tools/setup/server.mjs",
+    "dev": "bin/serve",
+    "start": "bin/serve",
+    "build": "bin/build",
+    "thumbs": "node tools/thumbs.mjs",
+    "new": "node tools/new.mjs",
+    "doctor": "node tools/doctor.mjs",
+    "check": "node tools/doctor.mjs && bin/build",
+    "test": "node tools/test.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

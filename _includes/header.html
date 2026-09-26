@@ -12,11 +12,35 @@
 {%- if h.sticky != false %}{% assign navmods = navmods | append: " is-sticky" %}{% endif -%}
 {%- if h.blur != false %}{% assign navmods = navmods | append: " is-blur" %}{% endif -%}
 
+{%- comment -%} Initials for the collapsed-island brand avatar, e.g. "Swarnil Singhai" -> "SS" {%- endcomment -%}
+{%- assign _author = site.author | default: site.title -%}
+{%- assign _parts = _author | split: ' ' -%}
+{%- if _parts.size > 1 -%}
+  {%- assign _il = _parts[0] | slice: 0, 1 -%}
+  {%- assign _iu = _parts[-1] | slice: 0, 1 -%}
+  {%- assign _initials = _il | append: _iu | upcase -%}
+{%- else -%}
+  {%- assign _initials = _parts[0] | slice: 0, 2 | upcase -%}
+{%- endif -%}
+
 <header class="im-navbar{{ navmods }}" data-im-navbar>
-  <div class="im-navbar-inner">
+  <div class="im-navbar-inner"{% if h.progress != false %} data-im-progress{% endif %}>
+    {%- if h.progress != false -%}
+    <svg class="im-navbar-progress-ring" data-im-progress-ring aria-hidden="true"><path pathLength="1"></path></svg>
+    {%- endif -%}
     {%- comment -%} ── Brand ── {%- endcomment -%}
+    {%- comment -%}
+      Island layout wears the initials mark ("SS") rather than the logo
+      image, in every state — top bar and scrolled pill alike.
+    {%- endcomment -%}
     <a class="im-brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }}">
-      {%- unless h.brand == "title" -%}{% if site.logo %}<img class="im-brand-logo" src="{{ site.logo | relative_url }}" alt="">{% endif %}{%- endunless -%}
+      {%- unless h.brand == "title" -%}
+        {%- if h.layout == "island" -%}
+        <span class="im-brand-avatar" aria-hidden="true">{{ _initials }}</span>
+        {%- elsif site.logo -%}
+        <img class="im-brand-logo" src="{{ site.logo | relative_url }}" alt="">
+        {%- endif -%}
+      {%- endunless -%}
       {%- unless h.brand == "logo" -%}<span class="im-brand-name">{{ site.title }}</span>{%- endunless -%}
     </a>
 
@@ -29,7 +53,11 @@
           {%- assign is_mega = false -%}
           {%- if h.megamenu != false and item.megamenu and item.groups %}{% assign is_mega = true %}{% endif -%}
           {%- assign active = false -%}
-          {%- if item.url != '/' and page.url contains item.url %}{% assign active = true %}{% endif -%}
+          {%- if item.url == '/' -%}
+            {%- if page.url == '/' %}{% assign active = true %}{% endif -%}
+          {%- elsif page.url contains item.url -%}
+            {%- assign active = true -%}
+          {%- endif -%}
           <li class="im-nav-item{% if has_children or is_mega %} has-dropdown{% endif %}{% if is_mega %} has-mega{% endif %}">
             <a class="im-nav-link" href="{{ item.url | relative_url }}"{% if active %} aria-current="page"{% endif %}{% if has_children or is_mega %} aria-haspopup="true" aria-expanded="false"{% endif %}>
               {%- if h.show_icons != false and item.icon %}<i class="ph-bold ph-{{ item.icon }}" aria-hidden="true"></i>{% endif -%}
@@ -126,7 +154,7 @@
       {%- endif -%}
 
       {%- if h.cta.enabled and h.cta.url -%}
-      <a class="im-btn im-btn-sm im-nav-cta" href="{{ h.cta.url | relative_url }}">{{ h.cta.label | default: "Contact" }}</a>
+      <a class="im-btn im-btn-sm im-btn-ink im-nav-cta" href="{{ h.cta.url | relative_url }}">{{ h.cta.label | default: "Contact" }}</a>
       {%- endif -%}
 
       <button class="im-nav-toggle" data-im-nav-toggle aria-label="Menu" aria-expanded="false" aria-controls="im-nav">
@@ -134,7 +162,6 @@
       </button>
     </div>
 
-    {%- if h.progress != false -%}<span class="im-navbar-progress" data-im-progress aria-hidden="true"></span>{%- endif -%}
   </div>
 </header>
 

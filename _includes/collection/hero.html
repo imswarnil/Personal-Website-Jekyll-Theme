@@ -1,0 +1,69 @@
+{%- comment -%}
+  The first screen of a collection's landing page.
+
+  It is one partial for every collection, because a collection's hero is
+  always the same four things — what this is, what it is called, one line
+  about it, and how much of it there is. What differs is DATA: the icon,
+  the hue and the counts come from the collection itself, and the optional
+  extras come from a `hero:` block in _config.yml —
+
+    videos:
+      hero:
+        video: aqz-KE-bpKQ      # a muted loop behind it
+        pattern: dots           # or grid, rings, none
+        cta:  { label: Subscribe, url: "…", icon: youtube-logo }
+        views: true             # the grid/list toggle, top right
+
+  Params: coll (the collection), docs (its entries), title, views.
+{%- endcomment -%}
+{%- assign c = include.coll -%}
+{%- assign docs = include.docs -%}
+{%- assign h = c.hero -%}
+{%- assign latest = docs | first -%}
+{%- assign bg = h.video | default: page.hero_video -%}
+<header class="im-chero im-reveal{% if h.pattern and h.pattern != 'none' %} im-bg-{{ h.pattern }}{% endif %}"
+        style="--im-c-this: var(--im-c-{{ c.label }}, var(--im-accent));">
+  {%- if bg and bg != "" -%}
+  <div class="im-hero-bgvideo im-chero-bg" aria-hidden="true">
+    <iframe src="https://www.youtube.com/embed/{{ bg }}?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist={{ bg }}&amp;controls=0&amp;playsinline=1" title="" tabindex="-1" allow="autoplay; encrypted-media"></iframe>
+  </div>
+  {%- endif -%}
+
+  <div class="im-chero-grid">
+    <div class="im-chero-copy">
+      <p class="im-chero-kicker"><i class="ph-bold ph-{{ c.icon | default: 'folder' }}" aria-hidden="true"></i> {{ c.title }}</p>
+      <h1 class="im-chero-title">{{ include.title | default: c.title }}</h1>
+      {%- if c.description %}<p class="im-chero-desc">{{ c.description }}</p>{% endif -%}
+      {%- if h.cta -%}
+      <p class="im-chero-actions">
+        <a class="im-btn im-btn-primary" href="{{ h.cta.url }}"{% if h.cta.url contains '//' %} target="_blank" rel="noopener"{% endif %}>
+          {%- if h.cta.icon %}<i class="ph-bold ph-{{ h.cta.icon }}" aria-hidden="true"></i> {% endif -%}{{ h.cta.label }}
+        </a>
+      </p>
+      {%- endif -%}
+    </div>
+
+    <div class="im-chero-side">
+      <dl class="im-chero-stats">
+        <div><dt>{{ c.title }}</dt><dd>{{ docs.size }}</dd></div>
+        {%- if latest.date -%}<div><dt>Latest</dt><dd>{{ latest.date | date: "%b %Y" }}</dd></div>{%- endif -%}
+        {%- if include.extra_label -%}<div><dt>{{ include.extra_label }}</dt><dd>{{ include.extra_value }}</dd></div>{%- endif -%}
+      </dl>
+
+      {%- if include.views -%}
+      {%- comment -%}
+        Grid or list, and no JavaScript: two radios and `:has()` on the
+        section below. The reader's choice survives a repaint because the
+        browser keeps the checked state — it is a form control, not state
+        we invented.
+      {%- endcomment -%}
+      <div class="im-viewtoggle" role="group" aria-label="View as">
+        <input type="radio" name="im-view" id="im-view-grid" class="im-viewtoggle-input" checked>
+        <label class="im-viewtoggle-label" for="im-view-grid"><i class="ph-bold ph-squares-four" aria-hidden="true"></i> Grid</label>
+        <input type="radio" name="im-view" id="im-view-list" class="im-viewtoggle-input">
+        <label class="im-viewtoggle-label" for="im-view-list"><i class="ph-bold ph-rows" aria-hidden="true"></i> List</label>
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+</header>

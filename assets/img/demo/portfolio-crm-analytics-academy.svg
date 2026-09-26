@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="CRM Analytics Academy">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(213 26% 12%)"/><stop offset="1" stop-color="hsl(213 39% 22%)"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="82%" cy="14%" r="70%">
+      <stop offset="0" stop-color="hsl(213 79% 52% / 0.38)"/><stop offset="1" stop-color="hsl(213 79% 52% / 0.38)" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="p" width="60" height="30" patternUnits="userSpaceOnUse"><path d="M0 22q15-18 30 0t30 0" fill="none" stroke="hsl(213 35% 75% / 0.16)" stroke-width="1.2"/></pattern>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect width="1200" height="675" fill="url(#p)"/>
+  <rect width="1200" height="675" fill="url(#glow)"/>
+  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
+    <text x="80" y="214" fill="hsl(213 75% 66%)" font-size="24" font-weight="600" letter-spacing="3.2">PROJECT</text>
+    <rect x="80" y="238" width="56" height="4" rx="2" fill="hsl(213 75% 66%)"/>
+    <text x="80" y="300" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">CRM Analytics Academy</text>
+    <text x="80" y="402" fill="rgb(255 255 255 / 0.66)" font-size="26" font-weight="500">Ruby  ·  2025  ·  web · jekyll</text>
+    <g opacity="0.92">
+      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
+      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">SS</text>
+    </g>
+  </g>
+</svg>

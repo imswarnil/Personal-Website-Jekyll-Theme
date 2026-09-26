@@ -5,6 +5,14 @@ category: snippet
 tags: [javascript]
 lang: javascript
 excerpt: "A 6-line debounce with no dependencies."
+preview: |
+  const debounce = (fn, ms = 200) => {
+    let t;
+    return (...a) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn(...a), ms);
+    };
+  };
 ---
 ```js
 const debounce = (fn, ms = 200) => {

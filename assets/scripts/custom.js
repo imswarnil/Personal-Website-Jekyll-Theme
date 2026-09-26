@@ -23,10 +23,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  var printBtn = document.querySelector('[data-im-print]');
-  if (printBtn) {
-    printBtn.addEventListener('click', function () { window.print(); });
-  }
+  // Every print button, not just the first: /resume/ has one in its hero
+  // and one in the bar the hero becomes.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-im-print]'), function (btn) {
+    btn.addEventListener('click', function () { window.print(); });
+  });
 
   // In-article ads: insert a clone of #im-inline-ad-tpl after every Nth
   // paragraph inside a post's prose (N from data-im-inline-ads).

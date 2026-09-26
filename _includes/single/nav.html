@@ -1,0 +1,6 @@
+{%- if page.previous.url or page.next.url -%}
+<nav class="im-postnav" aria-label="More in {{ coll.title }}">
+  {%- if page.previous.url -%}<a href="{{ page.previous.url | relative_url }}"><span class="im-postnav-label">Previous</span><span class="im-postnav-title">{{ page.previous.title }}</span></a>{% endif -%}
+  {%- if page.next.url -%}<a class="im-postnav-next" href="{{ page.next.url | relative_url }}"><span class="im-postnav-label">Next</span><span class="im-postnav-title">{{ page.next.title }}</span></a>{% endif -%}
+</nav>
+{%- endif -%}

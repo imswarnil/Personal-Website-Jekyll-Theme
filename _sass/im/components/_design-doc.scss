@@ -1,0 +1,52 @@
+// ======================================================================
+// im/_design-doc.scss — /design/ style guide page
+// Small, page-scoped pieces for documenting tokens (swatches, scale rows)
+// — everything else on that page reuses existing components/utilities.
+// ======================================================================
+.im-swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--im-space-4);
+}
+.im-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-2);
+}
+.im-swatch-fill {
+  height: 4.5rem;
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-lg);
+}
+.im-swatch-name  { font-size: var(--im-text-sm); font-weight: var(--im-weight-semibold); }
+.im-swatch-value { font-size: var(--im-text-xs); color: var(--im-muted); font-family: var(--im-font-mono); }
+
+.im-scale-row {
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-4);
+  padding: var(--im-space-3) 0;
+  border-top: 1px solid var(--im-line);
+  &:first-child { border-top: 0; }
+}
+.im-scale-box {
+  flex: 0 0 auto;
+  background: var(--im-accent);
+}
+.im-scale-label {
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  color: var(--im-muted);
+  min-width: 8rem;
+}
+
+.im-doc-section {
+  padding-block: var(--im-space-7);
+  border-top: 1px solid var(--im-line);
+  &:first-of-type { border-top: 0; }
+}
+.im-doc-section-head {
+  margin-bottom: var(--im-space-5);
+  h2 { margin: 0 0 var(--im-space-2); font-size: var(--im-text-2xl); }
+  p { margin: 0; max-width: 56ch; color: var(--im-muted); }
+}

@@ -1,0 +1,315 @@
+// ======================================================================
+// components/_collection-hero.scss — the first screen of a landing page
+// ----------------------------------------------------------------------
+// One hero for every collection (collection/hero.html): what this is, what
+// it is called, one line about it, and how much of it there is. The icon,
+// the hue and the counts come from the collection; the pattern, the loop
+// behind it and the view toggle come from its `hero:` block.
+// ======================================================================
+
+.im-chero {
+  position: relative;
+  overflow: clip;
+  margin-bottom: var(--im-space-7);
+  padding: var(--im-space-7) var(--im-space-5);
+  border-radius: var(--im-radius-2xl);
+  background: var(--im-surface);
+}
+
+// A collection whose subject is moving pictures can run one behind its
+// hero. It sits under everything, muted, and never above the words.
+.im-chero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.5;
+
+  iframe { width: 100%; height: 100%; border: 0; pointer-events: none; }
+}
+.im-chero:has(.im-chero-bg) { background: var(--im-canvas); }
+
+.im-chero-grid {
+  display: grid;
+  gap: var(--im-space-5);
+  align-items: end;
+
+  @include mq($bp-lg) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+}
+
+.im-chero-copy { min-width: 0; }
+
+.im-chero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  margin: 0 0 var(--im-space-3);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 72%, var(--im-muted));
+
+  > i { font-size: 1.1em; }
+}
+
+.im-chero-title {
+  margin: 0;
+  font-size: var(--im-text-display);
+  line-height: var(--im-leading-display);
+  letter-spacing: var(--im-tracking-tighter);
+}
+
+.im-chero-desc {
+  margin: var(--im-space-3) 0 0;
+  max-width: 52ch;
+  font-size: var(--im-text-lg);
+  line-height: var(--im-leading-lg);
+  color: var(--im-body);
+  text-wrap: pretty;
+}
+
+.im-chero-actions { margin: var(--im-space-5) 0 0; }
+
+.im-chero-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-4);
+  align-items: flex-start;
+
+  @include mq($bp-lg) { align-items: flex-end; }
+}
+
+// The counts, as a definition list: the label is the quiet half and the
+// number is the loud one, so a row of them reads as a dashboard and not
+// as a sentence.
+.im-chero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--im-space-3) var(--im-space-6);
+  margin: 0;
+
+  > div { display: flex; flex-direction: column-reverse; }
+
+  dt {
+    font-size: var(--im-text-xs);
+    letter-spacing: var(--im-tracking-wide);
+    text-transform: uppercase;
+    color: var(--im-muted);
+  }
+  dd {
+    margin: 0;
+    font-size: var(--im-text-h3);
+    line-height: var(--im-leading-h3);
+    font-weight: var(--im-weight-semibold);
+    letter-spacing: var(--im-tracking-tight);
+    color: var(--im-ink);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ---- Grid or list -----------------------------------------------------
+// Two radios and `:has()`. No script, no stored preference to go stale,
+// and the browser keeps the choice across a repaint because it is a form
+// control rather than state we invented.
+.im-viewtoggle {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: var(--im-radius-full);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+}
+.im-viewtoggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.im-viewtoggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  min-height: 1.75rem;
+  padding: 0 var(--im-space-3);
+  border-radius: var(--im-radius-full);
+  color: var(--im-muted);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+
+  &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+}
+.im-viewtoggle-input:checked + .im-viewtoggle-label {
+  background: var(--im-current-bg);
+  color: var(--im-current-fg);
+  font-weight: var(--im-current-weight);
+}
+.im-viewtoggle-input:focus-visible + .im-viewtoggle-label {
+  outline: var(--im-ring-width) solid var(--im-ring);
+  outline-offset: var(--im-ring-offset);
+}
+
+// LIST: one column, and the cards that have a picture put it beside the
+// words instead of above them. Everything else simply goes full width —
+// a chat window or a code window has no sensible "row" form, and forcing
+// one on it would be a second design for the same object.
+.im-collection:has(#im-view-list:checked) {
+  .im-cards {
+    grid-template-columns: 1fr;
+    gap: var(--im-space-5);
+  }
+
+  :is(.im-ecard, .im-vcard, .im-product, .im-coursecard, .im-tripcard) {
+    @include mq($bp-md) {
+      flex-direction: row;
+      align-items: stretch;
+      gap: var(--im-space-5);
+    }
+  }
+
+  :is(.im-ecard-media, .im-vcard-screen, .im-product-art, .im-coursecard-media, .im-tripcard-art) {
+    @include mq($bp-md) { flex: 0 0 min(34%, 20rem); aspect-ratio: 16 / 10; }
+  }
+
+  :is(.im-ecard-body, .im-vcard-body, .im-product-body, .im-coursecard-body) {
+    @include mq($bp-md) { justify-content: center; }
+  }
+
+  // A trip card puts its words ON the picture, so in a row it needs the
+  // picture to stop being the whole card.
+  .im-tripcard-link { @include mq($bp-md) { display: flex; width: 100%; } }
+  .im-tripcard-art  { @include mq($bp-md) { flex: 1 1 auto; } }
+}
+
+// ---- The reels band ---------------------------------------------------
+// Portrait films, in a strip of their own. Two columns of them on the
+// left; on the right, what the band is about. A reel is 9:16 and there is
+// no honest way to put one in a 16:9 card.
+.im-reelband {
+  display: grid;
+  gap: var(--im-space-6);
+  margin-bottom: var(--im-space-7);
+  padding: var(--im-space-6);
+  border-radius: var(--im-radius-2xl);
+  background: var(--im-surface);
+
+  @include mq($bp-lg) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+}
+
+.im-reelband-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--im-space-4);
+}
+
+.im-reel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-2);
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.im-reel-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: var(--im-radius-lg);
+  background: var(--im-surface-2);
+  isolation: isolate;
+
+  img, .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: translate var(--im-duration-fast) var(--im-ease-out), box-shadow var(--im-duration-fast) var(--im-ease-out);
+    .im-reel:is(:hover, :focus-visible) & { translate: 0 -1px; box-shadow: var(--im-card-hover-shadow); }
+  }
+}
+.im-reel-scrim { position: absolute; inset: 0; background: var(--im-media-scrim); opacity: 0.7; }
+.im-reel-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--im-radius-full);
+  background: var(--im-glass);
+  box-shadow: inset 0 0 0 1px var(--im-glass-light);
+  color: var(--im-on-media);
+  transition: background-color var(--im-duration-fast) var(--im-ease-out);
+
+  .im-reel:is(:hover, :focus-visible) & { background: var(--im-accent); }
+}
+.im-reel-time {
+  position: absolute;
+  right: var(--im-space-2);
+  bottom: var(--im-space-2);
+  padding: 0.05rem var(--im-space-2);
+  border-radius: var(--im-radius-sm);
+  background: var(--im-glass);
+  color: var(--im-on-media);
+  font-size: var(--im-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+.im-reel-title {
+  font-size: var(--im-text-sm);
+  font-weight: var(--im-weight-medium);
+  line-height: var(--im-leading-sm);
+  color: var(--im-ink);
+  text-wrap: pretty;
+}
+
+.im-reelband-copy { min-width: 0; }
+.im-reelband-title {
+  margin: 0 0 var(--im-space-3);
+  font-size: var(--im-text-h1);
+  line-height: var(--im-leading-h1);
+  letter-spacing: var(--im-tracking-tight);
+}
+.im-reelband-desc {
+  margin: 0 0 var(--im-space-5);
+  max-width: 52ch;
+  color: var(--im-body);
+  text-wrap: pretty;
+}
+.im-reelband-actions { margin: var(--im-space-5) 0 0; }
+
+// ---- A reel's own page ------------------------------------------------
+// The film on one side, the words on the other: a 9:16 player dropped into
+// a reading column is taller than the screen it is read on.
+.im-shell.is-reel {
+  @include mq($bp-lg) {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+
+    .im-shell-main { max-width: none; }
+
+    .im-article {
+      display: contents;
+    }
+
+    .im-post-media {
+      grid-column: 1;
+      grid-row: 1 / span 20;
+      position: sticky;
+      top: calc(var(--im-navbar-height) + var(--im-space-5));
+      max-width: none;
+      margin: 0;
+    }
+  }
+}

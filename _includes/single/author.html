@@ -1,0 +1,38 @@
+{%- comment -%}
+  The author box: who wrote this, where to find them, and what else they
+  have published. `author_latest` (a number) sets how many recent posts to
+  list — 0 hides the list.
+{%- endcomment -%}
+{%- assign a_name = page.author | default: site.author | default: site.title -%}
+{%- assign a_bio = page.author_bio | default: site.author_bio | default: site.description -%}
+{%- assign n = page.author_latest | default: single.author_latest | default: 4 -%}
+<section class="im-authorbox" aria-labelledby="im-authorbox-name">
+  <div class="im-authorbox-head">
+    <img class="im-authorbox-avatar" src="{{ page.author_avatar | default: site.avatarurl | default: '/assets/img/avatar.jpg' | relative_url }}" alt="" width="72" height="72">
+    <div class="im-authorbox-id">
+      <p class="im-authorbox-name" id="im-authorbox-name">{{ a_name }}</p>
+      <p class="im-authorbox-bio">{{ a_bio | strip_html }}</p>
+      {% include social-row.html class="im-authorbox-social" label="Find me elsewhere" %}
+    </div>
+  </div>
+
+  {%- if n > 0 -%}
+  {%- assign others = site.posts | where_exp: "d", "d.url != page.url" -%}
+  {%- if others.size > 0 -%}
+  <div class="im-authorbox-more">
+    <p class="im-authorbox-more-title">Latest writing</p>
+    <ul class="im-authorbox-list">
+      {%- for d in others limit: n -%}
+      <li>
+        <a href="{{ d.url | relative_url }}">
+          <span class="im-authorbox-list-title">{{ d.title }}</span>
+          {%- if d.date %}<time datetime="{{ d.date | date_to_xmlschema }}">{{ d.date | date: "%b %Y" }}</time>{% endif -%}
+        </a>
+      </li>
+      {%- endfor -%}
+    </ul>
+    <a class="im-card-cta" href="{{ '/blog/' | relative_url }}">All posts <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></a>
+  </div>
+  {%- endif -%}
+  {%- endif -%}
+</section>

@@ -12,12 +12,16 @@
 {%- endcomment -%}
 {%- assign it = include.item -%}
 {%- assign cover = it.image | default: it.cover -%}
-{%- capture coverurl -%}{%- include utility/image.html image=cover collection=it.collection -%}{%- endcapture -%}
 {%- assign snip = include.snippet | default: it.excerpt | default: it.description -%}
 <article class="im-pcard im-pcard--{{ include.accent }}">
   {%- unless include.media == false -%}
   <a class="im-pcard-media" href="{{ it.url | relative_url }}" tabindex="-1" aria-hidden="true">
-    <img src="{{ coverurl }}" alt="" loading="lazy" width="1200" height="675">
+    {%- comment -%} A real cover if the doc has one; otherwise art generated from its front matter. {%- endcomment -%}
+    {%- if cover and cover != "" and cover != site.placeholder_image -%}
+    <img src="{{ cover | relative_url }}" alt="" loading="lazy" width="1200" height="675">
+    {%- else -%}
+    {%- include utility/thumb.html item=it -%}
+    {%- endif -%}
     <span class="im-pcard-type">{{ include.kicker }}</span>
     {%- if include.play %}<span class="im-pcard-play"><i class="ph-bold ph-play"></i></span>{% endif -%}
     {%- if include.badge %}<span class="im-pcard-badge">{{ include.badge }}</span>{% endif -%}

@@ -4,28 +4,41 @@
 
 .im-hero {
   display: grid;
-  gap: var(--im-space-6);
+  gap: var(--im-space-5);
   align-items: center;
-  // Uniform, compact hero height across pages.
-  padding-block: var(--im-space-6);
+  padding-block: var(--im-space-5);
+  // Everything decorative behind the hero (grid, glow, video) is clipped
+  // to the hero's own box, so nothing ever pokes out past the container
+  // edge the navbar shares with it.
+  overflow: clip;
 
-  // Two-column split once there's room (text-led, square image on the right)
+  // Mobile: no forced height. The column stacks (photo, copy, CTAs,
+  // socials) and is already taller than a phone screen — pinning it to
+  // the viewport would only squeeze it and force a scroll *inside* the
+  // hero. It just takes the height its content needs.
+  //
+  // Desktop: on the site's 12-column grid — copy spans 7, photo spans 5 —
+  // and fills the viewport below the top bar, so the whole hero lands in
+  // one screen. See --im-hero-height for the svh/vh handling.
   @media (min-width: $bp-lg) {
-    grid-template-columns: 1.5fr 0.8fr;
-    padding-block: var(--im-space-7);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--im-gutter);
+    min-height: var(--im-hero-height);
+    padding-block: var(--im-space-6);
   }
 }
 
-// Image-led variant: bigger picture on the left, left-aligned copy on the right.
+// Image-led variant: left-aligned copy on the left, bigger picture on the right.
 .im-hero--media-first {
   @media (min-width: $bp-lg) {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: var(--im-space-8);
+    .im-hero-content { grid-column: 1 / span 7; order: 0; }
+    // Centred in its 5 columns, not flush right: leaves the pointer-drift
+    // (hero.js) room to move without the photo's edge hitting the clip.
+    .im-hero-media   { grid-column: 8 / span 5; order: 1; justify-self: center; }
   }
   .im-hero-content { text-align: left; align-items: flex-start; }
 }
 .im-hero-center { text-align: center; justify-items: center; }
-.im-hero-stats { margin-bottom: var(--im-space-7); }
 
 .im-hero-content {
   display: flex;
@@ -34,34 +47,52 @@
   max-width: 40rem;
 }
 
+// Quote + eyebrow badge share a single line above the title.
+.im-hero-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--im-space-3);
+  align-self: flex-start;
+}
+.im-hero-center .im-hero-line { align-self: center; justify-content: center; }
+
+// The kicker over a hero is set in the MONO face — the system's one
+// typographic signal that a line is a label and not a sentence. It is a
+// chip, so it wears the chip's hairline and nothing else.
 .im-hero-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: var(--im-space-2);
-  align-self: flex-start;
-  padding: var(--im-space-1) var(--im-space-3);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-pill);
+  min-height: 1.75rem;
+  padding: 0 var(--im-space-3);
+  border: 0;
+  border-radius: var(--im-radius-full);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+  font-family: var(--im-font-mono);
   font-size: var(--im-text-xs);
-  font-weight: var(--im-fw-semibold);
-  letter-spacing: 0.04em;
+  font-weight: var(--im-weight-medium);
+  letter-spacing: var(--im-tracking-wide);
   text-transform: uppercase;
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
 }
-.im-hero-center .im-hero-eyebrow { align-self: center; }
 
+// The one place the display size is used. Everything else on the site
+// stops at h1 — see base/_elements.scss.
 .im-hero-title {
   margin: 0;
-  font-size: clamp(var(--im-text-4xl), 6vw, var(--im-text-5xl));
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: var(--im-text-display);
+  line-height: var(--im-leading-display);
+  letter-spacing: var(--im-tracking-tighter);
 }
 
 .im-hero-subtitle {
   margin: 0;
+  max-width: 46ch;
   font-size: var(--im-text-lg);
-  line-height: var(--im-leading-base);
-  color: var(--im-color-secondary);
+  line-height: var(--im-leading-lg);
+  color: var(--im-body);
+  text-wrap: pretty;
 }
 
 .im-hero-meta {
@@ -73,9 +104,9 @@
   padding: 0;
   list-style: none;
   font-size: var(--im-text-sm);
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
 
-  i { margin-right: var(--im-space-1); color: var(--im-color-mute); }
+  i { margin-right: var(--im-space-1); color: var(--im-faint); }
 }
 .im-hero-center .im-hero-meta { justify-content: center; }
 .im-hero-status {
@@ -86,9 +117,9 @@
 .im-hero-status-dot {
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: 50%;
-  background: var(--im-color-success);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--im-color-success) 25%, transparent);
+  border-radius: var(--im-radius-full);
+  background: var(--im-success);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--im-success) 25%, transparent);
 }
 
 .im-hero-actions {
@@ -99,13 +130,15 @@
 }
 .im-hero-center .im-hero-actions { justify-content: center; }
 
+// Pull the social row up, closer to the actions above it.
+.im-hero-content .im-footer-social { margin-top: var(--im-space-3); }
+
 .im-hero-media {
   position: relative;
   margin: 0;
   max-width: 22rem;
   margin-inline: auto;
   justify-self: center;
-  overflow: visible;   // let the annotations sit outside the picture
 
   // Mobile: image leads (above the text).
   order: -1;
@@ -116,7 +149,7 @@
     display: block;
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: var(--im-radius-6);
+    border-radius: var(--im-radius-2xl);
     box-shadow: var(--im-shadow-lg);
     object-fit: cover;
   }
@@ -128,36 +161,18 @@
   }
 }
 
-// Gentle float on the picture itself (entrance fade is on .im-hero-media).
-@media (prefers-reduced-motion: no-preference) {
-  .im-hero-img { animation: im-hero-img-float 5.5s var(--im-ease) infinite alternate; }
+// ---- Word-mask reveal (hero.js) ---------------------------------------
+// hero.js wraps each title word in .im-split > .im-split-i, then slides
+// the inner span up from behind the outer one. The outer span clips, so
+// the padding/negative-margin pair is what stops descenders (the g in
+// "Engineering", the y in "storytelling") being sliced off by it.
+.im-split {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
-@keyframes im-hero-img-float {
-  from { transform: translateY(0) rotate(-0.6deg); }
-  to   { transform: translateY(-10px) rotate(0.6deg); }
-}
-
-// ---- Handwritten annotations -----------------------------------------
-// "that's me!" tag with a hand-drawn arrow pointing at the picture.
-.im-hero-tag {
-  position: absolute;
-  top: -2rem;
-  left: -1.25rem;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  color: var(--im-color-accent);
-  transform: rotate(-7deg);
-  pointer-events: none;
-}
-.im-hero-tag-text {
-  font-family: "Caveat", ui-rounded, cursive;
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 1;
-}
-.im-hero-tag-arrow { width: 3rem; height: auto; margin: -0.15rem 0 0 1.6rem; }
+.im-split-i { display: inline-block; will-change: transform; }
 
 // Handwritten quote near the picture (leads the copy column).
 .im-hero-quote {
@@ -166,24 +181,8 @@
   font-weight: 600;
   font-size: 1.7rem;
   line-height: 1.05;
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
   transform: rotate(-1.5deg);
-}
-
-// Signature at the bottom of the picture.
-.im-hero-sign {
-  position: absolute;
-  right: 0.9rem;
-  bottom: -0.7rem;
-  z-index: 3;
-  font-family: "Caveat", ui-rounded, cursive;
-  font-weight: 700;
-  font-size: 2.4rem;
-  line-height: 1;
-  color: var(--im-color-contrast);
-  transform: rotate(-6deg);
-  pointer-events: none;
-  text-shadow: 0 1px 0 var(--im-color-background), 0 0 6px var(--im-color-background);
 }
 
 // Lightbox for the hero video (opened by the "Watch" CTA)
@@ -202,7 +201,7 @@
   position: relative;
   width: min(60rem, 100%);
   aspect-ratio: 16 / 9;
-  border-radius: var(--im-radius-5);
+  border-radius: var(--im-radius-xl);
   overflow: hidden;
   box-shadow: var(--im-shadow-lg);
   background: #000;
@@ -216,7 +215,7 @@
   align-items: center;
   justify-content: center;
   width: 2.5rem; height: 2.5rem;
-  border: 0; border-radius: 50%;
+  border: 0; border-radius: var(--im-radius-full);
   background: rgba(255,255,255,0.15);
   color: #fff; cursor: pointer;
   font-size: 1.2rem;

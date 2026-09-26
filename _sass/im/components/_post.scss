@@ -12,14 +12,18 @@
 // ---- Post header ------------------------------------------------------
 .im-post-header { margin-bottom: var(--im-space-6); }
 
+// The kicker is a LABEL: mono face, and the colour of the collection the
+// entry belongs to — the same hue its card, its chips and its cover wear.
+// --im-c-current is set on <body> by the default layout.
 .im-kicker {
   display: inline-block;
   margin-bottom: var(--im-space-3);
+  font-family: var(--im-font-mono);
   font-size: var(--im-text-xs);
-  font-weight: var(--im-fw-semibold);
-  letter-spacing: 0.08em;
+  font-weight: var(--im-weight-medium);
+  letter-spacing: var(--im-tracking-wide);
   text-transform: uppercase;
-  color: var(--im-color-secondary);
+  color: color-mix(in oklab, var(--im-c-current) 72%, var(--im-muted));
 }
 
 .im-post-title {
@@ -34,15 +38,15 @@
   align-items: center;
   gap: var(--im-space-2) var(--im-space-3);
   font-size: var(--im-text-sm);
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
 
-  .im-avatar { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .im-avatar { width: 1.75rem; height: 1.75rem; border-radius: var(--im-radius-full); }
   .im-dot { opacity: 0.5; }
 }
 
 .im-post-cover {
   margin: var(--im-space-6) 0;
-  img { width: 100%; border-radius: var(--im-radius-5); }
+  img { width: 100%; border-radius: var(--im-radius-xl); }
 }
 
 // ---- Post media (video / audio) --------------------------------------
@@ -52,7 +56,7 @@
     width: 100%;
     aspect-ratio: 16 / 9;
     border: 0;
-    border-radius: var(--im-radius-4);
+    border-radius: var(--im-radius-xl);
   }
   audio { width: 100%; }
 }
@@ -64,7 +68,7 @@
   display: inline-block;
   font-size: var(--im-text-lg);
   line-height: 1;
-  background: linear-gradient(90deg, var(--im-color-warning) var(--pct), var(--im-color-background-300) var(--pct));
+  background: linear-gradient(90deg, var(--im-warning) var(--pct), var(--im-surface-3) var(--pct));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -78,24 +82,24 @@
   gap: var(--im-space-2) var(--im-space-5);
   margin: var(--im-space-4) 0;
   padding: var(--im-space-4);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-4);
-  background: var(--im-color-background-100);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
   font-size: var(--im-text-sm);
 
   .im-fact { display: inline-flex; align-items: center; gap: var(--im-space-2); }
-  .im-fact-label { color: var(--im-color-secondary); }
-  .im-fact-value { font-weight: var(--im-fw-semibold); color: var(--im-color-contrast); }
+  .im-fact-label { color: var(--im-muted); }
+  .im-fact-value { font-weight: var(--im-weight-semibold); color: var(--im-ink); }
 }
 
 // ---- Prose (rendered markdown) ---------------------------------------
 .im-prose {
   font-size: var(--im-text-lg);
-  color: var(--im-color-foreground);
+  color: var(--im-body);
 
   > * + * { margin-top: var(--im-space-4); }
   h2, h3, h4 { margin-top: var(--im-space-6); scroll-margin-top: calc(var(--im-navbar-height) + var(--im-space-4)); }
-  img { border-radius: var(--im-radius-4); }
+  img { border-radius: var(--im-radius-xl); }
   > :first-child { margin-top: 0; }
 }
 
@@ -108,15 +112,23 @@
   padding: 0;
   list-style: none;
 
+  // A tag is a chip, and it takes the chip's steps: a hairline at rest,
+  // the hover fill when it is pointed at.
   a {
     display: inline-flex;
-    padding: var(--im-space-1) var(--im-space-3);
-    border-radius: var(--im-radius-1);
-    background: var(--im-color-background-100);
-    color: var(--im-color-contrast);
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 1.75rem;
+    padding: 0 var(--im-space-3);
+    border-radius: var(--im-radius-full);
+    box-shadow: inset 0 0 0 1px var(--im-line);
+    background: transparent;
+    color: var(--im-ink);
     font-size: var(--im-text-sm);
+    font-weight: var(--im-weight-medium);
     text-decoration: none;
-    &:hover { background: var(--im-color-background-200); }
+    transition: background-color var(--im-duration-instant);
+    &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
   }
 }
 
@@ -134,12 +146,12 @@
   align-items: center;
   margin: var(--im-space-6) 0;
   padding: var(--im-space-5);
-  border-radius: var(--im-radius-5);
-  background: var(--im-color-background-100);
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
 
-  img { width: 3.25rem; height: 3.25rem; border-radius: 50%; flex: 0 0 auto; }
+  img { width: 3.25rem; height: 3.25rem; border-radius: var(--im-radius-full); flex: 0 0 auto; }
   .im-author-name { margin: 0; font-size: var(--im-text-lg); }
-  .im-author-bio  { margin: var(--im-space-1) 0 0; font-size: var(--im-text-sm); color: var(--im-color-secondary); }
+  .im-author-bio  { margin: var(--im-space-1) 0 0; font-size: var(--im-text-sm); color: var(--im-muted); }
 }
 
 .im-postnav {
@@ -147,12 +159,12 @@
   flex-wrap: wrap;
   gap: var(--im-space-4);
   margin-top: var(--im-space-6);
-  border-top: 1px solid var(--im-color-border);
+  border-top: 1px solid var(--im-line);
   padding-top: var(--im-space-5);
 
-  a { flex: 1 1 0; min-width: 12rem; text-decoration: none; color: var(--im-color-contrast); }
-  .im-postnav-label { display: block; font-size: var(--im-text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--im-color-secondary); }
-  .im-postnav-title { font-weight: var(--im-fw-semibold); }
+  a { flex: 1 1 0; min-width: 12rem; text-decoration: none; color: var(--im-ink); }
+  .im-postnav-label { display: block; font-size: var(--im-text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--im-muted); }
+  .im-postnav-title { font-weight: var(--im-weight-semibold); }
   .im-postnav-next { text-align: right; }
 }
 
@@ -164,32 +176,43 @@
   gap: var(--im-space-3);
   margin-top: var(--im-space-7);
   padding-top: var(--im-space-6);
-  border-top: 1px solid var(--im-color-border);
+  border-top: 1px solid var(--im-line);
 }
+// A page number is a chip, and a chip has the system's three steps: a
+// hairline at rest, the hover fill, the current fill with a bolder label.
 .im-page-btn {
   display: inline-flex;
   align-items: center;
   gap: var(--im-space-2);
-  padding: var(--im-space-2) var(--im-space-4);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-pill);
+  min-height: 2rem;
+  padding: 0 var(--im-space-4);
+  border: 0;
+  border-radius: var(--im-radius-full);
+  box-shadow: inset 0 0 0 1px var(--im-line);
   font-size: var(--im-text-sm);
-  font-weight: var(--im-fw-medium);
-  color: var(--im-color-contrast);
+  font-weight: var(--im-weight-medium);
+  color: var(--im-ink);
   text-decoration: none;
-  &:hover { background: var(--im-color-background-100); }
-  &.is-disabled { opacity: 0.4; pointer-events: none; }
+  transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+  &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+  &[aria-current="page"] {
+    background: var(--im-current-bg);
+    color: var(--im-current-fg);
+    font-weight: var(--im-current-weight);
+    box-shadow: none;
+  }
+  &.is-disabled { opacity: var(--im-opacity-disabled); pointer-events: none; }
 }
-.im-page-indicator { font-size: var(--im-text-sm); color: var(--im-color-secondary); }
+.im-page-indicator { font-size: var(--im-text-sm); color: var(--im-muted); font-variant-numeric: tabular-nums; }
 
 // ---- Page breadcrumb --------------------------------------------------
 .im-breadcrumb {
   display: flex;
   gap: var(--im-space-2);
   font-size: var(--im-text-sm);
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
   margin-bottom: var(--im-space-3);
-  a { color: inherit; text-decoration: none; &:hover { color: var(--im-color-contrast); } }
+  a { color: inherit; text-decoration: none; &:hover { color: var(--im-ink); } }
 }
 
 // ---- TOC --------------------------------------------------------------
@@ -197,12 +220,22 @@
   font-size: var(--im-text-sm);
   ol, ul { list-style: none; margin: 0; padding-left: var(--im-space-3); }
   > ol, > ul { padding-left: 0; }
-  a { color: var(--im-color-secondary); text-decoration: none; display: block; padding: var(--im-space-1) 0; &:hover, &.active { color: var(--im-color-contrast); } }
+  a {
+    display: block;
+    padding: var(--im-space-1) var(--im-space-2);
+    border-radius: var(--im-radius-sm);
+    color: var(--im-muted);
+    text-decoration: none;
+    transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+    &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+    &.active { background: var(--im-current-bg); color: var(--im-current-fg); font-weight: var(--im-current-weight); }
+  }
 }
 .im-toc-title {
   margin-bottom: var(--im-space-3);
   font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--im-color-secondary);
+  letter-spacing: var(--im-tracking-wide);
+  color: var(--im-faint);
 }

@@ -15,19 +15,18 @@
 .im-search-overlay {
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, var(--im-color-black) 55%, transparent);
+  background: color-mix(in srgb, var(--im-black) 55%, transparent);
   backdrop-filter: blur(4px);
 }
 .im-search-panel {
   position: relative;
   width: 100%;
   max-width: 40rem;
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-5);
-  background: var(--im-color-surface);
-  box-shadow: var(--im-shadow-lg);
+  border-radius: var(--im-radius-xl);
+  background: var(--im-canvas);
+  box-shadow: inset 0 0 0 1px var(--im-line), var(--im-shadow-float);
   overflow: hidden;
-  animation: im-search-in var(--im-dur-2) var(--im-ease);
+  animation: im-search-in var(--im-duration-base) var(--im-ease-out);
 }
 @keyframes im-search-in { from { opacity: 0; transform: translateY(-10px) scale(0.98); } to { opacity: 1; transform: none; } }
 
@@ -36,21 +35,21 @@
   align-items: center;
   gap: var(--im-space-3);
   padding: var(--im-space-4) var(--im-space-5);
-  border-bottom: 1px solid var(--im-color-border);
+  border-bottom: 1px solid var(--im-line);
 
-  > i { font-size: 1.25rem; color: var(--im-color-secondary); }
+  > i { font-size: 1.25rem; color: var(--im-muted); }
   input {
     flex: 1; border: 0; padding: 0; background: transparent;
-    font-size: var(--im-text-lg); color: var(--im-color-contrast);
+    font-size: var(--im-text-lg); color: var(--im-ink);
     &:focus-visible { outline: none; }
   }
 }
 .im-search-esc {
   font-size: var(--im-text-xs);
   padding: 0.15rem 0.4rem;
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-1);
-  color: var(--im-color-secondary);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-sm);
+  color: var(--im-muted);
 }
 
 .im-search-results {
@@ -62,35 +61,39 @@
   grid-template-columns: 1fr auto;
   gap: 0 var(--im-space-3);
   padding: var(--im-space-3) var(--im-space-4);
-  border-radius: var(--im-radius-3);
+  border-radius: var(--im-radius-md);
   cursor: pointer;
+  transition: background-color var(--im-duration-instant);
 
-  &.is-active { background: var(--im-color-background-100); }
-  &-title { font-weight: var(--im-fw-semibold); color: var(--im-color-contrast); }
-  &-excerpt { grid-column: 1 / -1; margin-top: 2px; font-size: var(--im-text-sm); color: var(--im-color-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  // The arrow keys and the pointer mean the same thing here, so they get
+  // the same fill — the row the keyboard is on wears the CURRENT step.
+  &:hover { background: var(--im-hover-bg); }
+  &.is-active { background: var(--im-current-bg); }
+  &-title { font-weight: var(--im-weight-semibold); color: var(--im-ink); }
+  &-excerpt { grid-column: 1 / -1; margin-top: 2px; font-size: var(--im-text-sm); color: var(--im-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
 .im-search-chip {
   align-self: center;
   padding: 0.1rem 0.5rem;
-  border-radius: var(--im-radius-pill);
-  background: var(--im-color-background-200);
+  border-radius: var(--im-radius-full);
+  background: var(--im-surface-2);
   font-size: var(--im-text-xs);
-  font-weight: var(--im-fw-medium);
-  color: var(--im-color-secondary);
+  font-weight: var(--im-weight-medium);
+  color: var(--im-muted);
   text-transform: capitalize;
 }
-.im-search-empty { padding: var(--im-space-6); text-align: center; color: var(--im-color-secondary); }
+.im-search-empty { padding: var(--im-space-6); text-align: center; color: var(--im-muted); }
 
 .im-search-foot {
   display: flex;
   gap: var(--im-space-4);
   padding: var(--im-space-3) var(--im-space-5);
-  border-top: 1px solid var(--im-color-border);
+  border-top: 1px solid var(--im-line);
   font-size: var(--im-text-xs);
-  color: var(--im-color-secondary);
+  color: var(--im-muted);
   span:last-child { margin-left: auto; }
-  kbd { padding: 0.1rem 0.35rem; border: 1px solid var(--im-color-border); border-radius: var(--im-radius-1); }
-  a { color: var(--im-color-secondary); text-decoration: none; &:hover { color: var(--im-color-contrast); } }
+  kbd { padding: 0.1rem 0.35rem; border: 1px solid var(--im-line); border-radius: var(--im-radius-sm); }
+  a { color: var(--im-muted); text-decoration: none; &:hover { color: var(--im-ink); } }
 }
 
 // ---- Full search page (search.md) ------------------------------------
@@ -98,21 +101,19 @@
 .im-searchpage-field {
   display: flex; align-items: center; gap: var(--im-space-3);
   padding: var(--im-space-4) var(--im-space-5);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-pill);
-  background: var(--im-color-surface);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-full);
+  background: var(--im-canvas);
   margin-bottom: var(--im-space-5);
-  > i { font-size: 1.25rem; color: var(--im-color-secondary); }
+  > i { font-size: 1.25rem; color: var(--im-muted); }
   input { flex: 1; border: 0; background: transparent; font-size: var(--im-text-lg); &:focus-visible { outline: none; } }
 }
 .im-searchpage-results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--im-space-3); }
 .im-searchpage-result {
   padding: var(--im-space-4) var(--im-space-5);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-4);
-  background: var(--im-color-surface);
-  transition: border-color var(--im-dur-1) var(--im-ease);
-  &:hover { border-color: var(--im-color-contrast); }
+  border-radius: var(--im-radius-xl);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+  @include im-hover-fill;
   h3 { margin: 0 0 var(--im-space-1); font-size: var(--im-text-lg); a { text-decoration: none; } }
-  p { margin: 0; font-size: var(--im-text-sm); color: var(--im-color-secondary); }
+  p { margin: 0; font-size: var(--im-text-sm); color: var(--im-muted); }
 }

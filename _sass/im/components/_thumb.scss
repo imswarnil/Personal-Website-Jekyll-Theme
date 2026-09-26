@@ -1,0 +1,102 @@
+// ======================================================================
+// im/components/_thumb.scss — drawn cover art (utility/thumb.html)
+// ----------------------------------------------------------------------
+// The inline twin of tools/thumbs.mjs. Both draw the SAME picture, so an
+// entry that gets a real .svg file later does not suddenly look like it
+// belongs to a different site.
+//
+// A cover is DARK in both themes, deliberately. A picture sits on top of
+// the page rather than in it, so it has to be legible against a white
+// canvas and a near-black one; white type on a deep field is the one
+// combination that always is. That is also why nothing in here reads
+// --im-ink: on a picture, ink is always white (see --im-on-media).
+//
+// The hue comes from --im-c-this, which thumb.html sets to the entry's
+// own collection colour — so a mixed feed on the homepage shows one
+// colour per kind of thing, without a single per-collection rule here.
+// ======================================================================
+
+.im-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  // The patterns draw in currentColor.
+  color: color-mix(in oklab, #fff 62%, var(--im-c-this, var(--im-accent)));
+}
+
+.im-thumb-bg {
+  fill: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 28%, #101014);
+}
+.im-thumb-pattern { opacity: 0.14; }
+.im-thumb--v1 .im-thumb-pattern,
+.im-thumb--v3 .im-thumb-pattern { opacity: 0.2; }
+
+// One soft light in the top-right corner, the same one the file-based
+// covers have. It is the only thing that keeps a flat field from reading
+// as a placeholder.
+.im-thumb-glow-a { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0.5; }
+.im-thumb-glow-b { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0; }
+
+.im-thumb-mark {
+  circle { fill: rgb(255 255 255 / 10%); stroke: rgb(255 255 255 / 28%); }
+  text {
+    fill: var(--im-on-media);
+    font-family: var(--im-font-body);
+    font-size: 32px;
+    font-weight: var(--im-weight-semibold);
+    letter-spacing: 0.02em;
+  }
+}
+
+// The <foreignObject> block: real HTML, so the title can wrap — SVG
+// <text> cannot, and a cover whose title runs off the edge is worse than
+// no cover at all.
+.im-thumb-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  font-family: var(--im-font-body);
+  color: var(--im-on-media);
+}
+.im-thumb-kicker {
+  font-size: 24px;
+  font-weight: var(--im-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, #fff 52%, var(--im-c-this, var(--im-accent)));
+}
+.im-thumb-rule {
+  width: 56px;
+  height: 4px;
+  margin: 18px 0 20px;
+  border-radius: 2px;
+  background: color-mix(in oklab, #fff 52%, var(--im-c-this, var(--im-accent)));
+}
+.im-thumb-title {
+  font-size: 66px;
+  font-weight: var(--im-weight-semibold);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.im-thumb-meta {
+  margin-top: 20px;
+  font-size: 26px;
+  font-weight: var(--im-weight-medium);
+  color: var(--im-on-media-faint);
+}
+
+// A browser with no color-mix() still gets a dark card with white type
+// rather than an invalid fill (which resolves to black on black).
+@supports not (color: color-mix(in oklab, #fff 50%, red)) {
+  .im-thumb      { color: #fff; }
+  .im-thumb-bg   { fill: #17171b; }
+  .im-thumb-kicker,
+  .im-thumb-rule { color: #fff; background: #fff; }
+}

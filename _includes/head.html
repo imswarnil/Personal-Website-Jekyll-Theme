@@ -60,6 +60,9 @@
 
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css"/>
 
+  {%- comment -%} _config.yml → CSS custom properties (accent, radius, width) {%- endcomment -%}
+  {% include site-theme.html %}
+
   {% if site.favicons or site.avatarurl %}{% include site-favicons.html %}{% endif %}
   {% if site.google_analytics %}{% include site-analytics.html %}{% endif %}
   {% include site-fonts.html %}

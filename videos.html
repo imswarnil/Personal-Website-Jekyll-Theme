@@ -1,0 +1,31 @@
+---
+layout: default
+title: Videos
+permalink: /videos/
+description: "Films, edits and video essays."
+ad_rails: false
+---
+{%- comment -%}
+  The videos landing. It uses the shared collection hero like every other
+  landing (the loop behind it comes from the collection's `hero.video`),
+  and then splits the collection by SHAPE: the portrait entries get the
+  reels band, the rest get the ordinary card grid. A reel in a 16:9 card
+  is a letterboxed apology, so it never appears in one.
+{%- endcomment -%}
+{%- assign coll = site.collections | where: "label", "videos" | first -%}
+{%- assign docs = site.videos | sort: "date" | reverse -%}
+{%- assign reels = docs | where_exp: "d", "d.orientation == 'portrait'" -%}
+{%- assign wide = docs | where_exp: "d", "d.orientation != 'portrait'" -%}
+
+<section class="im-collection im-page is-videos" style="--im-c-current: var(--im-c-videos, var(--im-accent));">
+  {% include collection/hero.html coll=coll docs=docs title=page.title views=true %}
+
+  {% include collection/reels.html items=reels %}
+
+  {%- if wide.size > 0 -%}
+  <ul class="im-cards">
+    {%- for d in wide -%}<li>{% include utility/card.html item=d %}</li>{%- endfor -%}
+  </ul>
+  {%- endif -%}
+</section>
+<script src="{{ '/assets/scripts/filter.js' | relative_url }}" defer></script>

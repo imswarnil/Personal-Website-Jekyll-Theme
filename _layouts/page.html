@@ -3,20 +3,73 @@ layout: default
 ---
 {%- if page.list_collection -%}
   {%- assign coll = site.collections | where: "label", page.list_collection | first -%}
-  <section class="im-collection im-page">
-    <header class="im-collection-head im-bg-dots im-reveal">
-      <span class="im-collection-icon"><i class="ph-bold ph-{{ coll.icon | default: 'folder' }}" aria-hidden="true"></i></span>
-      <h1 class="im-collection-title">{{ page.title | default: coll.title }}</h1>
-      {%- if coll.description %}<p class="im-collection-desc">{{ coll.description }}</p>{% endif -%}
-      <div class="im-collection-stats">
-        <span><strong>{{ coll.docs.size }}</strong> {{ coll.title | downcase }}</span>
-        {%- assign latest = coll.docs | sort: "date" | last -%}
-        {%- if latest.date %}<span>Updated <strong>{{ latest.date | date: "%b %Y" }}</strong></span>{% endif -%}
-      </div>
-    </header>
+  {%- assign docs = coll.docs | sort: "date" | reverse -%}
+  {%- assign latest = docs | first -%}
+  <section class="im-collection im-page is-{{ page.list_collection }}" style="--im-c-current: var(--im-c-{{ page.list_collection }}, var(--im-accent));">
+    {%- comment -%}
+      A landing page opens on the collection hero unless the collection
+      says otherwise (`hero: false`), in which case it gets the compact
+      one-row head instead. Both are data — see collection/hero.html.
+    {%- endcomment -%}
+    {%- if coll.hero == false -%}
+      {%- include utility/collection-head.html
+          title=page.title
+          desc=coll.description
+          icon=coll.icon
+          count=docs.size
+          count_label=coll.title
+          latest=latest.date -%}
+    {%- else -%}
+      {%- assign show_views = coll.hero.views -%}
+      {%- include collection/hero.html coll=coll docs=docs title=page.title views=show_views -%}
+    {%- endif -%}
     {%- if page.content != "" -%}<div class="im-prose im-margin-bottom-5">{{ content }}</div>{%- endif -%}
-    {% include utility/collection-list.html collection=page.list_collection %}
+
+    {%- if page.list_collection == "portfolio" -%}
+      {%- comment -%} Build the filter groups: kinds, and the union of tags + stack. {%- endcomment -%}
+      {%- capture kinds_raw -%}{%- for d in docs -%}{{ d.kind | default: "project" }}|{%- endfor -%}{%- endcapture -%}
+      {%- assign kinds = kinds_raw | split: "|" | uniq | sort -%}
+      {%- capture tags_raw -%}{%- for d in docs -%}{%- for t in d.tags -%}{{ t | slugify }}|{%- endfor -%}{%- for t in d.stack -%}{{ t | slugify }}|{%- endfor -%}{%- endfor -%}{%- endcapture -%}
+      {%- assign tags = tags_raw | split: "|" | uniq | sort -%}
+
+      <div class="im-grid-12 im-listing">
+        <aside class="im-filter im-span-lg-3" data-im-filter aria-label="Filter projects">
+          <div class="im-filter-sticky">
+            <div class="im-filter-head">
+              <span class="im-filter-count" data-im-filter-count>{{ docs.size }} of {{ docs.size }} shown</span>
+              <button class="im-filter-clear" type="button" data-im-filter-clear hidden><i class="ph-bold ph-x" aria-hidden="true"></i> Clear</button>
+            </div>
+            <div class="im-filter-group">
+              <h3 class="im-filter-title">Kind</h3>
+              <div class="im-filter-chips">
+                {%- for k in kinds -%}{%- if k != "" -%}
+                {%- assign n = 0 -%}{%- for d in docs -%}{%- assign dk = d.kind | default: "project" -%}{%- if dk == k -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                <button class="im-filter-chip" type="button" data-filter-key="kind" data-filter-value="{{ k }}" aria-pressed="false">{{ k }} <span class="im-filter-n">{{ n }}</span></button>
+                {%- endif -%}{%- endfor -%}
+              </div>
+            </div>
+            <div class="im-filter-group">
+              <h3 class="im-filter-title">Stack &amp; skills</h3>
+              <div class="im-filter-chips">
+                {%- for t in tags -%}{%- if t != "" -%}
+                {%- assign n = 0 -%}{%- for d in docs -%}{%- capture dt -%}{%- for x in d.tags -%}{{ x | slugify }}|{%- endfor -%}{%- for x in d.stack -%}{{ x | slugify }}|{%- endfor -%}{%- endcapture -%}{%- assign dta = dt | split: "|" -%}{%- if dta contains t -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+                <button class="im-filter-chip" type="button" data-filter-key="tag" data-filter-value="{{ t }}" aria-pressed="false">{{ t }} <span class="im-filter-n">{{ n }}</span></button>
+                {%- endif -%}{%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </aside>
+        <div class="im-span-lg-9">
+          <ul class="im-cards im-cards--2" data-im-filter-grid>
+            {%- for d in docs -%}<li>{% include utility/card.html item=d %}</li>{%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- else -%}
+      {% include utility/collection-list.html collection=page.list_collection %}
+    {%- endif -%}
   </section>
+  <script src="{{ '/assets/scripts/filter.js' | relative_url }}" defer></script>
 {%- else -%}
   <article class="im-article im-page">
     <nav class="im-breadcrumb" aria-label="Breadcrumb">

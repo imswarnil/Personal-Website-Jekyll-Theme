@@ -1,40 +1,15 @@
-{%- comment -%} Post sidebar: TOC widget + ad + about/CTA. Sticky on desktop. {%- endcomment -%}
+{%- comment -%}
+  The sidebar is a LIST, not a layout: `single.widgets` in _config.yml says
+  which widgets a collection's entries get and in what order, and each name
+  is a file in _includes/widgets/. Add a widget by dropping a file there
+  and naming it; no template is edited.
+
+  A single entry can override the list with `widgets:` in its front matter.
+{%- endcomment -%}
+{%- assign w_list = page.widgets | default: single.widgets | default: site.layout.single.widgets -%}
 <div class="im-sidebar-sticky">
-  {%- if site.layout.toc != false and page.toc != false -%}
-  <section class="im-widget im-toc-widget" id="im-toc" hidden>
-    <h2 class="im-widget-title"><i class="ph-bold ph-list-bullets" aria-hidden="true"></i> On this page</h2>
-    <nav class="im-toc" aria-label="Table of contents"><ul id="im-toc-list"></ul></nav>
-  </section>
-  {%- endif -%}
-
-  {%- if site.adsense.enabled -%}
-  {% include ad.html type="square" class="im-widget" %}
-  {%- endif -%}
-
-  {%- assign coll = site.collections | where: "label", page.collection | first -%}
-  {%- assign related = coll.docs | where_exp: "d", "d.url != page.url" | sort: "date" | reverse -%}
-  {%- if related.size > 0 -%}
-  <section class="im-widget">
-    <h2 class="im-widget-title"><i class="ph-bold ph-{{ coll.icon | default: 'folder' }}" aria-hidden="true"></i> More {{ coll.title | downcase }}</h2>
-    <ul class="im-widget-list">
-      {%- for it in related limit: 3 -%}
-      <li><a href="{{ it.url | relative_url }}">{{ it.title }}</a></li>
-      {%- endfor -%}
-    </ul>
-  </section>
-  {%- endif -%}
-
-  <section class="im-widget im-widget-author">
-    <img class="im-widget-avatar" src="{{ site.avatarurl | relative_url }}" alt="" width="44" height="44">
-    <h2 class="im-widget-title">{{ site.author | default: site.title }}</h2>
-    <p class="im-widget-text">{{ site.description | strip_html | truncate: 130 }}</p>
-    {% include footer-social.html %}
-    <a class="im-btn im-btn-sm im-btn-outline im-w-full" href="{{ '/about/' | relative_url }}">About me</a>
-  </section>
-
-  <section class="im-widget im-widget-cta">
-    <h2 class="im-widget-title"><i class="ph-bold ph-rocket-launch" aria-hidden="true"></i> Work with me</h2>
-    <p class="im-widget-text">Have a project or idea? Let's make it real.</p>
-    <a class="im-btn im-btn-sm im-w-full" href="{{ '/contact/' | relative_url }}"><i class="ph-bold ph-paper-plane-tilt"></i> Get in touch</a>
-  </section>
+  {%- for w in w_list -%}
+    {%- assign w_file = "widgets/" | append: w | append: ".html" -%}
+    {% include {{ w_file }} %}
+  {%- endfor -%}
 </div>

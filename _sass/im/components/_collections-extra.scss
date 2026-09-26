@@ -1,0 +1,400 @@
+// ======================================================================
+// components/_collections-extra.scss — the newer collections' own cards
+// ----------------------------------------------------------------------
+// Web series, episodes, courses, lessons, podcast, newsletter, travel and
+// the things-I-use shelf. Each one is a different SHAPE, because a series
+// and a newsletter issue are different objects — but all of them answer
+// the same way the rest of the theme does: they fill.
+// ======================================================================
+
+// ---- A series, as a poster -------------------------------------------
+// Portrait, because that is the shape a title card has been since the
+// video shop. The words sit ON the picture, over the scrim, so a wall of
+// them reads as a shelf rather than as a grid of paragraphs.
+.im-poster {
+  --im-card-radius: var(--im-radius-lg);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-3);
+  min-width: 0;
+}
+.im-poster-text:last-child { margin-top: auto; }
+.im-poster-link { display: block; text-decoration: none; }
+
+.im-poster-art {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--im-card-radius);
+  background: var(--im-surface);
+  isolation: isolate;
+
+  > img, > .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: translate var(--im-duration-fast) var(--im-ease-out), box-shadow var(--im-duration-fast) var(--im-ease-out);
+    .im-poster:is(:hover, :focus-within) & { translate: 0 -1px; box-shadow: var(--im-card-hover-shadow); }
+  }
+}
+.im-poster-scrim { position: absolute; inset: 0; background: var(--im-media-scrim); }
+
+.im-poster-flag {
+  position: absolute;
+  top: var(--im-space-3);
+  left: var(--im-space-3);
+  padding: 0.1rem var(--im-space-2);
+  border-radius: var(--im-radius-full);
+  background: var(--im-glass);
+  color: var(--im-on-media);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-semibold);
+}
+
+// The play mark arrives on hover: at rest the poster is a picture.
+.im-poster-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--im-radius-full);
+  background: var(--im-glass);
+  box-shadow: inset 0 0 0 1px var(--im-glass-light);
+  color: var(--im-on-media);
+  opacity: 0;
+  transition: opacity var(--im-duration-fast) var(--im-ease-out), background-color var(--im-duration-fast) var(--im-ease-out);
+
+  .im-poster:is(:hover, :focus-within) & { opacity: 1; background: var(--im-accent); }
+}
+
+.im-poster-copy { position: absolute; inset: auto 0 0; padding: var(--im-space-4); color: var(--im-on-media); }
+.im-poster-title {
+  margin: 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+  color: var(--im-on-media);
+}
+.im-poster-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--im-space-1) var(--im-space-3);
+  margin: var(--im-space-1) 0 0;
+  font-size: var(--im-text-xs);
+  color: var(--im-on-media-dim);
+}
+.im-poster-text { margin: 0; font-size: var(--im-text-sm); line-height: 1.55; color: var(--im-body); }
+
+// A shelf of posters is narrower than a grid of cards.
+.is-webseries .im-cards {
+  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  @include mq($bp-sm) { grid-template-columns: repeat(auto-fill, minmax(min(13rem, 100%), 1fr)); }
+  @include mq($bp-lg) { grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr)); }
+}
+
+// ---- The series page head --------------------------------------------
+.im-serieshead {
+  display: grid;
+  gap: var(--im-space-5);
+  margin-bottom: var(--im-space-6);
+
+  @include mq($bp-md) { grid-template-columns: 12rem minmax(0, 1fr); align-items: start; }
+}
+.im-serieshead-poster { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: var(--im-radius-lg); background: var(--im-surface); }
+.im-serieshead-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--im-space-2) var(--im-space-4);
+  margin: 0 0 var(--im-space-3);
+  font-size: var(--im-text-sm); color: var(--im-muted);
+}
+.im-serieshead-summary { margin: 0 0 var(--im-space-4); font-size: var(--im-text-lg); color: var(--im-body); text-wrap: pretty; }
+.im-serieshead-actions { display: flex; flex-wrap: wrap; gap: var(--im-space-3); }
+
+// ---- Episode + lesson rows -------------------------------------------
+.im-eplist, .im-curriculum { margin: var(--im-space-7) 0; }
+.im-eplist-title, .im-curriculum-title {
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  margin: 0 0 var(--im-space-4);
+  padding-bottom: var(--im-space-2);
+  border-bottom: 1px solid var(--im-line);
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+}
+.im-eplist-count { margin-left: auto; font-size: var(--im-text-sm); font-weight: var(--im-weight-normal); color: var(--im-muted); }
+.im-eplist-rows, .im-module-rows { display: grid; gap: var(--im-space-1); }
+
+.im-eprow-link {
+  display: grid;
+  grid-template-columns: 1.75rem 8rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--im-space-3);
+  padding: var(--im-space-2);
+  border-radius: var(--im-radius-md);
+  color: inherit;
+  text-decoration: none;
+  @include im-hover-fill;
+
+  // On a phone the still is what goes, not the runtime: the number, the
+  // title and how long it runs are the three things the row is for.
+  @include mq-down($bp-sm) { grid-template-columns: 1.5rem minmax(0, 1fr) auto; }
+}
+.im-eprow-n {
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-lg);
+  color: var(--im-faint);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.im-eprow-still {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--im-radius-sm);
+  background: var(--im-surface-2);
+
+  img, .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+  > i {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--im-on-media);
+    text-shadow: 0 1px 6px rgb(0 0 0 / 50%);
+  }
+  @include mq-down($bp-sm) { display: none; }
+}
+.im-eprow-body { min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.im-eprow-title { color: var(--im-ink); font-weight: var(--im-weight-medium); }
+.im-eprow-text {
+  font-size: var(--im-text-sm); color: var(--im-muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.im-eprow-time { font-size: var(--im-text-xs); color: var(--im-faint); font-variant-numeric: tabular-nums; }
+
+.im-module + .im-module { margin-top: var(--im-space-5); }
+.im-module-title {
+  margin: 0 0 var(--im-space-2);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+}
+.im-lessonrow-link {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--im-space-3);
+  padding: var(--im-space-3) var(--im-space-2);
+  border-radius: var(--im-radius-md);
+  color: inherit;
+  text-decoration: none;
+  @include im-hover-fill;
+}
+.im-lessonrow-n {
+  font-family: var(--im-font-mono);
+  color: var(--im-faint);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.im-lessonrow-body { min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.im-lessonrow-title { color: var(--im-ink); font-weight: var(--im-weight-medium); }
+.im-lessonrow-text { font-size: var(--im-text-sm); color: var(--im-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.im-lessonrow-time { font-size: var(--im-text-xs); color: var(--im-faint); white-space: nowrap; }
+
+// ---- A course card ----------------------------------------------------
+.im-coursecard {
+  --im-hover-bg: var(--im-surface-2);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  @include im-hover-card;
+}
+.im-coursecard-media {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--im-surface-2);
+  img, .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+.im-coursecard-body { display: flex; flex-direction: column; gap: var(--im-space-2); padding: 1.25rem; flex: 1; }
+.im-coursecard-level {
+  align-self: flex-start;
+  padding: 0.1rem var(--im-space-2);
+  border-radius: var(--im-radius-full);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  @include im-collection-tint;
+}
+.im-coursecard-title {
+  margin: 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+  a { color: var(--im-ink); text-decoration: none; }
+}
+.im-coursecard:is(:hover, :focus-within) .im-coursecard-title a { color: var(--im-accent); }
+.im-coursecard-text { margin: 0; font-size: var(--im-text-sm); line-height: 1.55; color: var(--im-body); }
+.im-coursecard-meta {
+  display: flex; flex-wrap: wrap; gap: var(--im-space-1) var(--im-space-4);
+  margin: 0; font-size: var(--im-text-xs); color: var(--im-muted);
+}
+.im-coursecard .im-card-cta { margin-top: auto; padding-top: var(--im-space-3); }
+
+// ---- A podcast episode ------------------------------------------------
+.im-podcard {
+  --im-hover-bg: var(--im-surface-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-3);
+  padding: 1.25rem;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  @include im-hover-card($shadow: false);
+}
+.im-podcard-head { display: flex; align-items: flex-start; gap: var(--im-space-3); }
+.im-podcard-n {
+  display: grid; place-items: center;
+  width: 2.75rem; height: 2.75rem; flex: 0 0 auto;
+  border-radius: var(--im-radius-full);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-sm);
+  @include im-collection-tint;
+}
+.im-podcard-id { min-width: 0; }
+.im-podcard-title {
+  margin: 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+  a { color: var(--im-ink); text-decoration: none; }
+}
+.im-podcard:is(:hover, :focus-within) .im-podcard-title a { color: var(--im-accent); }
+.im-podcard-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--im-space-2); margin: 0.15rem 0 0; font-size: var(--im-text-xs); color: var(--im-muted); }
+.im-podcard-text { margin: 0; font-size: var(--im-text-sm); line-height: 1.55; color: var(--im-body); }
+.im-podcard-text { flex: 1 1 auto; }
+.im-podcard-audio { margin-top: auto; }
+.im-podcard-audio, .im-audio audio { width: 100%; height: 2.5rem; }
+.im-audio { margin: var(--im-space-5) 0; display: flex; flex-direction: column; gap: var(--im-space-3); }
+.im-audio-links { display: flex; flex-wrap: wrap; gap: var(--im-space-2); margin: 0; }
+
+// ---- A newsletter issue -----------------------------------------------
+.im-issue-link {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--im-space-4);
+  padding: var(--im-space-4) var(--im-space-3);
+  border-radius: var(--im-radius-md);
+  color: inherit;
+  text-decoration: none;
+  @include im-hover-fill;
+
+  @include mq-down($bp-sm) { grid-template-columns: minmax(0, 1fr) auto; }
+}
+.im-issue-n {
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-sm);
+  color: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 72%, var(--im-muted));
+  white-space: nowrap;
+  @include mq-down($bp-sm) { display: none; }
+}
+.im-issue-body { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.im-issue-title {
+  font-size: var(--im-text-h5);
+  line-height: var(--im-leading-h5);
+  font-weight: var(--im-weight-semibold);
+  letter-spacing: var(--im-tracking-tight);
+  color: var(--im-ink);
+}
+.im-issue-text { font-size: var(--im-text-sm); color: var(--im-body); }
+.im-issue-date { font-size: var(--im-text-xs); color: var(--im-faint); white-space: nowrap; }
+.is-newsletter .im-cards { grid-template-columns: 1fr; gap: 1px; }
+
+// ---- A trip -----------------------------------------------------------
+.im-tripcard-link { display: block; text-decoration: none; }
+.im-tripcard-art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  isolation: isolate;
+
+  > img, > .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: translate var(--im-duration-fast) var(--im-ease-out), box-shadow var(--im-duration-fast) var(--im-ease-out);
+    .im-tripcard:is(:hover, :focus-within) & { translate: 0 -1px; box-shadow: var(--im-card-hover-shadow); }
+  }
+}
+.im-tripcard-scrim { position: absolute; inset: 0; background: var(--im-media-scrim); }
+.im-tripcard-copy { position: absolute; inset: auto 0 0; padding: var(--im-space-4); color: var(--im-on-media); }
+.im-tripcard-place {
+  display: inline-flex; align-items: center; gap: var(--im-space-1);
+  font-size: var(--im-text-xs); color: var(--im-on-media-dim);
+}
+.im-tripcard-title {
+  margin: var(--im-space-1) 0 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+  color: var(--im-on-media);
+}
+.im-tripcard-meta {
+  display: flex; flex-wrap: wrap; gap: var(--im-space-1) var(--im-space-3);
+  margin: var(--im-space-1) 0 0;
+  font-size: var(--im-text-xs); color: var(--im-on-media-dim);
+}
+
+// ---- A thing I use ----------------------------------------------------
+.im-product {
+  --im-hover-bg: var(--im-surface-2);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  @include im-hover-card;
+}
+.im-product-art {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--im-surface-2);
+  img, .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+.im-product-body { display: flex; flex-direction: column; gap: var(--im-space-2); padding: 1.25rem; flex: 1; }
+.im-product-cat {
+  align-self: flex-start;
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 72%, var(--im-muted));
+}
+.im-product-title {
+  margin: 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+  a { color: var(--im-ink); text-decoration: none; }
+}
+.im-product:is(:hover, :focus-within) .im-product-title a { color: var(--im-accent); }
+.im-product-text { margin: 0; font-size: var(--im-text-sm); line-height: 1.55; color: var(--im-body); }
+.im-product-foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--im-space-2); margin-top: auto; padding-top: var(--im-space-3);
+}
+.im-product-price { font-weight: var(--im-weight-semibold); color: var(--im-ink); font-variant-numeric: tabular-nums; }
+.im-product-disclosure { margin: 0; font-size: var(--im-text-xs); color: var(--im-faint); }

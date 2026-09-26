@@ -9,6 +9,9 @@
 (function () {
   var navbar = document.querySelector('[data-im-navbar]') || document.querySelector('.im-navbar');
   var progress = document.querySelector('[data-im-progress]');
+  var ring = document.querySelector('[data-im-progress-ring]');
+  var ringPath = ring && ring.querySelector('path');
+  var RING_RADIUS = 24; // px — matches --im-radius-6, the scrolled island pill's border-radius
 
   // ---- Mobile menu toggle ----
   var navBtn = document.querySelector('[data-im-nav-toggle]');
@@ -44,6 +47,35 @@
     });
   }
 
+  // ---- Progress ring geometry --------------------------------------
+  // A rounded-rect path, traced left -> bottom -> right -> top (i.e.
+  // counter-clockwise, starting by the brand mark) so `stroke-dashoffset`
+  // reveals it in that order. `pathLength="1"` normalizes the path's
+  // length to 1 regardless of its real size, so stroke-dashoffset can
+  // just use the 0-1 scroll ratio directly — and because it's driven by
+  // real path length (not angle), the fill moves at one constant visual
+  // rate all the way round, corners included, instead of speeding up on
+  // the straight edges and bunching up on the curves.
+  function roundedRectPath(w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    return 'M' + r + ',0' +
+      ' A' + r + ',' + r + ' 0 0 0 0,' + r +
+      ' L0,' + (h - r) +
+      ' A' + r + ',' + r + ' 0 0 0 ' + r + ',' + h +
+      ' L' + (w - r) + ',' + h +
+      ' A' + r + ',' + r + ' 0 0 0 ' + w + ',' + (h - r) +
+      ' L' + w + ',' + r +
+      ' A' + r + ',' + r + ' 0 0 0 ' + (w - r) + ',0' +
+      ' Z';
+  }
+  function updateRing() {
+    if (!ring || !ringPath || !navbar || !navbar.classList.contains('is-scrolled')) return;
+    var rect = navbar.querySelector('.im-navbar-inner').getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
+    ring.setAttribute('viewBox', '0 0 ' + rect.width + ' ' + rect.height);
+    ringPath.setAttribute('d', roundedRectPath(rect.width, rect.height, RING_RADIUS));
+  }
+
   // ---- Scroll: border/shadow + progress ----
   var ticking = false;
   function onScroll() {
@@ -51,9 +83,10 @@
     if (progress) {
       var doc = document.documentElement;
       var max = doc.scrollHeight - doc.clientHeight;
-      var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
-      progress.style.setProperty('--im-progress', Math.min(100, Math.max(0, pct)) + '%');
+      var ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progress.style.setProperty('--im-progress-ratio', ratio);
     }
+    updateRing();
     ticking = false;
   }
   onScroll();
@@ -61,6 +94,15 @@
     if (!ticking) { window.requestAnimationFrame(onScroll); ticking = true; }
   }, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+
+  // The pill's own size/radius/padding animate over --im-dur-2 (260ms)
+  // when .is-scrolled toggles. getBoundingClientRect() at the instant the
+  // class flips reads the box mid-transition, so if the user scrolls just
+  // past the threshold and then stops, the ring freezes with stale
+  // geometry — wrong width and a corner radius that doesn't match the
+  // now-settled pill. Re-measure once the transition actually finishes.
+  var navInner = navbar && navbar.querySelector('.im-navbar-inner');
+  if (navInner) navInner.addEventListener('transitionend', updateRing);
 
   // ---- Live GitHub star count ----
   var gh = document.querySelector('[data-im-ghstars]');

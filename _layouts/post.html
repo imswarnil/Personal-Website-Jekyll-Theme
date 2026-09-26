@@ -1,97 +1,47 @@
 ---
 layout: default
 ---
+{%- comment -%}
+  ONE single-entry layout for every collection, composed from parts.
+
+  What a collection's entry page looks like is DATA, not a template: each
+  collection's `single:` block in _config.yml names the parts to stack, in
+  order, and the widgets to put beside them —
+
+    collections:
+      portfolio:
+        single:
+          lead: portfolio                         # _includes/leads/portfolio.html
+          parts: [breadcrumbs, head, lead, prose, tags, share, ask, comments, author, nav]
+          widgets: [details, toc, collection, cta]
+          sidebar: true
+
+  Every name is a file: `parts` are _includes/single/<name>.html, `widgets`
+  are _includes/widgets/<name>.html, the lead is _includes/leads/<name>.html.
+  Adding a part means adding a file and naming it — nothing here changes.
+  A single entry can override any of the three in its own front matter.
+{%- endcomment -%}
 {%- assign coll = site.collections | where: "label", page.collection | first -%}
-{%- assign kicker = coll.singular | default: "Post" -%}
+{%- assign single = coll.single | default: site.layout.single -%}
+{%- assign parts = page.parts | default: single.parts | default: site.layout.single.parts -%}
+
 {%- assign has_sidebar = true -%}
 {%- if site.layout.sidebar == false %}{% assign has_sidebar = false %}{% endif -%}
+{%- if single.sidebar == false %}{% assign has_sidebar = false %}{% endif -%}
 {%- if page.sidebar == false %}{% assign has_sidebar = false %}{% endif -%}
+{%- if page.sidebar == true %}{% assign has_sidebar = true %}{% endif -%}
 
-<div class="im-shell{% if has_sidebar %} has-sidebar{% endif %} im-page">
+{%- assign is_reel = false -%}
+{%- if page.orientation == "portrait" or page.reel %}{% assign is_reel = true %}{% endif -%}
+{%- if is_reel %}{% assign has_sidebar = false %}{% endif -%}
+
+<div class="im-shell{% if has_sidebar %} has-sidebar{% endif %}{% if is_reel %} is-reel{% endif %} im-page is-{{ page.collection }}">
   <div class="im-shell-main">
     <article class="im-article">
-      <header class="im-post-header">
-        <span class="im-kicker">{{ kicker }}</span>
-        <h1 class="im-post-title">{{ page.title }}</h1>
-        <div class="im-post-meta">
-          <img class="im-avatar" src="{{ page.author_avatar | default: site.avatarurl | default: '/assets/img/avatar.jpg' | relative_url }}" alt="" width="28" height="28">
-          <span>{{ page.author | default: site.author | default: site.title }}</span>
-          {%- if page.date %}<span class="im-dot">·</span><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>{% endif -%}
-          {%- if page.read_time %}<span class="im-dot">·</span><span>{{ page.read_time }} min read</span>{% endif -%}
-        </div>
-      </header>
-
-      {%- comment -%} Mobile TOC (collapsible, above content) {%- endcomment -%}
-      <details class="im-toc-mobile" id="im-toc-mobile" hidden>
-        <summary><i class="ph-bold ph-list-bullets" aria-hidden="true"></i> On this page</summary>
-        <nav class="im-toc" aria-label="Table of contents"><ul id="im-toc-mobile-list"></ul></nav>
-      </details>
-
-      {%- comment -%} ── Type-specific lead block ── {%- endcomment -%}
-      {%- case page.collection -%}
-        {%- when "videos" -%}
-          {%- if page.video_id -%}
-            <div class="im-post-media"><iframe src="https://www.youtube-nocookie.com/embed/{{ page.video_id }}" title="{{ page.title }}" allowfullscreen loading="lazy"></iframe></div>
-          {%- elsif page.video_embed -%}
-            <div class="im-post-media">{{ page.video_embed }}</div>
-          {%- endif -%}
-        {%- when "prompts" -%}
-          {%- if page.prompt -%}
-            <div class="im-promptbox">
-              <div class="im-promptbox-head">{% if page.model %}<span class="im-badge">{{ page.model }}</span>{% endif %}<button class="im-btn im-btn-sm im-btn-outline" data-im-copy="{{ page.prompt | strip_newlines | escape }}"><i class="ph-bold ph-copy"></i> Copy prompt</button></div>
-              <pre class="im-promptbox-body"><code>{{ page.prompt | strip_html }}</code></pre>
-            </div>
-          {%- endif -%}
-        {%- when "snippets" -%}
-          {%- if page.lang %}<p class="im-snippet-lang"><i class="ph-bold ph-code"></i> {{ page.lang }}</p>{% endif -%}
-        {%- when "projects" -%}
-          {%- if page.facts -%}
-            <div class="im-factbar">{%- for f in page.facts %}<span class="im-fact"><span class="im-fact-label">{{ f.label }}</span><span class="im-fact-value">{{ f.value }}</span></span>{% endfor -%}</div>
-          {%- endif -%}
-      {%- endcase -%}
-
-      {%- assign cover = page.image | default: page.cover -%}
-      {%- unless page.collection == "videos" or page.collection == "snippets" or page.collection == "prompts" -%}
-        {%- if cover -%}<figure class="im-post-cover"><img src="{{ cover | relative_url }}" alt="{{ page.title }}">{% if page.cover_caption %}<figcaption>{{ page.cover_caption }}</figcaption>{% endif %}</figure>{%- endif -%}
-      {%- endunless -%}
-
-      {%- comment -%} In-article ad after the lead {%- endcomment -%}
-      {%- if site.adsense.enabled and page.ads != false %}{% include ad.html type="in_article" %}{% endif -%}
-
-      <div class="im-prose"{% if page.collection == "posts" and site.adsense.enabled and page.ads != false %} data-im-inline-ads="3"{% endif %}>
-        {{ content }}
-      </div>
-
-      {%- if page.collection == "posts" and site.adsense.enabled and page.ads != false -%}
-      {%- comment -%} Template cloned by custom.js and inserted after every Nth paragraph — see data-im-inline-ads above. {%- endcomment -%}
-      <template id="im-inline-ad-tpl">{% include ad.html type="in_article" class="im-ad--inline" %}</template>
-      {%- endif -%}
-
-      {%- if page.tags and page.tags != empty -%}
-      <ul class="im-tags">{%- for tag in page.tags %}<li><a href="{{ '/tags/' | append: tag | slugify | relative_url }}">#{{ tag }}</a></li>{% endfor -%}</ul>
-      {%- endif -%}
-
-      {%- assign u = page.url | absolute_url -%}
-      <div class="im-share">
-        <a class="im-btn im-btn-sm im-btn-outline" href="https://twitter.com/intent/tweet?url={{ u | uri_escape }}&text={{ page.title | uri_escape }}" target="_blank" rel="noopener"><i class="ph-bold ph-x-logo"></i> Share</a>
-        <a class="im-btn im-btn-sm im-btn-outline" href="https://www.linkedin.com/sharing/share-offsite/?url={{ u | uri_escape }}" target="_blank" rel="noopener"><i class="ph-bold ph-linkedin-logo"></i> LinkedIn</a>
-        <button class="im-btn im-btn-sm im-btn-ghost" data-im-copy="{{ u }}"><i class="ph-bold ph-link"></i> Copy link</button>
-      </div>
-
-      <div class="im-author-card">
-        <img src="{{ page.author_avatar | default: site.avatarurl | default: '/assets/img/avatar.jpg' | relative_url }}" alt="">
-        <div>
-          <p class="im-author-name">{{ page.author | default: site.author | default: site.title }}</p>
-          <p class="im-author-bio">{{ page.author_bio | default: site.description | strip_html }}</p>
-        </div>
-      </div>
-
-      {%- if page.previous.url or page.next.url -%}
-      <nav class="im-postnav" aria-label="More in {{ coll.title }}">
-        {%- if page.previous.url -%}<a href="{{ page.previous.url | relative_url }}"><span class="im-postnav-label">Previous</span><span class="im-postnav-title">{{ page.previous.title }}</span></a>{% endif -%}
-        {%- if page.next.url -%}<a class="im-postnav-next" href="{{ page.next.url | relative_url }}"><span class="im-postnav-label">Next</span><span class="im-postnav-title">{{ page.next.title }}</span></a>{% endif -%}
-      </nav>
-      {%- endif -%}
+      {%- for part in parts -%}
+        {%- assign part_file = "single/" | append: part | append: ".html" -%}
+        {% include {{ part_file }} %}
+      {%- endfor -%}
     </article>
   </div>
 
@@ -101,14 +51,5 @@ layout: default
 </div>
 
 {% include toc-script.html %}
-<script>
-  document.querySelectorAll('[data-im-copy]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var v = b.getAttribute('data-im-copy');
-      try { var d = document.createElement('textarea'); d.innerHTML = v; v = d.value; } catch (e) {}
-      navigator.clipboard && navigator.clipboard.writeText(v);
-      var old = b.innerHTML; b.innerHTML = '<i class="ph-bold ph-check"></i> Copied';
-      setTimeout(function () { b.innerHTML = old; }, 1500);
-    });
-  });
-</script>
+<script src="{{ '/assets/scripts/copy.js' | relative_url }}" defer></script>
+{%- if page.screenshots or page.gallery -%}<script src="{{ '/assets/scripts/carousel.js' | relative_url }}" defer></script>{%- endif -%}

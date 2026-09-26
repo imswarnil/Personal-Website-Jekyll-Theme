@@ -19,8 +19,11 @@
     position: sticky;
     top: calc(var(--im-navbar-height) + var(--im-space-4));
     width: var(--im-rail);
+    max-width: calc(100% - var(--im-space-5) * 2);
     justify-self: center;
-    margin-top: var(--im-space-6);
+    // Margin all round so the ad card floats clear of the viewport edge and
+    // the content column instead of sitting flush in the corner.
+    margin: var(--im-space-6) var(--im-space-5) var(--im-space-6);
   }
   .im-rail-left  { grid-column: 1; }
   .im-rail-right { grid-column: 3; }
@@ -69,22 +72,23 @@
   overscroll-behavior: contain;
 }
 
+// A widget is a SURFACE — a filled panel with no border and no shadow,
+// the same material a card is made of.
 .im-widget {
-  padding: var(--im-space-5);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-4);
-  background: var(--im-color-surface);
+  padding: 1.25rem;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
 }
 .im-widget-title {
   display: flex; align-items: center; gap: var(--im-space-2);
   margin: 0 0 var(--im-space-3);
   font-size: var(--im-text-sm);
-  font-weight: var(--im-fw-semibold);
-  color: var(--im-color-contrast);
-  > i { color: var(--im-color-secondary); }
+  font-weight: var(--im-weight-semibold);
+  color: var(--im-ink);
+  > i { color: var(--im-muted); }
 }
-.im-widget-text { margin: 0 0 var(--im-space-3); font-size: var(--im-text-sm); color: var(--im-color-secondary); }
-.im-widget-cta { background: var(--im-color-background-100); }
+.im-widget-text { margin: 0 0 var(--im-space-3); font-size: var(--im-text-sm); color: var(--im-muted); }
+.im-widget-cta { background: var(--im-surface-2); }
 
 .im-widget-list {
   list-style: none;
@@ -96,15 +100,15 @@
   font-size: var(--im-text-sm);
 
   a {
-    color: var(--im-color-foreground);
+    color: var(--im-body);
     text-decoration: none;
-    transition: color var(--im-dur-1) var(--im-ease);
-    &:hover { color: var(--im-color-contrast); text-decoration: underline; }
+    transition: color var(--im-duration-fast) var(--im-ease-out);
+    &:hover { color: var(--im-ink); text-decoration: underline; }
   }
 }
 
 .im-widget-author {
-  .im-widget-avatar { width: 2.75rem; height: 2.75rem; border-radius: 50%; object-fit: cover; margin-bottom: var(--im-space-3); }
+  .im-widget-avatar { width: 2.75rem; height: 2.75rem; border-radius: var(--im-radius-full); object-fit: cover; margin-bottom: var(--im-space-3); }
   .im-footer-social { margin: 0 0 var(--im-space-4); }
 }
 
@@ -118,31 +122,40 @@
     padding: var(--im-space-2) var(--im-space-2);
     border-left: 2px solid transparent;
     margin-left: -2px;
+    border-radius: 0 var(--im-radius-sm) var(--im-radius-sm) 0;
     font-size: var(--im-text-sm);
-    color: var(--im-color-secondary);
+    color: var(--im-muted);
     text-decoration: none;
-    transition: color var(--im-dur-1) var(--im-ease), border-color var(--im-dur-1) var(--im-ease);
-    &:hover { color: var(--im-color-contrast); }
-    &.active { color: var(--im-color-contrast); border-left-color: var(--im-color-accent); font-weight: var(--im-fw-medium); }
+    transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+    // The same two states as every other list of links in the theme: it
+    // fills on hover, and the entry you are reading wears the current fill
+    // with a bolder label. The rule on the left marks the position; it is
+    // the ink, not the accent, because "you are here" is not an action.
+    &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+    &.active {
+      background: var(--im-current-bg);
+      border-left-color: var(--im-ink);
+      color: var(--im-current-fg);
+      font-weight: var(--im-current-weight);
+    }
   }
 }
 
 // Mobile collapsible TOC (above content)
 .im-toc-mobile {
   margin-bottom: var(--im-space-5);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-3);
-  background: var(--im-color-surface);
+  border-radius: var(--im-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--im-line);
 
   summary {
     display: flex; align-items: center; gap: var(--im-space-2);
     padding: var(--im-space-3) var(--im-space-4);
-    font-weight: var(--im-fw-semibold);
+    font-weight: var(--im-weight-semibold);
     font-size: var(--im-text-sm);
     cursor: pointer;
     list-style: none;
     &::-webkit-details-marker { display: none; }
-    > i { color: var(--im-color-secondary); }
+    > i { color: var(--im-muted); }
   }
   .im-toc { padding: 0 var(--im-space-3) var(--im-space-3); }
 }
@@ -162,9 +175,9 @@
   max-width: 100%;
   box-sizing: border-box;
   padding: var(--im-space-3);
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-3);
-  background: var(--im-color-background-100);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-lg);
+  background: var(--im-surface);
   overflow: hidden;
   contain: layout;
 
@@ -177,17 +190,17 @@
 .im-ad-label {
   align-self: flex-start;
   font-size: 0.625rem;
-  font-weight: var(--im-fw-semibold);
+  font-weight: var(--im-weight-semibold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--im-color-mute);
+  color: var(--im-faint);
 }
 .im-ad-placeholder {
   display: grid; place-items: center;
   width: 100%; min-height: 6rem;
-  border: 1px dashed var(--im-color-border);
-  border-radius: var(--im-radius-2);
-  color: var(--im-color-mute);
+  border: 1px dashed var(--im-line);
+  border-radius: var(--im-radius-md);
+  color: var(--im-faint);
   font-size: var(--im-text-sm);
 }
 .im-ad--horizontal { margin-block: var(--im-space-6); }
@@ -225,27 +238,27 @@
   justify-content: center;
   width: 1.75rem;
   height: 1.75rem;
-  border: 1px solid var(--im-color-border);
-  border-radius: 50%;
-  background: var(--im-color-surface);
-  color: var(--im-color-secondary);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-full);
+  background: var(--im-canvas);
+  color: var(--im-muted);
   cursor: pointer;
-  transition: color var(--im-dur-1) var(--im-ease), background-color var(--im-dur-1) var(--im-ease);
-  &:hover { color: var(--im-color-contrast); background: var(--im-color-background-100); }
+  transition: color var(--im-duration-fast) var(--im-ease-out), background-color var(--im-duration-fast) var(--im-ease-out);
+  &:hover { color: var(--im-ink); background: var(--im-surface); }
 }
 
 // ---- Prompt box (prompts collection) ---------------------------------
 .im-promptbox {
   margin: var(--im-space-5) 0;
-  border: 1px solid var(--im-color-border);
-  border-radius: var(--im-radius-4);
+  border: 1px solid var(--im-line);
+  border-radius: var(--im-radius-xl);
   overflow: hidden;
 }
 .im-promptbox-head {
   display: flex; align-items: center; justify-content: space-between; gap: var(--im-space-3);
   padding: var(--im-space-3) var(--im-space-4);
-  background: var(--im-color-background-100);
-  border-bottom: 1px solid var(--im-color-border);
+  background: var(--im-surface);
+  border-bottom: 1px solid var(--im-line);
 }
 .im-promptbox-body { margin: 0; border-radius: 0; box-shadow: none; max-height: none; }
-.im-snippet-lang { display: inline-flex; align-items: center; gap: var(--im-space-2); font-size: var(--im-text-sm); color: var(--im-color-secondary); text-transform: capitalize; }
+.im-snippet-lang { display: inline-flex; align-items: center; gap: var(--im-space-2); font-size: var(--im-text-sm); color: var(--im-muted); text-transform: capitalize; }

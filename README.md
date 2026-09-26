@@ -1,6 +1,6 @@
 # imswarnil.com
 
-Personal site and blog for **Swarnil Singhai** — software engineer & filmmaker. A Jekyll site with a self-built design system ("**IM CSS**"), six content collections, a resume page, a cross-collection timeline, and a hand-styled tree sitemap.
+Personal site and blog for **Swarnil Singhai** — software engineer & filmmaker. A Jekyll site with a self-built design system ("**IM CSS**"), five content collections, a resume page, a cross-collection timeline, and a hand-styled tree sitemap.
 
 Live at [dev.imswarnil.com](https://dev.imswarnil.com) · originally forked from the [Alembic](https://alembic.darn.es/) Jekyll theme and rewritten from the ground up since.
 
@@ -20,15 +20,27 @@ Engineering meets storytelling: this repo is both the source for a working perso
 ## Features
 
 - **IM CSS** — a self-contained, token-driven design system (`_sass/im/`). Every colour, space, radius, and motion value is a `--im-*` custom property, so the whole site re-themes live. See [`DESIGN.md`](DESIGN.md) for the full reference.
-- **Six content collections** — `posts` (Jekyll's native collection), `projects`, `portfolio`, `videos`, `snippets`, `prompts` — each with its own homepage section style (bento, gallery, ranked "Top picks" list, numbered list, compact, cards) and JSON-LD schema.
+- **Composed pages, not templates** — what an entry page is made of is `_config.yml` data: `single.parts` (stacked in order), `single.widgets` (the sidebar) and `single.lead`. Every name is a file in `_includes/single/`, `_includes/widgets/` or `_includes/leads/`, so a new part is a file you drop in and name — no layout is edited. Any entry can override all three in its own front matter. See `.claude/skills/personal-site/SKILL.md`.
+- **Thirteen content collections** — blog, portfolio, videos (with 9:16 **reels** given their own band and their own two-column page), snippets, prompts, web series + episodes, courses + lessons, podcast, newsletter, travel and a gear shelf — each with its own card design, colour, landing hero and JSON-LD type.
+- **Five content collections** — `posts` (Jekyll's native collection), `portfolio` (projects, film and design, by `kind`), `videos`, `snippets`, `prompts` — each with its own card design (GitHub-repo card, video player, VS Code window, chat window, editorial) and JSON-LD schema.
 - **`/resume/`** — renders structured resume data straight from `_config.yml` (experience, education, skills, projects, awards), with a print-optimised "Save as PDF" mode.
 - **`/timeline/`** — a cross-collection timeline. Add `timeline: true` (and optionally `timeline_note:`) to any post/project/video's front matter and it shows up here, most-recent-first.
+- **`/tags/`** — a cross-collection tag index: every tag any entry carries, as a cloud and then a section each, grouped by slug so `Analytics` and `analytics` are one subject. A post's tag chips link straight to their section (`/tags/#t-<slug>`).
 - **`/sitemap/`** — a tree-style, collapsible sitemap of every page and collection entry, plus JSON-LD (`WebSite` + `ItemList`) describing the same structure for crawlers. (The machine-readable `/sitemap.xml` is generated separately by `jekyll-sitemap`.)
-- **`/explore/`** — every collection rendered as one big bento grid.
 - **Command-palette search** (`/` to open) plus a full `/search/` page, both reading a generated `assets/search.json` index.
 - **Motion system** — dotted/grid background patterns, scroll-reveal via `IntersectionObserver`, native View Transitions on navigation, all gated behind `prefers-reduced-motion` (`_sass/im/_motion.scss`).
 - **Configurable chrome** — header (island/full, dropdowns, megamenu), footer (a "big typographic" style with a huge faint wordmark), ads (AdSense, hardened so it can never overflow its container, plus a dismissible floating leaderboard) — all driven by `_config.yml`, no template edits needed for common tweaks.
 - **PWA** — offline support via a service worker (`assets/scripts/sw.js`) and an offline fallback page.
+
+## Use this for your own site
+
+`npm run setup` opens a form in your browser, writes `_config.yml`, and backs up
+everything it replaces. Then push to a repo named `username.github.io` and set
+Pages → Source → GitHub Actions. The workflow passes the right `baseurl` for
+both a user page and a project page, so nothing is hard-coded.
+
+Full instructions, including how to add a collection and how to change what an
+entry page is made of: [`.claude/skills/personal-site/SKILL.md`](.claude/skills/personal-site/SKILL.md).
 
 ## Getting started
 
@@ -55,7 +67,7 @@ _layouts/            default, page, post, resume
 _includes/           header, footer, ad, search modal, home/* section renderers, components/* shortcodes
 _sass/im/            the IM CSS framework — tokens, base, navbar, hero, components, motion, resume, sitetree…
 _posts/               blog posts (Jekyll's native collection), YYYY-MM-DD-slug.md
-_projects/ _portfolio/ _videos/ _snippets/ _prompts/   the other five collections
+_portfolio/ _videos/ _snippets/ _prompts/   the other four collections
 assets/               styles, scripts, images, search index
 ```
 
@@ -66,7 +78,6 @@ Full architecture notes — collection wiring, layout decisions, known gotchas �
 | Collection | Directory | Landing page | Homepage style |
 |---|---|---|---|
 | Blog | `_posts/` | `/blog/` | Numbered list |
-| Projects | `_projects/` | `/projects/` | Bento grid |
 | Portfolio | `_portfolio/` | `/portfolio/` | Gallery |
 | Videos | `_videos/` | `/videos/` | Ranked "Top picks" list |
 | Snippets | `_snippets/` | `/snippets/` | Compact list |

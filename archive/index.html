@@ -16,7 +16,7 @@ description: "Everything published, grouped by collection."
       <div class="im-home-section">
         <div class="im-home-section-head">
           <h2>{{ c.title | default: c.label }}</h2>
-          <a class="im-home-section-link" href="{{ c.permalink | default: c.url | relative_url }}">View all →</a>
+          <a class="im-home-section-link" href="{{ c.landing | default: c.url | relative_url }}">View all →</a>
         </div>
         {% include utility/collection-list.html collection=c.label %}
       </div>

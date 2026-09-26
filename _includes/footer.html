@@ -68,11 +68,6 @@
             {%- assign nav_limit = f.nav_limit | default: 7 -%}
             {%- for item in site.navigation_footer limit: nav_limit -%}<li><a class="im-flink" href="{{ item.url | relative_url }}">{{ item.title }}</a></li>{%- endfor -%}
           </ul>
-          {%- if f.show_legal != false and site.navigation_legal -%}
-          <ul class="im-footer-links im-footer-legal">
-            {%- for item in site.navigation_legal -%}<li><a class="im-flink" href="{{ item.url | relative_url }}">{{ item.title }}</a></li>{%- endfor -%}
-          </ul>
-          {%- endif -%}
         </nav>
         {%- endif -%}
 
@@ -82,15 +77,10 @@
           <p class="im-footer-tagline">New posts &amp; videos, no spam.</p>
           <form class="im-footer-form" action="{{ f.newsletter.action }}" method="post">
             <input type="email" name="email" placeholder="{{ f.newsletter.placeholder | default: 'you@email.com' }}" required aria-label="Email">
-            <button class="im-btn im-btn-sm" type="submit" aria-label="Subscribe"><i class="ph-bold ph-paper-plane-tilt"></i></button>
+            <button class="im-btn im-btn-sm im-btn-primary" type="submit" aria-label="Subscribe"><i class="ph-bold ph-paper-plane-tilt"></i></button>
           </form>
         </div>
         {%- endif -%}
-      </div>
-
-      <div class="im-footer-meta">
-        <p class="im-footer-copyright">© {{ site.time | date: '%Y' }} {{ site.author | default: site.title }}</p>
-        <a class="im-footer-top-link" href="#top">Back to top <i class="ph-bold ph-arrow-up"></i></a>
       </div>
     </div>
 
@@ -100,4 +90,18 @@
   {%- endif -%}
 
   </div>
+
+  {%- if flayout != "minimal" -%}
+  <div class="im-footer-strip">
+    <div class="im-footer-strip-inner">
+      <p class="im-footer-copyright">© {{ site.time | date: '%Y' }} {{ site.author | default: site.title }}</p>
+      {%- if f.show_legal != false and site.navigation_legal -%}
+      <ul class="im-footer-links im-footer-legal">
+        {%- for item in site.navigation_legal -%}<li><a class="im-flink" href="{{ item.url | relative_url }}">{{ item.title }}</a></li>{%- endfor -%}
+      </ul>
+      {%- endif -%}
+      <a class="im-footer-top-link" href="#top">Back to top <i class="ph-bold ph-arrow-up"></i></a>
+    </div>
+  </div>
+  {%- endif -%}
 </footer>

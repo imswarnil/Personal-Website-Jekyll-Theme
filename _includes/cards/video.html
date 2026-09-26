@@ -1,1 +1,31 @@
-{%- include utility/pcard.html item=include.item accent="videos" kicker="Video" play=true badge=include.item.duration -%}
+{%- comment -%}
+  Video-player-styled card. Reads: title, video_id (YouTube), duration,
+  channel, date, excerpt/description, image|cover, tags.
+{%- endcomment -%}
+{%- assign it = include.item -%}
+{%- assign cover = it.image | default: it.cover -%}
+{%- if cover == site.placeholder_image %}{% assign cover = nil %}{% endif -%}
+{%- assign snip = it.excerpt | default: it.description -%}
+<article class="im-vcard" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">
+  <a class="im-vcard-screen" href="{{ it.url | relative_url }}" aria-label="Watch: {{ it.title | escape }}">
+    {%- if it.video_id -%}<img src="https://i.ytimg.com/vi/{{ it.video_id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+    {%- elsif cover and cover != "" -%}<img src="{{ cover | relative_url }}" alt="" loading="lazy" width="1200" height="675">
+    {%- else -%}{%- include utility/thumb.html item=it size="sm" -%}{%- endif -%}
+    <span class="im-vcard-play" aria-hidden="true"><i class="ph-fill ph-play"></i></span>
+    {%- if it.duration %}<span class="im-vcard-duration">{{ it.duration }}</span>{% endif -%}
+    <span class="im-vcard-bar" aria-hidden="true"><span></span></span>
+  </a>
+  <div class="im-vcard-body">
+    <h3 class="im-vcard-title"><a href="{{ it.url | relative_url }}">{{ it.title }}</a></h3>
+    <div class="im-vcard-meta">
+      <img src="{{ site.avatarurl | relative_url }}" alt="" width="24" height="24" loading="lazy">
+      <span>{{ it.channel | default: site.author | default: site.title }}</span>
+      {%- if it.date %}<span class="im-dot">·</span><time datetime="{{ it.date | date_to_xmlschema }}">{{ it.date | date: "%b %-d, %Y" }}</time>{% endif -%}
+    </div>
+    {%- if snip %}<p class="im-vcard-excerpt">{{ snip | strip_html | truncate: 110 }}</p>{% endif -%}
+    <div class="im-vcard-foot">
+      {%- if it.tags.size > 0 -%}<div class="im-vcard-tags">{%- for t in it.tags limit: 3 -%}<span>#{{ t }}</span>{%- endfor -%}</div>{%- endif -%}
+      <a class="im-card-cta im-vcard-cta" href="{{ it.url | relative_url }}">Watch <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</article>

@@ -7,17 +7,16 @@ pagination:
   enabled: true
   collection: posts
 ---
+{%- assign coll = site.collections | where: "label", "posts" | first -%}
+{%- assign latest = site.posts | first -%}
 <section class="im-collection im-page">
-  <header class="im-collection-head im-bg-dots im-reveal">
-    <span class="im-collection-icon"><i class="ph-bold ph-pen-nib" aria-hidden="true"></i></span>
-    <h1 class="im-collection-title">Blog</h1>
-    <p class="im-collection-desc">Essays, how-tos and field notes on engineering &amp; craft.</p>
-    <div class="im-collection-stats">
-      <span><strong>{{ site.posts.size }}</strong> posts</span>
-      {%- assign latest = site.posts | first -%}
-      {%- if latest.date %}<span>Updated <strong>{{ latest.date | date: "%b %Y" }}</strong></span>{% endif -%}
-    </div>
-  </header>
+  {%- include utility/collection-head.html
+      title="Blog"
+      desc=coll.description
+      icon="pen-nib"
+      count=site.posts.size
+      count_label="posts"
+      latest=latest.date -%}
 
   <ul class="im-cards">
     {%- for it in paginator.posts -%}
@@ -27,3 +26,4 @@ pagination:
 
   {% include pagination.html %}
 </section>
+<script src="{{ '/assets/scripts/filter.js' | relative_url }}" defer></script>
