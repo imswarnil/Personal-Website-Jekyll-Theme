@@ -21,7 +21,9 @@ layout: default
           latest=latest.date -%}
     {%- else -%}
       {%- assign show_views = coll.hero.views -%}
-      {%- include collection/hero.html coll=coll docs=docs title=page.title views=show_views -%}
+      {%- comment -%} Portfolio has a real filter of its own, so the hero does not repeat the topics as links. {%- endcomment -%}
+      {%- assign show_tags = true -%}{% if page.list_collection == "portfolio" %}{% assign show_tags = false %}{% endif %}
+      {%- include collection/hero.html coll=coll docs=docs title=page.title views=show_views tags=show_tags -%}
     {%- endif -%}
     {%- if page.content != "" -%}<div class="im-prose im-margin-bottom-5">{{ content }}</div>{%- endif -%}
 
@@ -60,7 +62,7 @@ layout: default
           </div>
         </aside>
         <div class="im-span-lg-9">
-          <ul class="im-cards im-cards--2" data-im-filter-grid>
+          <ul class="im-cards im-cards--2" id="feed" data-view="{{ coll.view | default: 'grid' }}" data-im-filter-grid>
             {%- for d in docs -%}<li>{% include utility/card.html item=d %}</li>{%- endfor -%}
           </ul>
         </div>

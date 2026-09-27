@@ -117,16 +117,40 @@ header:
 # The footer. Drives _includes/footer.html.
 footer:
   layout: columns           # columns | minimal
-  boxed: false              # true = wrap the footer in a rounded island card
+  skin: line                # line (hairline above) | fill (surface) | ink (inverted)
   tagline: "Engineering meets storytelling — built fast, cinematic, robust."
   show_details: true        # brand, location, email, social
-  show_collections: true    # one icon pill per collection
-  show_nav: true            # navigation_footer links
-  nav_limit: 10             # cap the "Site" column so it can't grow tall
   show_legal: true          # navigation_legal links
   show_social: true
+
+  # The columns, in order. A column lists either `collections:` (labels, which
+  # bring their own title, icon and landing URL) or `links:` (anything). One
+  # column may be `newsletter: true` instead. Name them for what a reader is
+  # looking for, not for how the site is organised — "Watch" finds a video
+  # faster than "Collections" does.
+  columns:
+    - title: Read
+      collections: [posts, newsletter, snippets, prompts]
+    - title: Watch
+      collections: [videos, webseries, podcast]
+    - title: Make
+      collections: [portfolio, courses, travel, uses]
+    - title: More
+      links:
+        - { title: Docs, url: /docs/ }
+        - { title: About, url: /about/ }
+        - { title: Resume, url: /resume/ }
+        - { title: Now, url: /now/ }
+        - { title: Timeline, url: /timeline/ }
+        - { title: Tags, url: /tags/ }
+        - { title: Guestbook, url: /guestbook/ }
+        - { title: Support, url: /support/ }
+        - { title: Contact, url: /contact/ }
+
   newsletter:
     enabled: true
+    title: "The newsletter"
+    text: "New posts, films and snippets — when there's something worth sending."
     action: ""              # your form endpoint (Buttondown, Mailchimp, …)
     placeholder: "you@email.com"
 
@@ -238,6 +262,9 @@ navigation_header:
       - title: Tags
         url: /tags/
         icon: hash
+      - title: Docs
+        url: /docs/
+        icon: book-open
       - title: Archive
         url: /archive/
         icon: archive

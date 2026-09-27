@@ -4,6 +4,7 @@ title: Videos
 permalink: /videos/
 description: "Films, edits and video essays."
 ad_rails: false
+collection_view: true      # loads the view switch; see _layouts/default.html
 ---
 {%- comment -%}
   The videos landing. It uses the shared collection hero like every other
@@ -18,12 +19,12 @@ ad_rails: false
 {%- assign wide = docs | where_exp: "d", "d.orientation != 'portrait'" -%}
 
 <section class="im-collection im-page is-videos" style="--im-c-current: var(--im-c-videos, var(--im-accent));">
-  {% include collection/hero.html coll=coll docs=docs title=page.title views=true %}
+  {% include collection/hero.html coll=coll docs=docs title=page.title views=true tags=true %}
 
   {% include collection/reels.html items=reels %}
 
   {%- if wide.size > 0 -%}
-  <ul class="im-cards">
+  <ul class="im-cards" id="feed" data-view="{{ coll.view | default: 'card' }}">
     {%- for d in wide -%}<li>{% include utility/card.html item=d %}</li>{%- endfor -%}
   </ul>
   {%- endif -%}

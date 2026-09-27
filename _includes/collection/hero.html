@@ -1,69 +1,75 @@
 {%- comment -%}
-  The first screen of a collection's landing page.
+  The head of a listing, at the page's full width rather than the reading
+  column's: the collection's pattern on the right, a display title, and
+  along its foot the two things a reader does here — pick a topic, and
+  pick how to look at the list.
 
-  It is one partial for every collection, because a collection's hero is
-  always the same four things — what this is, what it is called, one line
-  about it, and how much of it there is. What differs is DATA: the icon,
-  the hue and the counts come from the collection itself, and the optional
-  extras come from a `hero:` block in _config.yml —
+  One partial for every collection, because a collection's head is always
+  the same four things. What differs is DATA: the caption, the hue, the
+  icon and the counts come from the collection itself; the pattern, an
+  optional loop behind it, a CTA and the view switch come from its `hero:`
+  block in _config.yml.
 
-    videos:
-      hero:
-        video: aqz-KE-bpKQ      # a muted loop behind it
-        pattern: dots           # or grid, rings, none
-        cta:  { label: Subscribe, url: "…", icon: youtube-logo }
-        views: true             # the grid/list toggle, top right
-
-  Params: coll (the collection), docs (its entries), title, views.
+  Params: coll, docs, title, views (show the view switch), tags (show the
+          topic chips — off where the page has a real filter of its own).
 {%- endcomment -%}
 {%- assign c = include.coll -%}
 {%- assign docs = include.docs -%}
 {%- assign h = c.hero -%}
 {%- assign latest = docs | first -%}
-{%- assign bg = h.video | default: page.hero_video -%}
-<header class="im-chero im-reveal{% if h.pattern and h.pattern != 'none' %} im-bg-{{ h.pattern }}{% endif %}"
-        style="--im-c-this: var(--im-c-{{ c.label }}, var(--im-accent));">
+{%- assign bg = h.video -%}
+
+{%- comment -%} The topics in this collection, most-used first is overkill: alphabetical is findable. {%- endcomment -%}
+{%- assign tagblob = "" -%}
+{%- for d in docs -%}{%- for t in d.tags -%}{%- assign tagblob = tagblob | append: t | append: "|" -%}{%- endfor -%}{%- endfor -%}
+{%- assign coll_tags = tagblob | split: "|" | uniq | sort_natural -%}
+
+<header class="im-collhero im-reveal" style="--im-c-this: var(--im-c-{{ c.label }}, var(--im-accent));">
   {%- if bg and bg != "" -%}
-  <div class="im-hero-bgvideo im-chero-bg" aria-hidden="true">
+  <span class="im-collhero-film" aria-hidden="true">
     <iframe src="https://www.youtube.com/embed/{{ bg }}?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist={{ bg }}&amp;controls=0&amp;playsinline=1" title="" tabindex="-1" allow="autoplay; encrypted-media"></iframe>
-  </div>
+  </span>
+  {%- else -%}
+  <span class="im-collhero-art im-pattern-{{ h.pattern | default: 'rules' }}" aria-hidden="true"></span>
   {%- endif -%}
 
-  <div class="im-chero-grid">
-    <div class="im-chero-copy">
-      <p class="im-chero-kicker"><i class="ph-bold ph-{{ c.icon | default: 'folder' }}" aria-hidden="true"></i> {{ c.title }}</p>
-      <h1 class="im-chero-title">{{ include.title | default: c.title }}</h1>
-      {%- if c.description %}<p class="im-chero-desc">{{ c.description }}</p>{% endif -%}
-      {%- if h.cta -%}
-      <p class="im-chero-actions">
-        <a class="im-btn im-btn-primary" href="{{ h.cta.url }}"{% if h.cta.url contains '//' %} target="_blank" rel="noopener"{% endif %}>
-          {%- if h.cta.icon %}<i class="ph-bold ph-{{ h.cta.icon }}" aria-hidden="true"></i> {% endif -%}{{ h.cta.label }}
-        </a>
-      </p>
-      {%- endif -%}
-    </div>
-
-    <div class="im-chero-side">
-      <dl class="im-chero-stats">
-        <div><dt>{{ c.title }}</dt><dd>{{ docs.size }}</dd></div>
-        {%- if latest.date -%}<div><dt>Latest</dt><dd>{{ latest.date | date: "%b %Y" }}</dd></div>{%- endif -%}
-        {%- if include.extra_label -%}<div><dt>{{ include.extra_label }}</dt><dd>{{ include.extra_value }}</dd></div>{%- endif -%}
-      </dl>
-
-      {%- if include.views -%}
-      {%- comment -%}
-        Grid or list, and no JavaScript: two radios and `:has()` on the
-        section below. The reader's choice survives a repaint because the
-        browser keeps the checked state — it is a form control, not state
-        we invented.
-      {%- endcomment -%}
-      <div class="im-viewtoggle" role="group" aria-label="View as">
-        <input type="radio" name="im-view" id="im-view-grid" class="im-viewtoggle-input" checked>
-        <label class="im-viewtoggle-label" for="im-view-grid"><i class="ph-bold ph-squares-four" aria-hidden="true"></i> Grid</label>
-        <input type="radio" name="im-view" id="im-view-list" class="im-viewtoggle-input">
-        <label class="im-viewtoggle-label" for="im-view-list"><i class="ph-bold ph-rows" aria-hidden="true"></i> List</label>
-      </div>
-      {%- endif -%}
-    </div>
+  <div class="im-collhero-copy">
+    <p class="im-caption" data-index="{{ docs.size }}">{{ c.title }}</p>
+    <h1 class="im-collhero-title">{{ include.title | default: c.title }}</h1>
+    {%- if c.description %}<p class="im-collhero-text">{{ c.description }}</p>{% endif -%}
+    <p class="im-collhero-meta">
+      <span>{{ docs.size }} {{ c.title | downcase }}</span>
+      {%- if latest.date %}<span>Updated {{ latest.date | date: "%b %Y" }}</span>{% endif -%}
+      {%- if h.cta %}<a href="{{ h.cta.url }}"{% if h.cta.url contains '//' %} target="_blank" rel="noopener"{% endif %}>{{ h.cta.label }}</a>{% endif -%}
+      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+    </p>
   </div>
+
+  {%- if include.views or include.tags -%}
+  <div class="im-collhero-bar">
+    {%- if include.tags and coll_tags.size > 0 -%}
+    <div class="im-collbar-filters">
+      {%- for t in coll_tags limit: 14 -%}
+      {%- assign n = docs | where_exp: "d", "d.tags contains t" | size -%}
+      <a class="im-tag" href="{{ '/tags/' | relative_url }}#t-{{ t | slugify }}">{{ t }} <small>{{ n }}</small></a>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- if include.views -%}
+    {%- comment -%}
+      Four dressings of one grid — the cards never change markup, the feed
+      decides their shape. assets/scripts/view.js sets `data-view` on the
+      feed and remembers the choice; without it the feed keeps whatever
+      data-view the page shipped and the CSS does the rest.
+    {%- endcomment -%}
+    <div class="im-btn-group im-viewswitch" role="group" aria-label="How to show the {{ c.title | downcase }}" data-im-view="#feed">
+      <button class="im-btn im-btn-sm" type="button" value="card" aria-pressed="true"><i class="ph-bold ph-layout" aria-hidden="true"></i><span>Card</span></button>
+      <button class="im-btn im-btn-sm" type="button" value="grid" aria-pressed="false"><i class="ph-bold ph-squares-four" aria-hidden="true"></i><span>Grid</span></button>
+      <button class="im-btn im-btn-sm" type="button" value="list" aria-pressed="false"><i class="ph-bold ph-rows" aria-hidden="true"></i><span>List</span></button>
+      <button class="im-btn im-btn-sm" type="button" value="simple" aria-pressed="false"><i class="ph-bold ph-list-dashes" aria-hidden="true"></i><span>Simple</span></button>
+    </div>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
 </header>

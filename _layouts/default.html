@@ -39,6 +39,7 @@
 
   {% if chrome %}<script src="{{ '/assets/scripts/navbar.js' | relative_url }}" defer></script>{% endif %}
   {%- if page.layout == 'resume' -%}<script src="{{ '/assets/scripts/resume.js' | relative_url }}" defer></script>{%- endif -%}
+  {%- if page.list_collection or page.collection_view -%}<script src="{{ '/assets/scripts/view.js' | relative_url }}" defer></script>{%- endif -%}
   {%- comment -%}
     GSAP + the hero choreography load only on pages that actually have a
     hero (front matter sets hero_title) — no reason to ship an animation
