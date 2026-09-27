@@ -50,3 +50,39 @@
   h2 { margin: 0 0 var(--im-space-2); font-size: var(--im-text-2xl); }
   p { margin: 0; max-width: 56ch; color: var(--im-muted); }
 }
+
+// ---- /styleguide/ -----------------------------------------------------
+// Everything the theme draws, on one page, from the real content — so it
+// cannot drift from what a card actually looks like.
+.im-sg { margin-block: var(--im-section-gap); }
+.im-sg-note { max-width: 62ch; color: var(--im-muted); }
+.im-sg-row { margin-top: var(--im-space-6); }
+.im-sg-label {
+  margin: 0 0 var(--im-space-3);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+
+  code { font-size: inherit; text-transform: none; letter-spacing: 0; }
+}
+.im-sg-strip { display: flex; flex-wrap: wrap; align-items: center; gap: var(--im-space-3); }
+
+.im-sg-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(11rem, 100%), 1fr));
+  gap: var(--im-space-4);
+  margin: var(--im-space-5) 0 0;
+  padding: 0;
+  list-style: none;
+
+  li { display: flex; flex-direction: column; gap: var(--im-space-1); min-width: 0; }
+  code { font-size: var(--im-text-xs); color: var(--im-muted); background: none; box-shadow: none; padding: 0; }
+}
+.im-sg-swatch {
+  height: 3.5rem;
+  border-radius: var(--im-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+}
+.im-sg-swatch-name { font-weight: var(--im-weight-medium); color: var(--im-ink); font-size: var(--im-text-sm); }

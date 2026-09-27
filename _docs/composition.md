@@ -49,9 +49,15 @@ spans.
 
 ## What ships
 
-**Parts** — `breadcrumbs`, `head`, `toc-mobile`, `lead`, `prose`, `tags`,
-`share`, `ask`, `comments`, `author`, `nav`, `episodes`, `lessons`, `siblings`,
-`coursenav`, `docsnav-prevnext`.
+**Parts** — `breadcrumbs`, `head`, `head-split`, `toc-mobile`, `lead`,
+`prose`, `tags`, `share`, `ask`, `comments`, `author`, `nav`, `episodes`,
+`lessons`, `siblings`, `coursenav`, `docsnav-prevnext`.
+
+`head-split` is `head` with a second column: the words on one side, the
+picture on the other, across the full width of the shell, with the body and
+its rail below. Use it instead of `head` **and** `lead` for an entry whose
+picture earns a whole column — `_travel` uses it. With no picture it falls
+back to one column, so it is safe anywhere.
 
 **Widgets** — `toc`, `details`, `collection`, `about`, `cta`, `share`,
 `subscribe`, `ad`.

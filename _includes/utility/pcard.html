@@ -11,7 +11,7 @@
     snippet (optional) override excerpt text
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign cover = it.image | default: it.cover -%}
+{%- assign cover = it.cover | default: it.image -%}
 {%- assign snip = include.snippet | default: it.excerpt | default: it.description -%}
 <article class="im-pcard im-pcard--{{ include.accent }}">
   {%- unless include.media == false -%}

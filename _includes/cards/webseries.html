@@ -5,7 +5,7 @@
   status, year, genre, excerpt/description.
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign poster = it.poster | default: it.image | default: it.cover -%}
+{%- assign poster = it.poster | default: it.cover | default: it.image -%}
 {%- if poster == site.placeholder_image %}{% assign poster = nil %}{% endif -%}
 {%- assign eps = site.episodes | where: "series", it.slug -%}
 <article class="im-poster" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">

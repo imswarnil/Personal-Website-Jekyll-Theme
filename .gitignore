@@ -16,3 +16,6 @@ Gemfile.lock
 .DS_Store
 *.log
 node_modules/
+
+# The built gem, not a source file.
+imprint-theme-*.gem

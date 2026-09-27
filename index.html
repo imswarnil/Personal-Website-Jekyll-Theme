@@ -139,6 +139,50 @@ hero_image: /assets/img/brand/portrait.svg
   </section>
   {%- endif -%}
 
+  {%- comment -%}
+    ── The rest of the shelf ──
+    Three collections that would otherwise only be reachable from a menu:
+    the series, the course and the podcast. Each renders its own card, so
+    adding a fourth is a copy of six lines, not a new design.
+  {%- endcomment -%}
+  {%- assign shelf = "webseries,courses,podcast" | split: "," -%}
+  {%- for label in shelf -%}
+    {%- assign c = site.collections | where: "label", label | first -%}
+    {%- assign items = c.docs | sort: "date" | reverse -%}
+    {%- if items.size > 0 -%}
+    <section class="im-sec im-reveal" aria-labelledby="sec-{{ label }}" style="--im-c-this: var(--im-c-{{ label }}, var(--im-accent));">
+      {% include utility/section-head.html id=label eyebrow=c.title title=c.description link_url=c.landing link_text="All" %}
+      <div class="im-grid-12 im-sec-body">
+        {%- for doc in items limit: 3 -%}
+        <div class="im-span-12 im-span-md-6 im-span-lg-4">{% include utility/card.html item=doc %}</div>
+        {%- endfor -%}
+      </div>
+    </section>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%}
+    ── Latest from the shelf, mixed ──
+    One feed across every collection, newest first: the page's answer to
+    "what has actually been happening here lately", which a set of
+    per-collection sections cannot give.
+  {%- endcomment -%}
+  {%- assign recent = "" | split: "" -%}
+  {%- for c in site.collections -%}
+    {%- unless c.label == "docs" or c.label == "lessons" or c.label == "episodes" -%}
+      {%- assign recent = recent | concat: c.docs -%}
+    {%- endunless -%}
+  {%- endfor -%}
+  {%- assign recent = recent | sort: "date" | reverse -%}
+  {%- if recent.size > 3 -%}
+  <section class="im-sec im-reveal" aria-labelledby="sec-recent">
+    {% include utility/section-head.html id="sec-recent" eyebrow="Lately" title="Everything, newest first" link_url="/archive/" link_text="The archive" %}
+    <ul class="im-cards" data-view="simple">
+      {%- for doc in recent limit: 8 -%}<li>{% include utility/card.html item=doc %}</li>{%- endfor -%}
+    </ul>
+  </section>
+  {%- endif -%}
+
   {%- comment -%} ── Let's talk ── {%- endcomment -%}
   <section class="im-sec im-reveal" aria-labelledby="sec-talk">
     <div class="im-cta-band im-grid-12">

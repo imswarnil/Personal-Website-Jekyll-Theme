@@ -4,7 +4,7 @@
   a disclosure.
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign shot = it.image | default: it.cover -%}
+{%- assign shot = it.cover | default: it.image -%}
 {%- if shot == site.placeholder_image %}{% assign shot = nil %}{% endif -%}
 <article class="im-product" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">
   <a class="im-product-art" href="{{ it.url | relative_url }}" tabindex="-1" aria-hidden="true">

@@ -592,7 +592,7 @@ collections:
     single:
       shell: split
       lead: cover
-      parts: [breadcrumbs, head, lead, prose, tags, share, ask, comments, author, nav]
+      parts: [breadcrumbs, head-split, prose, tags, share, ask, comments, author, nav]
       widgets: [details, collection, about]
   uses:
     output: true

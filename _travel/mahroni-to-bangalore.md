@@ -6,7 +6,7 @@ distance: "1,840 km"
 description: Two thousand kilometres, one camera bag, and the sleeper class education nobody puts on a CV.
 date: 2025-03-12
 tags: [travel, india, film]
-cover: /assets/img/demo/posts-i-didnt-get-a-job-in-college-now-what-a-cinematic-guide-from-mahroni-to-.svg
+cover: /assets/img/demo/travel-mahroni-to-bangalore-by-train.svg
 role: Shot and cut solo
 timeframe: March 2025
 status: Published

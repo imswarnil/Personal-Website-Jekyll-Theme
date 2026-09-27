@@ -47,3 +47,17 @@ picture means it is set twice, at a size nobody chose.
 
 `npm run thumbs` draws the same art as real `.svg` files for the cases that
 need a URL — a social card, a collection's fallback image.
+
+## What picture should an entry have?
+
+For several collections the answer is "none — the drawn one is right". The
+full guidance, collection by collection, is in
+`.claude/skills/collection-art/SKILL.md`: which ones want a real photograph,
+which ones the theme draws better, and how to brief one if you are generating
+it. The short version:
+
+- **Always a real picture** — portfolio (a screenshot of the actual thing),
+  travel (the photograph *is* the content), web series (a 2:3 poster).
+- **Never one** — snippets and prompts, whose cards are already the artwork;
+  videos, which take the thumbnail you chose in YouTube; lessons and docs.
+- **Only if it is genuinely about the entry** — posts, courses, gear.

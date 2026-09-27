@@ -1,100 +1,171 @@
-# imswarnil.com
+<div align="center">
 
-Personal site and blog for **Swarnil Singhai** — software engineer & filmmaker. A Jekyll site with a self-built design system ("**IM CSS**"), five content collections, a resume page, a cross-collection timeline, and a hand-styled tree sitemap.
+<img src="assets/img/brand/logo.svg" width="72" height="72" alt="">
 
-Live at [dev.imswarnil.com](https://dev.imswarnil.com) · originally forked from the [Alembic](https://alembic.darn.es/) Jekyll theme and rewritten from the ground up since.
+# Imprint
 
-<p align="center">
-  <img src="assets/img/readme/site-preview-light.svg" alt="imswarnil.com homepage, light mode" width="100%">
-</p>
-<p align="center">
-  <img src="assets/img/readme/site-preview-dark.svg" alt="imswarnil.com homepage, dark mode" width="100%">
-</p>
+**A personal site on Jekyll, composed from config rather than templates.**
+Thirteen content collections, a resume that stands on its own, a tag index,
+four ways to look at every listing, and a setup form that writes the config
+for you.
 
-> These are hand-drawn SVG mockups of the layout (built from the site's real colour tokens), not live screenshots — swap them for actual captures whenever you like; they live at `assets/img/readme/site-preview-{light,dark}.svg`.
+[Live demo](https://dev.imswarnil.com) · [Docs](https://dev.imswarnil.com/docs/) · [Style guide](https://dev.imswarnil.com/styleguide/)
 
-## About
+</div>
 
-Engineering meets storytelling: this repo is both the source for a working personal site and a small, from-scratch CSS framework (`_sass/im/`) built to re-theme entirely at runtime via CSS custom properties — no rebuild needed to flip between light, dark, or system theme.
+---
 
-## Features
-
-- **IM CSS** — a self-contained, token-driven design system (`_sass/im/`). Every colour, space, radius, and motion value is a `--im-*` custom property, so the whole site re-themes live. See [`DESIGN.md`](DESIGN.md) for the full reference.
-- **Composed pages, not templates** — what an entry page is made of is `_config.yml` data: `single.parts` (stacked in order), `single.widgets` (the sidebar) and `single.lead`. Every name is a file in `_includes/single/`, `_includes/widgets/` or `_includes/leads/`, so a new part is a file you drop in and name — no layout is edited. Any entry can override all three in its own front matter. See `.claude/skills/personal-site/SKILL.md`.
-- **Thirteen content collections** — blog, portfolio, videos (with 9:16 **reels** given their own band and their own two-column page), snippets, prompts, web series + episodes, courses + lessons, podcast, newsletter, travel and a gear shelf — each with its own card design, colour, landing hero and JSON-LD type.
-- **Five content collections** — `posts` (Jekyll's native collection), `portfolio` (projects, film and design, by `kind`), `videos`, `snippets`, `prompts` — each with its own card design (GitHub-repo card, video player, VS Code window, chat window, editorial) and JSON-LD schema.
-- **`/resume/`** — renders structured resume data straight from `_config.yml` (experience, education, skills, projects, awards), with a print-optimised "Save as PDF" mode.
-- **`/timeline/`** — a cross-collection timeline. Add `timeline: true` (and optionally `timeline_note:`) to any post/project/video's front matter and it shows up here, most-recent-first.
-- **`/tags/`** — a cross-collection tag index: every tag any entry carries, as a cloud and then a section each, grouped by slug so `Analytics` and `analytics` are one subject. A post's tag chips link straight to their section (`/tags/#t-<slug>`).
-- **`/sitemap/`** — a tree-style, collapsible sitemap of every page and collection entry, plus JSON-LD (`WebSite` + `ItemList`) describing the same structure for crawlers. (The machine-readable `/sitemap.xml` is generated separately by `jekyll-sitemap`.)
-- **Command-palette search** (`/` to open) plus a full `/search/` page, both reading a generated `assets/search.json` index.
-- **Motion system** — dotted/grid background patterns, scroll-reveal via `IntersectionObserver`, native View Transitions on navigation, all gated behind `prefers-reduced-motion` (`_sass/im/_motion.scss`).
-- **Configurable chrome** — header (island/full, dropdowns, megamenu), footer (a "big typographic" style with a huge faint wordmark), ads (AdSense, hardened so it can never overflow its container, plus a dismissible floating leaderboard) — all driven by `_config.yml`, no template edits needed for common tweaks.
-- **PWA** — offline support via a service worker (`assets/scripts/sw.js`) and an offline fallback page.
-
-## Use this for your own site
-
-`npm run setup` opens a form in your browser, writes `_config.yml`, and backs up
-everything it replaces. Then push to a repo named `username.github.io` and set
-Pages → Source → GitHub Actions. The workflow passes the right `baseurl` for
-both a user page and a project page, so nothing is hard-coded.
-
-Full instructions, including how to add a collection and how to change what an
-entry page is made of: [`.claude/skills/personal-site/SKILL.md`](.claude/skills/personal-site/SKILL.md).
-
-## Getting started
+## Start one in a minute
 
 ```bash
-bin/serve      # local dev server + livereload (recommended)
-bin/build      # production build into _site/
+npx imprint-theme my-site
 ```
 
-Requires Ruby 3.4 via [chruby](https://github.com/postmodern/chruby) — the macOS system Ruby (2.6) cannot build this site (`sass-embedded`/`google-protobuf` crash on load). `bin/serve`/`bin/build` force the right Ruby onto `PATH` for you. If you switch Ruby versions: `rm -rf vendor/bundle Gemfile.lock && bundle install`.
-
-For a fast SCSS-only sanity check without spinning up Jekyll:
+It clones the theme, drops the history so the first commit is yours, clears
+the demo content, and opens the setup form. Then:
 
 ```bash
-npx --yes sass@1.77.8 --no-source-map _sass/main.scss /tmp/out.css
+cd my-site
+npm run dev        # http://localhost:4000
 ```
 
-There's no test suite, linter, or JS build step — content is plain Markdown/Liquid, and Sass is compiled by `jekyll-sass-converter`.
+Push to a repo named `username.github.io`, set **Settings → Pages → Source:
+GitHub Actions**, and you are live. The workflow passes GitHub's own base
+path to Jekyll, so the same setup is correct for a user page and a project
+page — you never set `baseurl` by hand.
 
-## Project structure
+---
 
-```
-_config.yml         Control center — nav, header/footer options, collections, resume data, adsense
-_layouts/            default, page, post, resume
-_includes/           header, footer, ad, search modal, home/* section renderers, components/* shortcodes
-_sass/im/            the IM CSS framework — tokens, base, navbar, hero, components, motion, resume, sitetree…
-_posts/               blog posts (Jekyll's native collection), YYYY-MM-DD-slug.md
-_portfolio/ _videos/ _snippets/ _prompts/   the other four collections
-assets/               styles, scripts, images, search index
-```
+## What a page is made of
 
-Full architecture notes — collection wiring, layout decisions, known gotchas — live in [`CLAUDE.md`](CLAUDE.md). Design tokens, motion conventions, and the shortcode component reference live in [`DESIGN.md`](DESIGN.md).
+This is the idea the whole theme hangs on. **An entry page is a list in
+`_config.yml`, not a template**: which parts to stack, which widgets sit
+beside them, which lead block goes under the title, and how wide the page is.
 
-## Content collections
+<img src="assets/img/readme/composition.svg" alt="A collection's single: block on the left — shell, lead, parts, widgets — and the page it produces on the right" width="100%">
 
-| Collection | Directory | Landing page | Homepage style |
-|---|---|---|---|
-| Blog | `_posts/` | `/blog/` | Numbered list |
-| Portfolio | `_portfolio/` | `/portfolio/` | Gallery |
-| Videos | `_videos/` | `/videos/` | Ranked "Top picks" list |
-| Snippets | `_snippets/` | `/snippets/` | Compact list |
-| Prompts | `_prompts/` | `/prompts/` | Card grid |
+Every name is a file. `parts` are `_includes/single/<name>.html`, `widgets`
+are `_includes/widgets/<name>.html`, `lead` is `_includes/leads/<name>.html`.
+**To invent a part, drop a file in and name it.** No layout is edited, and any
+single entry can override all four in its own front matter.
 
-Every entry gets `layout: post` by default (see `defaults:` in `_config.yml`), and JSON-LD structured data matching its collection's configured `schema:` (e.g. `BlogPosting`, `VideoObject`, `CreativeWork`).
+### Five shells
 
-## Deployment
+| `shell` | What it is | Used by |
+| --- | --- | --- |
+| `reading` | A reading column, centred, nothing beside it | posts, snippets, prompts, newsletter |
+| `aside` | A reading column with a rail beside it | podcast |
+| `wide` | The full fluid container | videos, web series, episodes, courses |
+| `split` | 70 / 30, the rail sticky | portfolio, travel, uses |
+| `course` | Contents on the **left**, the page beside them | lessons, the docs |
 
-Pushing to `main` triggers `.github/workflows/jekyll.yml`, which builds with Ruby 3.1 in production mode and deploys `_site/` to GitHub Pages.
+---
 
-## Credits
+## Thirteen collections, one colour each
 
-- Forked from [Alembic](https://alembic.darn.es/) by [David Darnes](https://darn.es/) — the original theme scaffolding and a few shortcode includes are still in here, even though the styling layer (IM CSS) is a full rewrite.
-- Icons by [Phosphor Icons](https://phosphoricons.com/).
-- Typeface: [Geist](https://vercel.com/font).
+Every collection's hue is the site accent with its hue rotated, so changing
+`accent_color` moves all of them together. The chips, the cover art, the
+kickers and the card rules all read the same variable.
 
-## License
+<img src="assets/img/readme/collections.svg" alt="The collections and the hue rotation that gives each one its colour" width="100%">
 
-[MIT](LICENSE)
+| Folder | What it is | Card |
+| --- | --- | --- |
+| `_posts/` | Essays and notes | editorial |
+| `_portfolio/` | Projects, films, design | repo card |
+| `_videos/` | Films — 9:16 entries become reels | player |
+| `_webseries/` + `_episodes/` | A series and its episodes | portrait poster |
+| `_courses/` + `_lessons/` | A course and its curriculum | course card |
+| `_podcast/` | Audio episodes | episode with a player |
+| `_newsletter/` | Issues, in full | issue row |
+| `_snippets/` | Copy-pasteable code | code window |
+| `_prompts/` | Prompts, **and what they produced** | chat window |
+| `_travel/` | Trips | photo card |
+| `_uses/` | Hardware, software, gear | product card |
+| `_docs/` | The manual | doc row |
+
+Delete any you do not want — the setup form retires the folder, the landing
+page and the config entry together, and backs them up first.
+
+---
+
+## Four ways to look at a listing
+
+| View | What it does |
+| --- | --- |
+| **card** | The newest entry leads across the top, the rest in a grid |
+| **grid** | Every card the same |
+| **list** | One column, the picture beside the words |
+| **simple** | One column, a title and a date — an index, not a feed |
+
+The cards never change markup; the feed decides their shape, and a reader's
+choice is remembered across the site. Cards in a row are always the same
+height, whatever they carry.
+
+---
+
+## What else is in the box
+
+- **A resume** that drops the site chrome entirely, opens on its own hero, and
+  collapses into an island bar as you scroll. Prints to a clean PDF.
+- **A tag page per tag**, across every collection — not just posts.
+- **Ask an AI** on every entry: opens Claude, ChatGPT or Perplexity with the
+  page's URL and a prompt to read it and answer you.
+- **Comments** via giscus, utterances or Disqus, with an honest placeholder
+  until you pick one.
+- **Search** — a command palette on `/` and a full page.
+- **Generated cover art** for anything without a picture: the collection's
+  colour, pattern and mark, drawn as SVG. No title inside the picture.
+- **Dark mode**, with no flash, and a toggle in the header.
+- **A setup form**, a doctor that catches the mistakes that break a build, and
+  a test suite for both.
+
+---
+
+## The commands
+
+| Command | What it does |
+| --- | --- |
+| `npm run setup` | The browser setup form |
+| `npm run dev` | Local server with live reload |
+| `npm run build` | Production build into `_site/` |
+| `npm run new` | Scaffold an entry in any collection |
+| `npm run thumbs` | Redraw the cover art from your accent colour |
+| `npm run doctor` | Check the config for the mistakes that break a build |
+| `npm run test` | The config and wizard test suite |
+| `npm run check` | Doctor + build — what CI runs |
+
+Ruby 3.4 and Node 18+. The macOS system Ruby (2.6) cannot build this site;
+`bin/serve` and `bin/build` put the right toolchain on your PATH.
+
+---
+
+## House style
+
+The CSS follows the [Im Design System](https://design.imswarnil.com), and it
+has exactly two interactions:
+
+- **Hover** — the thing *fills*. Nothing sharpens a border, nothing grows
+  three per cent, nothing rests on a drop shadow.
+- **Current** ("you are here") — a stronger fill and a bolder label. Never a
+  change of colour.
+
+The accent belongs to the primary button, a link's hover, the focus ring, text
+selection and each collection's hue. Nothing else.
+
+---
+
+## Docs
+
+- **[/docs/](https://dev.imswarnil.com/docs/)** — setting it up, deploying,
+  writing a post, adding a collection, composing a page, cards and views,
+  styling.
+- **[/styleguide/](https://dev.imswarnil.com/styleguide/)** — every card,
+  component and colour on one page, drawn from the real content.
+- **`.claude/skills/personal-site/SKILL.md`** — the same ground, written for
+  an AI assistant. If you use one, point it there.
+
+## Licence
+
+MIT. The demo content and the brand marks are the author's; the code is yours
+to use.

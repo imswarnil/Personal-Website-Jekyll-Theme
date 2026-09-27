@@ -1,5 +1,5 @@
 {%- comment -%} The default lead: the entry's cover picture, if it has one. {%- endcomment -%}
-{%- assign cover = page.image | default: page.cover -%}
+{%- assign cover = page.cover | default: page.image -%}
 {%- if cover and cover != site.placeholder_image -%}
 <figure class="im-post-cover">
   <img src="{{ cover | relative_url }}" alt="{{ page.title }}">

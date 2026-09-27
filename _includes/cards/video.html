@@ -3,7 +3,7 @@
   channel, date, excerpt/description, image|cover, tags.
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign cover = it.image | default: it.cover -%}
+{%- assign cover = it.cover | default: it.image -%}
 {%- if cover == site.placeholder_image %}{% assign cover = nil %}{% endif -%}
 {%- assign snip = it.excerpt | default: it.description -%}
 <article class="im-vcard" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">

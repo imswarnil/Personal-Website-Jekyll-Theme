@@ -2,7 +2,7 @@
   A series opens on its poster and its facts — the shape a streaming
   service's title page has, because that is the shape a reader expects.
 {%- endcomment -%}
-{%- assign poster = page.poster | default: page.image | default: page.cover -%}
+{%- assign poster = page.poster | default: page.cover | default: page.image -%}
 {%- assign eps = site.episodes | where: "series", page.slug -%}
 <div class="im-serieshead">
   {%- if poster and poster != site.placeholder_image -%}

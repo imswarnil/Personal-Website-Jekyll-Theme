@@ -4,7 +4,7 @@
   tags, stack, role. Carries data-kind / data-tags for filter.js.
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign cover = it.image | default: it.cover -%}
+{%- assign cover = it.cover | default: it.image -%}
 {%- if cover == site.placeholder_image %}{% assign cover = nil %}{% endif -%}
 {%- assign snip = it.summary | default: it.excerpt | default: it.description -%}
 {%- if it.repo contains "github.com/" -%}

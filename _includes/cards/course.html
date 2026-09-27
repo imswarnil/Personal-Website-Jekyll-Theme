@@ -1,6 +1,6 @@
 {%- comment -%} A course: cover, level, how many lessons, how long. {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign cover = it.image | default: it.cover -%}
+{%- assign cover = it.cover | default: it.image -%}
 {%- if cover == site.placeholder_image %}{% assign cover = nil %}{% endif -%}
 {%- assign lessons = site.lessons | where: "course", it.slug -%}
 <article class="im-coursecard" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">

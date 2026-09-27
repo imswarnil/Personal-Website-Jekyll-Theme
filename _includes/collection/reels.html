@@ -15,7 +15,7 @@
     {%- for r in reels limit: 6 -%}
     <a class="im-reel" href="{{ r.url | relative_url }}">
       <span class="im-reel-art">
-        {%- assign cover = r.image | default: r.cover -%}
+        {%- assign cover = r.cover | default: r.image -%}
         {%- if r.video_id -%}<img src="https://i.ytimg.com/vi/{{ r.video_id }}/hqdefault.jpg" alt="" loading="lazy" width="360" height="640">
         {%- elsif cover and cover != site.placeholder_image -%}<img src="{{ cover | relative_url }}" alt="" loading="lazy" width="360" height="640">
         {%- else -%}{% include utility/thumb.html item=r size="sm" %}{%- endif -%}
