@@ -6,7 +6,14 @@ description: "Have a project, a question, or a collaboration in mind? Let's talk
 sidebar: false
 ad_rails: false
 ---
-{%- assign form_action = site.footer.newsletter.action | default: "" -%}
+{%- comment -%}
+  The contact form posts to `contact.action`, NOT to the newsletter
+  endpoint: they are different things going to different places, and
+  wiring one to the other is how a signup list quietly fills up with
+  project enquiries. With no endpoint set the form says so and the email
+  link beside it still works — which is the honest fallback.
+{%- endcomment -%}
+{%- assign form_action = site.contact.action | default: "" -%}
 <section class="im-home im-page im-pg">
 
   <header class="im-pg-head im-grid-12 im-reveal">
@@ -36,10 +43,7 @@ ad_rails: false
           <label class="im-field im-field-full">
             <span class="im-field-label">What is it about?</span>
             <select class="im-input" name="topic">
-              <option>A project or contract</option>
-              <option>A film or brand story</option>
-              <option>Something on the blog</option>
-              <option>Just saying hi</option>
+              {%- for t in site.contact.topics -%}<option>{{ t }}</option>{%- endfor -%}
             </select>
           </label>
           <label class="im-field im-field-full">
@@ -48,8 +52,18 @@ ad_rails: false
           </label>
         </div>
         <div class="im-form-foot">
-          <button class="im-btn im-btn-lg im-btn-primary" type="submit"{% if form_action == '' %} title="Set site.footer.newsletter.action in _config.yml to enable posting"{% endif %}><i class="ph-bold ph-paper-plane-tilt" aria-hidden="true"></i> Send message</button>
+          <button class="im-btn im-btn-lg im-btn-primary" type="submit"
+                  {% if form_action == '' %}disabled title="Set contact.action in _config.yml to enable posting"{% endif %}>
+            <i class="ph-bold ph-paper-plane-tilt" aria-hidden="true"></i> Send message
+          </button>
+          {%- if form_action == '' -%}
+          <span class="im-form-note">
+            This form has no endpoint yet — set <code>contact.action</code> in
+            <code>_config.yml</code>. The email link above works either way.
+          </span>
+          {%- else -%}
           <span class="im-form-note">No newsletter, no tracking — this only sends your message.</span>
+          {%- endif -%}
         </div>
       </form>
     </div>
@@ -64,8 +78,8 @@ ad_rails: false
         </div>
         <ul class="im-pg-facts im-card im-card-muted">
           <li><i class="ph-bold ph-map-pin" aria-hidden="true"></i> {{ site.location }} · IST (UTC+5:30)</li>
-          <li><i class="ph-bold ph-clock" aria-hidden="true"></i> Usually replies within 2 working days</li>
-          <li><i class="ph-bold ph-briefcase" aria-hidden="true"></i> Open to analytics builds, web work and short films</li>
+          <li><i class="ph-bold ph-clock" aria-hidden="true"></i> Usually replies within {{ site.contact.reply_within | default: "a few days" }}</li>
+          {%- if site.contact.availability %}<li><i class="ph-bold ph-briefcase" aria-hidden="true"></i> {{ site.contact.availability }}</li>{% endif -%}
         </ul>
         <div class="im-card">
           <h2 class="im-card-title">Prefer a call?</h2>

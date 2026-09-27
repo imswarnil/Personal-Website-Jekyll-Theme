@@ -157,6 +157,12 @@ if (cfg.adsense?.enabled && !cfg.adsense?.client) err('AdSense is on but `adsens
 if (cfg.footer?.newsletter?.enabled && !cfg.footer?.newsletter?.action) {
   warn('The newsletter form is on but has no `action:`.', 'It will render disabled until you paste your endpoint in.');
 }
+// The contact form is a DIFFERENT endpoint from the newsletter: two things
+// going to two places. Wiring one to the other fills a signup list with
+// project enquiries.
+if (!cfg.contact?.action) {
+  warn('The contact form has no `action:`.', 'Set `contact.action` in _config.yml; the email link works either way.');
+}
 if (cfg.header?.github?.enabled && !/^[\w.-]+\/[\w.-]+$/.test(String(cfg.header?.github?.repo || ''))) {
   warn('`header.github.repo` is not in owner/repo form.', 'The star count will not load.');
 }

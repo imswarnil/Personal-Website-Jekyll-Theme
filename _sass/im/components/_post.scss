@@ -180,6 +180,39 @@
 }
 .im-page-indicator { font-size: var(--im-text-sm); color: var(--im-muted); font-variant-numeric: tabular-nums; }
 
+// The numbers themselves. Each is a chip, so they take the same three
+// steps every other chip in the theme does.
+.im-page-nums {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--im-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.im-page-num {
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding-inline: var(--im-space-2);
+  border-radius: var(--im-radius-full);
+  color: var(--im-ink);
+  font-size: var(--im-text-sm);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: background-color var(--im-duration-instant);
+
+  &:hover { background: var(--im-hover-bg); }
+  &[aria-current="page"] {
+    background: var(--im-current-bg);
+    color: var(--im-current-fg);
+    font-weight: var(--im-current-weight);
+  }
+}
+.im-page-gap { padding-inline: var(--im-space-1); color: var(--im-faint); }
+
 // ---- Page breadcrumb --------------------------------------------------
 .im-breadcrumb {
   display: flex;

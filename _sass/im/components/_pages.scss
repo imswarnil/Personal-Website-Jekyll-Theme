@@ -330,3 +330,117 @@ select.im-input { cursor: pointer; }
   .im-sec-eyebrow { margin-bottom: var(--im-space-1); }
   .im-flink { align-self: flex-start; font-size: var(--im-text-sm); }
 }
+
+// ======================================================================
+// /about/ — the story, in chapters
+// ----------------------------------------------------------------------
+// A rail of years on the left that marks where you are, the chapters
+// stacked on the right. The rail is sticky because the point of it is
+// orientation: it has to be there when you are three chapters down.
+// ======================================================================
+.im-story {
+  display: grid;
+  gap: var(--im-space-7);
+  margin-block: var(--im-section-gap);
+
+  @include mq($bp-lg) {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+}
+
+.im-story-rail {
+  @include mq($bp-lg) {
+    position: sticky;
+    top: calc(var(--im-navbar-height) + var(--im-space-5));
+  }
+}
+.im-story-rail-title {
+  margin: 0 0 var(--im-space-4);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+}
+
+.im-story-rail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: var(--im-space-3);
+    align-items: baseline;
+    padding: var(--im-space-2) var(--im-space-3);
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--im-radius-sm) var(--im-radius-sm) 0;
+    color: var(--im-muted);
+    text-decoration: none;
+    transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+
+    &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+
+    // The chapter you are reading wears the theme's one CURRENT state —
+    // a fill and a bolder label, marked on the rule at its left.
+    &.is-current {
+      background: var(--im-current-bg);
+      border-left-color: var(--im-ink);
+      color: var(--im-current-fg);
+      font-weight: var(--im-current-weight);
+    }
+  }
+}
+.im-story-year {
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  color: var(--im-faint);
+  font-variant-numeric: tabular-nums;
+}
+.im-story-label { min-width: 0; font-size: var(--im-text-sm); }
+
+.im-story-body { display: flex; flex-direction: column; gap: var(--im-section-gap); min-width: 0; }
+
+.im-story-photo {
+  margin: 0;
+
+  img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--im-radius-2xl);
+    background: var(--im-surface);
+  }
+  figcaption {
+    margin-top: var(--im-space-3);
+    color: var(--im-muted);
+    font-size: var(--im-text-sm);
+    text-align: center;
+  }
+}
+
+.im-story-ch {
+  scroll-margin-top: calc(var(--im-navbar-height) + var(--im-space-6));
+
+  .im-prose { max-width: 62ch; }
+}
+.im-story-ch-year {
+  margin: 0 0 var(--im-space-1);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  color: var(--im-c-current, var(--im-accent));
+}
+.im-story-ch-title {
+  margin: 0 0 var(--im-space-3);
+  font-size: var(--im-text-h2);
+  line-height: var(--im-leading-h2);
+  letter-spacing: var(--im-tracking-tight);
+}

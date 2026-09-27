@@ -488,3 +488,89 @@
 .im-coursenav-n { color: var(--im-faint); font-family: var(--im-font-mono); font-variant-numeric: tabular-nums; }
 .im-coursenav-title { min-width: 0; }
 .im-coursenav-time { color: var(--im-faint); font-size: var(--im-text-xs); white-space: nowrap; }
+
+// ---- The manual's rail (single/docsnav.html) --------------------------
+.im-docsnav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-5);
+  padding: 1.25rem;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  font-size: var(--im-text-sm);
+}
+.im-docsnav-home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  color: var(--im-ink);
+  font-weight: var(--im-weight-semibold);
+  letter-spacing: var(--im-tracking-tight);
+  text-decoration: none;
+
+  > i { color: var(--im-c-docs, var(--im-muted)); }
+  &:hover { color: var(--im-accent); }
+}
+.im-docsnav-group + .im-docsnav-group { margin-top: var(--im-space-4); }
+.im-docsnav-title {
+  margin: 0 0 var(--im-space-2);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+}
+.im-docsnav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: block;
+    padding: var(--im-space-2);
+    border-radius: var(--im-radius-sm);
+    color: var(--im-body);
+    text-decoration: none;
+    @include im-hover-fill;
+
+    &[aria-current="page"] {
+      background: var(--im-current-bg);
+      color: var(--im-current-fg);
+      font-weight: var(--im-current-weight);
+    }
+  }
+}
+
+// ---- A page of the manual, as a card ----------------------------------
+.im-doccard-link {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--im-space-3);
+  padding: var(--im-space-3);
+  border-radius: var(--im-radius-lg);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+  color: inherit;
+  text-decoration: none;
+  @include im-hover-fill;
+
+  &:hover .im-doccard-go { translate: 3px 0; }
+}
+.im-doccard-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--im-radius-md);
+  @include im-collection-tint;
+}
+.im-doccard-body { min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.im-doccard-title { color: var(--im-ink); font-weight: var(--im-weight-medium); }
+.im-doccard-text { font-size: var(--im-text-sm); color: var(--im-muted); }
+.im-doccard-go { color: var(--im-faint); transition: translate var(--im-duration-instant) var(--im-ease-out); }
+
+.is-docs .im-cards { grid-template-columns: minmax(0, 1fr); gap: var(--im-space-2); }
+@include mq($bp-md) { .is-docs .im-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

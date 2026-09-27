@@ -614,6 +614,100 @@ collections:
       lead: cover
       parts: [breadcrumbs, head, lead, prose, tags, share, ask, author]
       widgets: [details, collection, about]
+  # ── The theme's own manual ──────────────────────────────────────────
+  # A collection, so the docs are pages with a nav rather than one very
+  # long page. `section:` groups them in the rail and `order:` sorts them.
+  docs:
+    output: true
+    title: Docs
+    singular: Page
+    description: "How to use this theme — set it up, fill it, style it, ship it."
+    permalink: /docs/:name/
+    landing: /docs/
+    icon: book-open
+    schema: TechArticle
+    style: compact
+    card: doc
+    hero: false
+    image: "/assets/img/covers/docs.svg"
+    single:
+      shell: course
+      lead: none
+      parts: [head, toc-mobile, prose, docsnav-prevnext]
+      widgets: [toc]
+      sidebar: false
+
+
+# ── Contact ────────────────────────────────────────────────────────────
+# The contact form posts HERE, not to the newsletter endpoint — they are
+# different things going to different places, and wiring one to the other
+# is how a signup list quietly fills with project enquiries.
+contact:
+  action: ""                  # Formspree, Basin, Netlify, your own handler
+  topics:
+    - A project or contract
+    - A film or brand story
+    - Something on the blog
+    - Just saying hi
+  reply_within: "2 working days"
+  availability: "Open to analytics builds, web work and short films"
+
+# ── About ──────────────────────────────────────────────────────────────
+# The story, in chapters. The left rail on /about/ lists them by year and
+# marks the one you are reading; the right column stacks them. Add, remove
+# or reorder here — the page is generated from this list.
+about:
+  chapters:
+    - id: mahroni
+      year: "1996"
+      title: "A small town in Uttar Pradesh"
+      body: >
+        Mahroni. One road worth the name, a school with more ambition than
+        equipment, and a public library I worked through mostly out of
+        boredom. Nothing about it suggested software, which is probably why
+        I noticed software at all when it arrived.
+    - id: school
+      year: "2009"
+      title: "Schooling, and the first computer"
+      body: >
+        A shared machine in a room of twenty, forty minutes a week. I spent
+        most of that time finding out what a spreadsheet would do if you
+        pushed it, which turns out to be the same instinct I now get paid
+        for.
+    - id: college
+      year: "2013"
+      title: "Engineering, and no campus offer"
+      body: >
+        Four years of engineering and no job at the end of them — the thing
+        the brochures do not mention. What came next is one of the most-read
+        pieces on this site, because it turns out a lot of people are
+        standing where I was standing.
+      link: /blog/no-campus-job-lessons/
+      link_label: "Read what I did next"
+    - id: salesforce
+      year: "2017"
+      title: "Apex on an org nobody wanted"
+      body: >
+        My first real work was the system everyone avoided. I found I liked
+        the untouchable ones best — they are where the actual problems live.
+        That became a decade around CRM Analytics, CPQ, and the unglamorous
+        plumbing between a quote and a paid invoice.
+    - id: camera
+      year: "2020"
+      title: "A camera, and what editing taught me"
+      body: >
+        Editing taught me more about engineering than any book did: cut what
+        does not serve the story, get the pacing right, make the first three
+        seconds count. Every dashboard and pull request I ship now runs
+        through that filter.
+    - id: now
+      year: "Now"
+      title: "Both, on purpose"
+      body: >
+        Shipping analytics at work, making travel and brand films under
+        Imswarnil Studio, and writing about the craft of both here.
+      link: /now/
+      link_label: "What I am doing now"
 
 # ── Support ────────────────────────────────────────────────────────────
 # What /support/ offers. Every entry is optional; the page renders what is
@@ -652,6 +746,29 @@ support:
 # you already configured (see `comments:`), pointed at one page.
 guestbook:
   intro: "Say hello, leave a note, tell me what you are building. No account needed if you are signing by email."
+
+  # ── The theme's own manual ──────────────────────────────────────────
+  # A collection, so the docs are pages with a nav rather than one very
+  # long page. `section:` groups them in the rail and `order:` sorts them.
+  docs:
+    output: true
+    title: Docs
+    singular: Page
+    description: "How to use this theme — set it up, fill it, style it, ship it."
+    permalink: /docs/:name/
+    landing: /docs/
+    icon: book-open
+    schema: TechArticle
+    style: compact
+    card: doc
+    hero: false
+    image: "/assets/img/covers/docs.svg"
+    single:
+      shell: course
+      lead: none
+      parts: [head, toc-mobile, prose, docsnav-prevnext]
+      widgets: [toc]
+      sidebar: false
 
 # The last-resort cover, when an entry has none and its collection has none.
 # Imprint draws a cover from the entry's own front matter before falling
@@ -907,10 +1024,17 @@ plugins:
 pagination:
   enabled: true
   collection: posts
-  per_page: 6
+  per_page: 2               # small on purpose, so the demo has pages to show
   permalink: "/page/:num/"
   sort_field: "date"
   sort_reverse: true
+  # The window of numbers either side of the current page. jekyll-paginate-v2
+  # builds `paginator.page_trail` from this, and _includes/pagination.html
+  # renders it — every page is a real file, so the numbers work on GitHub
+  # Pages with no JavaScript and no server.
+  trail:
+    before: 2
+    after: 2
 
 jekyll-mentions: https://twitter.com
 

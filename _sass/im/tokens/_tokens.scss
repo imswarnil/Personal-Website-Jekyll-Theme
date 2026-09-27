@@ -249,6 +249,7 @@ $im-text: (
   --im-c-uses:      oklch(from var(--im-accent) l c calc(h - 220));
   --im-c-newsletter: oklch(from var(--im-accent) l c calc(h - 250));
   --im-c-podcast:   oklch(from var(--im-accent) l c calc(h - 290));
+  --im-c-docs:      oklch(from var(--im-accent) l c calc(h - 320));
   // Tags are not a collection but they are a KIND of thing, and the system
   // gives every kind its own hue off the same accent.
   --im-c-tags:      oklch(from var(--im-accent) l c calc(h + 45));
@@ -391,6 +392,7 @@ $im-text: (
     --im-c-uses:      var(--im-accent);
     --im-c-newsletter: var(--im-accent);
     --im-c-podcast:   var(--im-accent);
+    --im-c-docs:      var(--im-accent);
     --im-accent-hover:  var(--im-accent);
     --im-accent-active: var(--im-accent);
   }

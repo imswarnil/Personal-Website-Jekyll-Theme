@@ -23,25 +23,60 @@ ad_rails: false
     </div>
   </header>
 
-  <div class="im-grid-12 im-pg-row im-reveal">
-    <figure class="im-span-12 im-span-lg-5 im-pg-photo">
-      <img src="{{ '/assets/img/brand/portrait.svg' | relative_url }}" alt="Swarnil Singhai" width="900" height="900" loading="lazy">
-      <figcaption>Bengaluru, most days. A camera bag, most weekends.</figcaption>
-    </figure>
-    <div class="im-span-12 im-span-lg-7 im-pg-story im-prose">
-      <h2>The short version</h2>
-      <p>I started out writing Apex on a Salesforce org that nobody wanted to touch, and found I liked the untouchable ones best. That turned into a decade around CRM Analytics, CPQ and the unglamorous plumbing between a quote and a paid invoice — dashboards that sales leaders actually open, SAQL that survives a fiscal-year change, quote flows that shave real hours off a deal.</p>
-      <p>Somewhere in the middle I picked up a camera. Editing taught me more about engineering than any book did: cut what doesn't serve the story, get the pacing right, and make the first three seconds count. Every dashboard, page and pull request I ship now runs through that same filter.</p>
-      <p>Today I split my time between shipping analytics at work, making travel and brand films under <strong>Imswarnil Studio</strong>, and writing about the craft of both here — guides, snippets, prompts and the occasional long essay.</p>
-      <h2>What I'm good at</h2>
-      <ul>
-        <li><strong>Analytics engineering</strong> — CRM Analytics, SAQL, data flows and the dashboards on top of them.</li>
-        <li><strong>Quote-to-cash</strong> — Conga CPQ, quote automation, approval flows, pricing logic that finance can audit.</li>
-        <li><strong>Web craft</strong> — Jekyll and Next.js sites, hand-written CSS systems (this one included), fast by default.</li>
-        <li><strong>Film</strong> — writing, shooting, grading and cutting short-form films with a documentary sensibility.</li>
-      </ul>
+  {%- comment -%}
+    The story, in chapters. The rail on the left lists them by year and
+    marks the one you are reading; the chapters stack on the right. Both
+    come from `about.chapters` in _config.yml, so the page is edited as
+    data rather than as markup.
+  {%- endcomment -%}
+  {%- assign chapters = site.about.chapters -%}
+  {%- if chapters.size > 0 -%}
+  <div class="im-story">
+    <nav class="im-story-rail" aria-label="Chapters">
+      <p class="im-story-rail-title">The long version</p>
+      <ol class="im-story-rail-list">
+        {%- for c in chapters -%}
+        <li>
+          <a href="#{{ c.id }}" data-story-link="{{ c.id }}">
+            <span class="im-story-year">{{ c.year }}</span>
+            <span class="im-story-label">{{ c.title }}</span>
+          </a>
+        </li>
+        {%- endfor -%}
+      </ol>
+    </nav>
+
+    <div class="im-story-body">
+      <figure class="im-story-photo im-reveal">
+        <img src="{{ '/assets/img/brand/portrait.svg' | relative_url }}" alt="{{ site.author }}" width="900" height="900" loading="lazy">
+        <figcaption>Bengaluru, most days. A camera bag, most weekends.</figcaption>
+      </figure>
+
+      {%- for c in chapters -%}
+      <section class="im-story-ch im-reveal" id="{{ c.id }}" data-story-section="{{ c.id }}">
+        <p class="im-story-ch-year">{{ c.year }}</p>
+        <h2 class="im-story-ch-title">{{ c.title }}</h2>
+        <div class="im-prose"><p>{{ c.body | strip }}</p></div>
+        {%- if c.link -%}
+        <a class="im-card-cta" href="{{ c.link | relative_url }}">{{ c.link_label | default: "Read more" }} <i class="ph-bold ph-arrow-right" aria-hidden="true"></i></a>
+        {%- endif -%}
+      </section>
+      {%- endfor -%}
+
+      <section class="im-story-ch im-reveal">
+        <h2 class="im-story-ch-title">What I'm good at</h2>
+        <div class="im-prose">
+          <ul>
+            <li><strong>Analytics engineering</strong> — CRM Analytics, SAQL, data flows and the dashboards on top of them.</li>
+            <li><strong>Quote-to-cash</strong> — Conga CPQ, quote automation, approval flows, pricing logic that finance can audit.</li>
+            <li><strong>Web craft</strong> — Jekyll and Next.js sites, hand-written CSS systems (this one included), fast by default.</li>
+            <li><strong>Film</strong> — writing, shooting, grading and cutting short-form films with a documentary sensibility.</li>
+          </ul>
+        </div>
+      </section>
     </div>
   </div>
+  {%- endif -%}
 
   <section class="im-sec im-reveal" aria-labelledby="how">
     {% include utility/section-head.html id="how" eyebrow="Process" title="How I work" %}
@@ -119,3 +154,4 @@ ad_rails: false
     </div>
   </section>
 </section>
+<script src="{{ '/assets/scripts/story.js' | relative_url }}" defer></script>
