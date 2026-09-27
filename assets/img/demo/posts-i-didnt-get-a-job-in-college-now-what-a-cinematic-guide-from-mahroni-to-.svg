@@ -11,16 +11,8 @@
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
-  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-    <text x="80" y="138" fill="hsl(353 75% 66%)" font-size="24" font-weight="600" letter-spacing="3.2">POST</text>
-    <rect x="80" y="162" width="56" height="4" rx="2" fill="hsl(353 75% 66%)"/>
-    <text x="80" y="224" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">I Didn’t Get a Job in</text>
-    <text x="80" y="300" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">College. Now What?—A</text>
-    <text x="80" y="376" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">Cinematic Guide…</text>
-    <text x="80" y="478" fill="rgb(255 255 255 / 0.66)" font-size="26" font-weight="500">first job · freshers</text>
-    <g opacity="0.92">
-      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
-      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">SS</text>
-    </g>
+  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
+    <path d="M4 20h4L20 8a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="M14 6l4 4"/>
   </g>
 </svg>

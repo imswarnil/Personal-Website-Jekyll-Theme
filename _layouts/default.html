@@ -46,6 +46,7 @@
     library to a blog post. Both deferred, so they run in document order
     and hero.js can count on window.gsap being there.
   {%- endcomment -%}
+  {%- if page.hero_image -%}<script src="{{ '/assets/scripts/hero-media.js' | relative_url }}" defer></script>{%- endif -%}
   {%- if page.hero_title -%}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{ '/assets/scripts/hero.js' | relative_url }}" defer></script>

@@ -31,11 +31,34 @@ layout: default
 {%- if page.sidebar == false %}{% assign has_sidebar = false %}{% endif -%}
 {%- if page.sidebar == true %}{% assign has_sidebar = true %}{% endif -%}
 
+{%- comment -%}
+  How WIDE the page is, and whether anything sits beside it, is the
+  collection's `single.shell` — the third thing that makes one kind of
+  entry a different page from another:
+
+    reading  a reading column, centred, no sidebar   (a post, a snippet)
+    aside    a reading column with a rail beside it  (the default)
+    wide     the full fluid container, nothing beside it — for a page
+             whose subject is a PICTURE: a film, an episode
+    split    70 / 30, the rail sticky — a project, a case study
+    course   a contents rail on the LEFT and the lesson beside it, because
+             in a course "where am I" is the first question, not the last
+
+  A reel overrides all of it: a 9:16 player wants the film on one side and
+  the words on the other, which is none of the four.
+{%- endcomment -%}
+{%- assign shell = page.shell | default: single.shell | default: "aside" -%}
+{%- if shell == "reading" or shell == "wide" or shell == "course" %}{% assign has_sidebar = false %}{% endif -%}
+
 {%- assign is_reel = false -%}
 {%- if page.orientation == "portrait" or page.reel %}{% assign is_reel = true %}{% endif -%}
 {%- if is_reel %}{% assign has_sidebar = false %}{% endif -%}
 
-<div class="im-shell{% if has_sidebar %} has-sidebar{% endif %}{% if is_reel %} is-reel{% endif %} im-page is-{{ page.collection }}">
+<div class="im-shell is-{{ shell }}{% if has_sidebar %} has-sidebar{% endif %}{% if is_reel %} is-reel{% endif %} im-page is-{{ page.collection }}">
+  {%- if shell == "course" -%}
+  <aside class="im-shell-rail" aria-label="Course contents">{% include single/coursenav.html %}</aside>
+  {%- endif -%}
+
   <div class="im-shell-main">
     <article class="im-article">
       {%- for part in parts -%}

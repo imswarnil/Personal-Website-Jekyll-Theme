@@ -38,65 +38,10 @@
 .im-thumb-glow-a { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0.5; }
 .im-thumb-glow-b { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0; }
 
-.im-thumb-mark {
-  circle { fill: rgb(255 255 255 / 10%); stroke: rgb(255 255 255 / 28%); }
-  text {
-    fill: var(--im-on-media);
-    font-family: var(--im-font-body);
-    font-size: 32px;
-    font-weight: var(--im-weight-semibold);
-    letter-spacing: 0.02em;
-  }
-}
-
-// The <foreignObject> block: real HTML, so the title can wrap — SVG
-// <text> cannot, and a cover whose title runs off the edge is worse than
-// no cover at all.
-.im-thumb-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-  font-family: var(--im-font-body);
+// The collection's mark, centred. It is the only thing on the cover
+// besides colour, so it carries the whole message: what KIND of thing
+// this is. Quiet enough to sit under a title without competing with it.
+.im-thumb-icon {
   color: var(--im-on-media);
-}
-.im-thumb-kicker {
-  font-size: 24px;
-  font-weight: var(--im-weight-semibold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: color-mix(in oklab, #fff 52%, var(--im-c-this, var(--im-accent)));
-}
-.im-thumb-rule {
-  width: 56px;
-  height: 4px;
-  margin: 18px 0 20px;
-  border-radius: 2px;
-  background: color-mix(in oklab, #fff 52%, var(--im-c-this, var(--im-accent)));
-}
-.im-thumb-title {
-  font-size: 66px;
-  font-weight: var(--im-weight-semibold);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.im-thumb-meta {
-  margin-top: 20px;
-  font-size: 26px;
-  font-weight: var(--im-weight-medium);
-  color: var(--im-on-media-faint);
-}
-
-// A browser with no color-mix() still gets a dark card with white type
-// rather than an invalid fill (which resolves to black on black).
-@supports not (color: color-mix(in oklab, #fff 50%, red)) {
-  .im-thumb      { color: #fff; }
-  .im-thumb-bg   { fill: #17171b; }
-  .im-thumb-kicker,
-  .im-thumb-rule { color: #fff; background: #fff; }
+  opacity: 0.85;
 }

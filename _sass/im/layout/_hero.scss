@@ -38,7 +38,6 @@
   }
   .im-hero-content { text-align: left; align-items: flex-start; }
 }
-.im-hero-center { text-align: center; justify-items: center; }
 
 .im-hero-content {
   display: flex;
@@ -55,27 +54,10 @@
   gap: var(--im-space-3);
   align-self: flex-start;
 }
-.im-hero-center .im-hero-line { align-self: center; justify-content: center; }
 
 // The kicker over a hero is set in the MONO face — the system's one
 // typographic signal that a line is a label and not a sentence. It is a
 // chip, so it wears the chip's hairline and nothing else.
-.im-hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--im-space-2);
-  min-height: 1.75rem;
-  padding: 0 var(--im-space-3);
-  border: 0;
-  border-radius: var(--im-radius-full);
-  box-shadow: inset 0 0 0 1px var(--im-line);
-  font-family: var(--im-font-mono);
-  font-size: var(--im-text-xs);
-  font-weight: var(--im-weight-medium);
-  letter-spacing: var(--im-tracking-wide);
-  text-transform: uppercase;
-  color: var(--im-muted);
-}
 
 // The one place the display size is used. Everything else on the site
 // stops at h1 — see base/_elements.scss.
@@ -108,7 +90,6 @@
 
   i { margin-right: var(--im-space-1); color: var(--im-faint); }
 }
-.im-hero-center .im-hero-meta { justify-content: center; }
 .im-hero-status {
   display: inline-flex;
   align-items: center;
@@ -128,10 +109,112 @@
   gap: var(--im-space-3);
   margin-top: var(--im-space-3);
 }
-.im-hero-center .im-hero-actions { justify-content: center; }
 
 // Pull the social row up, closer to the actions above it.
 .im-hero-content .im-footer-social { margin-top: var(--im-space-3); }
+
+// ---- The frame, and what is in it -------------------------------------
+// One box, two shapes: a portrait is square, a film is 16:9, and the
+// frame travels between them rather than swapping one box for another.
+.im-hero-frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--im-radius-2xl);
+  background: var(--im-surface);
+  transition: aspect-ratio var(--im-duration-slow) var(--im-ease-out);
+
+  > img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.im-hero-film {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--im-duration-base) var(--im-ease-out);
+
+  iframe { width: 100%; height: 100%; border: 0; }
+}
+
+// The switch decides the shape, with `:has()` — no class to set, and the
+// browser keeps the choice because it is a form control.
+.im-hero-media:has(#im-hero-film:checked) {
+  .im-hero-frame { aspect-ratio: 16 / 9; }
+  .im-hero-img { opacity: 0; }
+  .im-hero-film { opacity: 1; pointer-events: auto; }
+}
+.im-hero-img { transition: opacity var(--im-duration-base) var(--im-ease-out); }
+
+.im-hero-switch {
+  display: inline-flex;
+  margin-top: var(--im-space-3);
+  padding: 3px;
+  border-radius: var(--im-radius-full);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+}
+.im-hero-switch-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.im-hero-switch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  min-height: 1.75rem;
+  padding: 0 var(--im-space-3);
+  border-radius: var(--im-radius-full);
+  color: var(--im-muted);
+  font-size: var(--im-text-xs);
+  font-weight: var(--im-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+
+  &:hover { background: var(--im-hover-bg); color: var(--im-ink); }
+}
+.im-hero-switch-input:checked + .im-hero-switch-label {
+  background: var(--im-current-bg);
+  color: var(--im-current-fg);
+  font-weight: var(--im-current-weight);
+}
+.im-hero-switch-input:focus-visible + .im-hero-switch-label {
+  outline: var(--im-ring-width) solid var(--im-ring);
+  outline-offset: var(--im-ring-offset);
+}
+
+// The socials sit IN the row of actions, not under it.
+.im-hero-social { margin-left: var(--im-space-2); }
+.im-hero-social a { width: 2.25rem; height: 2.25rem; }
+
+// The newsletter, with the calls to action.
+.im-hero-subscribe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--im-space-2);
+  margin-top: var(--im-space-4);
+  max-width: 26rem;
+
+  input {
+    flex: 1 1 11rem;
+    min-width: 0;
+    width: auto;
+    min-height: 2.5rem;
+    padding: 0 var(--im-space-4);
+    border: 0;
+    border-radius: var(--im-radius-full);
+    box-shadow: inset 0 0 0 1px var(--im-line);
+    background: transparent;
+    color: var(--im-ink);
+    font-size: var(--im-text-sm);
+
+    &::placeholder { color: var(--im-faint); }
+    &:disabled { opacity: var(--im-opacity-disabled); }
+  }
+}
 
 .im-hero-media {
   position: relative;
@@ -186,38 +269,3 @@
 }
 
 // Lightbox for the hero video (opened by the "Watch" CTA)
-.im-videolb {
-  position: fixed;
-  inset: 0;
-  z-index: var(--im-z-modal, 100);
-  display: none;
-  place-items: center;
-  padding: var(--im-gutter);
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(4px);
-  &.is-open { display: grid; }
-}
-.im-videolb-frame {
-  position: relative;
-  width: min(60rem, 100%);
-  aspect-ratio: 16 / 9;
-  border-radius: var(--im-radius-xl);
-  overflow: hidden;
-  box-shadow: var(--im-shadow-lg);
-  background: #000;
-  iframe { width: 100%; height: 100%; border: 0; }
-}
-.im-videolb-close {
-  position: absolute;
-  top: calc(-1 * var(--im-space-6));
-  right: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem; height: 2.5rem;
-  border: 0; border-radius: var(--im-radius-full);
-  background: rgba(255,255,255,0.15);
-  color: #fff; cursor: pointer;
-  font-size: 1.2rem;
-  &:hover { background: rgba(255,255,255,0.3); }
-}

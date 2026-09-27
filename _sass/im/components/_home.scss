@@ -12,7 +12,6 @@
 }
 
 .im-home-section,
-.im-explore-block { margin-block: var(--im-space-8); }
 
 .im-home-section-head {
   display: flex;
@@ -39,25 +38,3 @@
 }
 
 // ---- bento (used by every /explore/ block) -----------------------------
-.im-bento { display: grid; gap: var(--im-gutter); grid-template-columns: 1fr; }
-@include mq($bp-sm) { .im-bento { grid-template-columns: repeat(2, 1fr); } }
-@include mq($bp-lg) { .im-bento { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; } }
-.im-bento-item {
-  position: relative; display: flex; overflow: hidden; min-height: 12rem;
-  border-radius: var(--im-radius-xl); background: var(--im-surface-2); text-decoration: none;
-  transition: box-shadow var(--im-duration-fast) var(--im-ease-out), translate var(--im-duration-fast) var(--im-ease-out);
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    &:is(:hover, :focus-within) { translate: 0 -1px; box-shadow: var(--im-card-hover-shadow); }
-  }
-  img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  &.is-feature { @include mq($bp-lg) { grid-column: span 2; grid-row: span 2; } }
-}
-.im-bento-body {
-  position: relative; margin-top: auto; width: 100%;
-  display: flex; flex-direction: column; gap: var(--im-space-1);
-  padding: var(--im-space-6) var(--im-space-4) var(--im-space-4);
-  background: var(--im-media-scrim);
-  color: var(--im-on-media);
-}
-.im-bento-title { font-size: var(--im-text-lg); font-weight: var(--im-weight-semibold); }
-.im-bento-sub { font-size: var(--im-text-sm); opacity: 0.85; }

@@ -2,38 +2,28 @@
   A cover, drawn rather than photographed.
 
   Used wherever a card, a list or a share image needs a picture and the
-  entry did not provide one (`image:` / `cover:`). Nothing is fetched and
-  nothing is built: this is an inline SVG made out of the entry's own
-  front matter.
+  entry did not provide one. Nothing is fetched and nothing is built: an
+  inline SVG, made from the entry's collection.
 
-  WHAT DECIDES WHAT
-    colour    the entry's COLLECTION — the same hue its chips and rules
-              use, derived from the one site accent
-    pattern   a hash of the title, so the same entry always gets the same
-              art and two cards side by side never match
-    text      the collection's singular as a kicker, the title (wrapped in
-              a <foreignObject>, because SVG <text> cannot wrap), and one
-              line of whatever meta the entry happens to have
+  It carries NO TITLE. The title is already under the card, in real type
+  that wraps, reflows and can be selected — setting it again inside a
+  picture means it is set twice, at a size nobody chose, and clipped the
+  moment the card is narrower than the artwork. What the picture says
+  instead is WHAT KIND of thing this is: the collection's colour, its
+  pattern, and its mark.
 
-  The file-based twin of this is tools/thumbs.mjs (`npm run thumbs`),
-  which draws the same picture as a real .svg for the cases that need a
-  URL — a social card, a collection's fallback `image:`.
+  The file-based twin is tools/thumbs.mjs (`npm run thumbs`), which draws
+  the same picture as a real .svg for the cases that need a URL.
 
   Params:  item (required)
-           size ("sm" drops the meta line)
+           size (kept for callers; the art is the same at every size)
 {%- endcomment -%}
 {%- assign it = include.item -%}
-{%- assign coll = site.collections | where: "label", it.collection | first -%}
-{%- assign kicker = it.kind | default: coll.singular | default: "Page" -%}
 {%- assign label = it.collection | default: "pages" -%}
-{%- comment -%} Pattern: the title's length is a cheap, stable hash. {%- endcomment -%}
-{%- assign n = it.title | size -%}
-{%- assign v = n | modulo: 5 -%}
+{%- comment -%} The pattern varies by title length — a cheap, stable hash, so
+    the same entry always gets the same art and neighbours rarely match. {%- endcomment -%}
+{%- assign v = it.title | size | modulo: 5 -%}
 {%- assign uid = it.url | default: it.title | slugify -%}
-{%- capture meta -%}
-  {%- if it.lang %}{{ it.lang }}{% elsif it.model %}{{ it.model }}{% elsif it.duration %}{{ it.duration }}{% elsif it.year %}{{ it.year }}{% elsif it.date %}{{ it.date | date: "%b %Y" }}{% endif -%}
-  {%- if it.tags.size > 0 %}{% if it.lang or it.model or it.duration or it.year or it.date %} · {% endif %}{{ it.tags | slice: 0, 3 | join: " · " }}{% endif -%}
-{%- endcapture -%}
 <svg class="im-thumb im-thumb--v{{ v }}" viewBox="0 0 1200 675" role="img"
      aria-label="{{ it.title | escape }}" preserveAspectRatio="xMidYMid slice"
      style="--im-c-this: var(--im-c-{{ label }}, var(--im-accent));">
@@ -47,16 +37,13 @@
       <stop class="im-thumb-glow-a" offset="0"/><stop class="im-thumb-glow-b" offset="1"/>
     </radialGradient>
   </defs>
+
   <rect class="im-thumb-bg" width="1200" height="675"/>
   <rect class="im-thumb-pattern" width="1200" height="675" fill="url(#th-{% case v %}{% when 0 %}dots{% when 1 %}grid{% when 2 %}diag{% when 3 %}rings{% else %}wave{% endcase %}-{{ uid }})"/>
   <rect class="im-thumb-glow" width="1200" height="675" fill="url(#th-glow-{{ uid }})"/>
-  <g class="im-thumb-mark"><circle cx="1094" cy="108" r="46"/><text x="1094" y="122" text-anchor="middle">{% assign _p = site.author | default: site.title | split: " " %}{% assign _a = _p[0] | slice: 0, 1 %}{% if _p.size > 1 %}{% assign _b = _p[-1] | slice: 0, 1 %}{% else %}{% assign _b = _p[0] | slice: 1, 1 %}{% endif %}{{ _a | append: _b | upcase }}</text></g>
-  <foreignObject x="80" y="72" width="900" height="531">
-    <div xmlns="http://www.w3.org/1999/xhtml" class="im-thumb-text">
-      <span class="im-thumb-kicker">{{ kicker }}</span>
-      <span class="im-thumb-rule"></span>
-      <span class="im-thumb-title">{{ it.title }}</span>
-      {%- if include.size != "sm" and meta != "" -%}<span class="im-thumb-meta">{{ meta | strip }}</span>{%- endif -%}
-    </div>
-  </foreignObject>
+
+  {%- comment -%} The mark, centred, on a 24-unit grid scaled to 240. {%- endcomment -%}
+  <g class="im-thumb-icon" transform="translate(480 218) scale(10)">
+    {% include utility/mark.html collection=label %}
+  </g>
 </svg>

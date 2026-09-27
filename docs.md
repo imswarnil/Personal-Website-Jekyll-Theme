@@ -3,8 +3,9 @@ layout: page
 title: Docs
 permalink: /docs/
 description: "How to use this theme — set it up, add a collection, change what a page is made of, and put it on GitHub Pages."
-sidebar: false
 ad_rails: false
+sidebar: true
+widgets: [toc, cta]
 ---
 
 This site runs on **Imprint**, an open Jekyll theme. Everything you can see

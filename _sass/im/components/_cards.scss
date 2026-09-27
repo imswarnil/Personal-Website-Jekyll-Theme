@@ -495,33 +495,6 @@
 .im-cards--2 { @include mq($bp-lg) { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 // ---- /videos/ background-video band -----------------------------------
-.im-vhero {
-  position: relative;
-  isolation: isolate;
-  overflow: clip;
-  margin-bottom: var(--im-space-6);
-  padding: var(--im-space-7) var(--im-space-5);
-  border-radius: var(--im-radius-2xl);
-  box-shadow: inset 0 0 0 1px var(--im-line);
-  background: var(--im-canvas);  // a base for the video's screen blend, as on the hero
-  .im-vhero-bg { z-index: -1; }
-}
-.im-vhero-row { align-items: end; }
-.im-vhero-kicker {
-  display: inline-flex; align-items: center; gap: var(--im-space-2);
-  font-family: var(--im-font-mono);
-  font-size: var(--im-text-xs); font-weight: var(--im-weight-medium);
-  letter-spacing: var(--im-tracking-wide); text-transform: uppercase;
-  color: color-mix(in oklab, var(--im-c-videos) 72%, var(--im-muted));
-}
-.im-vhero-title { margin: var(--im-space-2) 0; font-size: var(--im-text-display); line-height: var(--im-leading-display); letter-spacing: var(--im-tracking-tighter); }
-.im-vhero-desc { margin: 0; max-width: 48ch; font-size: var(--im-text-lg); color: var(--im-body); }
-.im-vhero-stats {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--im-space-3) var(--im-space-5);
-  font-size: var(--im-text-sm); color: var(--im-muted);
-  strong { color: var(--im-ink); }
-  @include mq($bp-lg) { justify-content: flex-end; }
-}
 
 // ---- Single project: GitHub-style header ------------------------------
 .im-repo-head {

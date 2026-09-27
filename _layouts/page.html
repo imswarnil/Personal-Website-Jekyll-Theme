@@ -73,13 +73,39 @@ layout: default
   </section>
   <script src="{{ '/assets/scripts/filter.js' | relative_url }}" defer></script>
 {%- else -%}
-  <article class="im-article im-page">
-    <nav class="im-breadcrumb" aria-label="Breadcrumb">
-      <a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span><span>{{ page.title }}</span>
-    </nav>
-    <h1 class="im-post-title">{{ page.title }}</h1>
-    <div class="im-prose">
-      {{ content }}
+  {%- comment -%}
+    A plain page. With `sidebar: true` it gets a contents rail, which is
+    what turns a long one — the docs — from a wall into something you can
+    navigate. `widgets:` in front matter picks what goes in the rail.
+  {%- endcomment -%}
+  {%- assign has_sidebar = false -%}
+  {%- if page.sidebar %}{% assign has_sidebar = true %}{% endif -%}
+  {%- assign single = site.layout.single -%}
+
+  <div class="im-shell{% if has_sidebar %} has-sidebar{% else %} is-reading{% endif %} im-page">
+    <div class="im-shell-main">
+      <article class="im-article">
+        <nav class="im-breadcrumb" aria-label="Breadcrumb">
+          <a href="{{ '/' | relative_url }}">Home</a><span aria-hidden="true">/</span><span>{{ page.title }}</span>
+        </nav>
+        <h1 class="im-post-title">{{ page.title }}</h1>
+
+        {%- if has_sidebar -%}
+        <details class="im-toc-mobile" id="im-toc-mobile" hidden>
+          <summary><i class="ph-bold ph-list-bullets" aria-hidden="true"></i> On this page</summary>
+          <nav class="im-toc" aria-label="Table of contents"><ul id="im-toc-mobile-list"></ul></nav>
+        </details>
+        {%- endif -%}
+
+        <div class="im-prose">
+          {{ content }}
+        </div>
+      </article>
     </div>
-  </article>
+
+    {%- if has_sidebar -%}
+    <aside class="im-sidebar" aria-label="Sidebar">{% include sidebar.html %}</aside>
+    {%- endif -%}
+  </div>
+  {%- if has_sidebar %}{% include toc-script.html %}{% endif -%}
 {%- endif -%}

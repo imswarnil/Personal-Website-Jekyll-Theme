@@ -11,15 +11,8 @@
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
-  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-    <text x="80" y="176" fill="hsl(348 75% 66%)" font-size="24" font-weight="600" letter-spacing="3.2">LESSON</text>
-    <rect x="80" y="200" width="56" height="4" rx="2" fill="hsl(348 75% 66%)"/>
-    <text x="80" y="262" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">Windowing for running</text>
-    <text x="80" y="338" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">totals</text>
-    
-    <g opacity="0.92">
-      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
-      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">SS</text>
-    </g>
+  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
+    <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M8 8h8M8 12h5"/>
   </g>
 </svg>

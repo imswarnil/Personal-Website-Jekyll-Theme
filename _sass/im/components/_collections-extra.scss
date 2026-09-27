@@ -398,3 +398,93 @@
 }
 .im-product-price { font-weight: var(--im-weight-semibold); color: var(--im-ink); font-variant-numeric: tabular-nums; }
 .im-product-disclosure { margin: 0; font-size: var(--im-text-xs); color: var(--im-faint); }
+
+// ---- The course rail (single/coursenav.html) --------------------------
+.im-coursenav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--im-space-5);
+  padding: 1.25rem;
+  border-radius: var(--im-radius-xl);
+  background: var(--im-surface);
+  font-size: var(--im-text-sm);
+}
+
+.im-coursenav-back {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--im-space-2);
+  color: inherit;
+  text-decoration: none;
+
+  > i { margin-top: 0.2em; color: var(--im-muted); }
+  &:hover .im-coursenav-course { color: var(--im-accent); }
+}
+.im-coursenav-kicker {
+  display: block;
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+}
+.im-coursenav-course {
+  display: block;
+  font-weight: var(--im-weight-semibold);
+  letter-spacing: var(--im-tracking-tight);
+  color: var(--im-ink);
+}
+
+// How far through, drawn rather than described — the sentence under it
+// still says it in words, because a bar alone is a decoration.
+.im-coursenav-progress { display: flex; flex-direction: column; gap: var(--im-space-2); margin: 0; }
+.im-coursenav-bar {
+  display: block;
+  height: 0.25rem;
+  border-radius: var(--im-radius-full);
+  background: var(--im-surface-3);
+  overflow: hidden;
+
+  > span { display: block; height: 100%; border-radius: inherit; background: var(--im-c-courses); }
+}
+.im-coursenav-count { color: var(--im-muted); font-size: var(--im-text-xs); font-variant-numeric: tabular-nums; }
+
+.im-coursenav-module + .im-coursenav-module { margin-top: var(--im-space-4); }
+.im-coursenav-modtitle {
+  margin: 0 0 var(--im-space-2);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+  color: var(--im-faint);
+}
+.im-coursenav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--im-space-2);
+    padding: var(--im-space-2);
+    border-radius: var(--im-radius-sm);
+    color: var(--im-body);
+    text-decoration: none;
+    @include im-hover-fill;
+
+    // The lesson you are on wears the theme's one CURRENT state.
+    &[aria-current="page"] {
+      background: var(--im-current-bg);
+      color: var(--im-current-fg);
+      font-weight: var(--im-current-weight);
+    }
+  }
+}
+.im-coursenav-n { color: var(--im-faint); font-family: var(--im-font-mono); font-variant-numeric: tabular-nums; }
+.im-coursenav-title { min-width: 0; }
+.im-coursenav-time { color: var(--im-faint); font-size: var(--im-text-xs); white-space: nowrap; }

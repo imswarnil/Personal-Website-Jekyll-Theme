@@ -30,6 +30,9 @@
 }
 
 // ---- Content shell (article + right sidebar) -------------------------
+// ---- The four shells --------------------------------------------------
+// How wide an entry page is, and what sits beside it, is the collection's
+// `single.shell` — see _layouts/post.html. One class, four answers.
 .im-shell {
   width: 100%;
   max-width: calc(var(--im-container) + var(--im-gutter) * 2);
@@ -38,12 +41,42 @@
 }
 .im-shell-main { min-width: 0; }
 
-// Centre the article (reading width) when there's no sidebar.
-.im-shell:not(.has-sidebar) .im-article {
+// READING — prose, centred on the reading measure, nothing beside it. A
+// post and a snippet are read, not scanned, and a column of widgets beside
+// 44rem of type is a second thing competing for the same attention.
+.im-shell.is-reading {
   max-width: calc(var(--im-content) + var(--im-gutter) * 2);
+
+  .im-article { max-width: none; }
 }
 
-@media (min-width: 992px) {
+// WIDE — the full fluid container, for a page whose subject is a PICTURE:
+// a film, an episode, a lesson. The prose inside it still sets itself on
+// the reading measure, so the words never run the width of a cinema.
+.im-shell.is-wide {
+  max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
+
+  .im-article { max-width: none; }
+  .im-prose,
+  .im-post-header,
+  .im-tags,
+  .im-share,
+  .im-ask,
+  .im-authorbox,
+  .im-comments { max-width: var(--im-content); }
+
+  // …but the media, the episode list and the curriculum take the room.
+  .im-post-media,
+  .im-carousel,
+  .im-eplist,
+  .im-curriculum,
+  .im-serieshead,
+  .im-factbar { max-width: none; }
+}
+
+// A reading column with a rail beside it (`aside`), and the 70/30 the
+// `split` shell asks for. Both stack below lg.
+@include mq($bp-lg) {
   .im-shell.has-sidebar {
     display: grid;
     grid-template-columns: minmax(0, 1fr) var(--im-sidebar);
@@ -52,6 +85,14 @@
     max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
   }
   .im-shell.has-sidebar .im-article { max-width: none; padding-inline: 0; margin-inline: 0; }
+
+  // SPLIT — seven parts to three, rather than a fixed rail: a project page
+  // is a picture and a panel of facts, and the panel should grow with the
+  // window instead of stranding the pictures in the middle of it.
+  .im-shell.is-split.has-sidebar {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
 }
 
 // ---- Sidebar ----------------------------------------------------------
@@ -262,3 +303,33 @@
 }
 .im-promptbox-body { margin: 0; border-radius: 0; box-shadow: none; max-height: none; }
 .im-snippet-lang { display: inline-flex; align-items: center; gap: var(--im-space-2); font-size: var(--im-text-sm); color: var(--im-muted); text-transform: capitalize; }
+
+// COURSE — the contents on the left, the lesson beside them. In a course
+// "where am I" is the first question a reader has, not the last, so the
+// rail leads rather than trails.
+.im-shell.is-course {
+  max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
+
+  .im-article { max-width: none; }
+  .im-prose { max-width: var(--im-content); }
+
+  @include mq($bp-lg) {
+    display: grid;
+    grid-template-columns: var(--im-sidebar) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+}
+
+.im-shell-rail {
+  min-width: 0;
+
+  @include mq($bp-lg) {
+    position: sticky;
+    top: calc(var(--im-navbar-height) + var(--im-space-4));
+    max-height: calc(100vh - var(--im-navbar-height) - var(--im-space-6));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  @include mq-down($bp-lg) { margin-bottom: var(--im-space-6); }
+}

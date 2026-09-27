@@ -84,6 +84,29 @@ const MONOGRAM = (() => {
  * in both themes, so it has to be legible against either, and white type
  * on a deep field is the one combination that always is.
  */
+
+/* The collection's mark, on a 24-unit grid. The same drawings as
+ * _includes/utility/mark.html — a cover has to work as a standalone file,
+ * where no icon font is loaded and no stylesheet applies, so the shapes
+ * are paths rather than glyphs. */
+const MARKS = {
+  posts:      '<path d="M4 20h4L20 8a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="M14 6l4 4"/>',
+  portfolio:  '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>',
+  videos:     '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9Z" fill="currentColor" stroke="none"/>',
+  webseries:  '<rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M10 8.5l4 2.5-4 2.5v-5Z" fill="currentColor" stroke="none"/>',
+  episodes:   '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 9h20M2 15h20"/><path d="M7 5v14M17 5v14"/>',
+  courses:    '<path d="M12 4 2 9l10 5 10-5-10-5Z"/><path d="M6 11.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5"/>',
+  lessons:    '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M8 8h8M8 12h5"/>',
+  snippets:   '<path d="M8 6 3 12l5 6"/><path d="M16 6l5 6-5 6"/><path d="M13 4l-2 16"/>',
+  prompts:    '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3Z"/>',
+  podcast:    '<rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>',
+  newsletter: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="m2.5 7 9.5 6 9.5-6"/>',
+  travel:     '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/>',
+  uses:       '<path d="M15 4.5a4.5 4.5 0 0 0-5.9 5.7L3.6 15.7a2 2 0 0 0 2.8 2.8l5.5-5.5A4.5 4.5 0 0 0 17.5 7L15 9.5 13 8l2.5-2.5Z"/>',
+  tags:       '<path d="M3 11V4h7l10 10-7 7L3 11Z"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none"/>',
+};
+const MARK_FALLBACK = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>';
+
 function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
   const hue = collectionHue(H, label);
   const s = Math.max(S, 0.4);
@@ -96,8 +119,7 @@ function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
   const ink = hsl(hue, s * 0.4, 0.75, 0.16);
   const rule = hsl(hue, s * 0.85, 0.66);
   const pattern = PATTERNS[hash(seed ?? title) % PATTERNS.length](ink);
-  const lines = wrap(title, title.length > 46 ? 26 : 22);
-  const y0 = 300 - (lines.length - 1) * 38;
+  const mark = MARKS[label] || MARK_FALLBACK;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="${esc(title)}">
   <defs>
@@ -112,15 +134,9 @@ function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
-  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-    ${kicker ? `<text x="80" y="${y0 - 86}" fill="${rule}" font-size="24" font-weight="600" letter-spacing="3.2">${esc(kicker.toUpperCase())}</text>` : ''}
-    <rect x="80" y="${y0 - 62}" width="56" height="4" rx="2" fill="${rule}"/>
-    ${lines.map((l, i) => `<text x="80" y="${y0 + i * 76}" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">${esc(l)}</text>`).join('\n    ')}
-    ${meta ? `<text x="80" y="${y0 + lines.length * 76 + 26}" fill="rgb(255 255 255 / 0.66)" font-size="26" font-weight="500">${esc(meta)}</text>` : ''}
-    <g opacity="0.92">
-      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
-      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">${esc(MONOGRAM)}</text>
-    </g>
+  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
+    ${mark}
   </g>
 </svg>
 `;

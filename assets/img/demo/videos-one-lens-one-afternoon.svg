@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="Videos">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="One lens, one afternoon">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="hsl(333 26% 12%)"/><stop offset="1" stop-color="hsl(333 39% 22%)"/>
@@ -6,7 +6,7 @@
     <radialGradient id="glow" cx="82%" cy="14%" r="70%">
       <stop offset="0" stop-color="hsl(333 79% 52% / 0.38)"/><stop offset="1" stop-color="hsl(333 79% 52% / 0.38)" stop-opacity="0"/>
     </radialGradient>
-    <pattern id="p" width="60" height="30" patternUnits="userSpaceOnUse"><path d="M0 22q15-18 30 0t30 0" fill="none" stroke="hsl(333 35% 75% / 0.16)" stroke-width="1.2"/></pattern>
+    <pattern id="p" width="120" height="120" patternUnits="userSpaceOnUse"><circle cx="60" cy="60" r="46" fill="none" stroke="hsl(333 35% 75% / 0.16)" stroke-width="1"/><circle cx="60" cy="60" r="20" fill="none" stroke="hsl(333 35% 75% / 0.16)" stroke-width="1"/></pattern>
   </defs>
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>

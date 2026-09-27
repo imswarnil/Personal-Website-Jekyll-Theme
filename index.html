@@ -4,7 +4,7 @@ title: "Swarnil Singhai — Software Engineer & Filmmaker"
 description: "Engineering meets storytelling. Guides, projects, videos, reviews, trips, podcasts and notes."
 hero_title: "Engineering meets storytelling."
 hero_subtitle: "I build fast, cinematic and robust experiences — and write about the craft along the way."
-hero_image: /assets/Swarnil-Singhai.png
+hero_image: /assets/img/brand/portrait.svg
 ---
 
 {%- assign hero_video = page.hero_video | default: site.hero_video -%}
@@ -16,15 +16,34 @@ hero_image: /assets/Swarnil-Singhai.png
     </div>
     {%- endif -%}
     {%- if page.hero_image -%}
-    <figure class="im-hero-media">
-      <img class="im-hero-img" src="{{ page.hero_image | relative_url }}" alt="{{ site.author | default: site.title }}" width="900" height="900">
+    {%- comment -%}
+      The portrait, and the film in the same frame. The switch morphs the
+      frame from the square a portrait wants to the 16:9 a film wants —
+      one box, two shapes, rather than two boxes and a jump. The film is
+      not requested until it is asked for (assets/scripts/hero-media.js).
+    {%- endcomment -%}
+    <figure class="im-hero-media" data-hero-media>
+      <div class="im-hero-frame">
+        <img class="im-hero-img" src="{{ page.hero_image | relative_url }}" alt="{{ site.author | default: site.title }}" width="900" height="900">
+        {%- if hero_video and hero_video != "" -%}
+        <div class="im-hero-film" data-hero-film data-video-id="{{ hero_video }}"></div>
+        {%- endif -%}
+      </div>
+
+      {%- if hero_video and hero_video != "" -%}
+      <figcaption class="im-hero-switch" role="group" aria-label="Show the portrait or the film">
+        <input class="im-hero-switch-input" type="radio" name="im-hero-view" id="im-hero-photo" value="photo" checked>
+        <label class="im-hero-switch-label" for="im-hero-photo"><i class="ph-bold ph-image" aria-hidden="true"></i> Photo</label>
+        <input class="im-hero-switch-input" type="radio" name="im-hero-view" id="im-hero-film" value="film">
+        <label class="im-hero-switch-label" for="im-hero-film"><i class="ph-fill ph-play" aria-hidden="true"></i> Film</label>
+      </figcaption>
+      {%- endif -%}
     </figure>
     {%- endif -%}
 
     <div class="im-hero-content">
       <span class="im-hero-line">
         <span class="im-hero-quote">“Build fast. Keep it cinematic.”</span>
-        <span class="im-hero-eyebrow"><i class="ph-bold ph-sparkle"></i> Software Engineer &amp; Filmmaker</span>
       </span>
       <h1 class="im-hero-title">{{ page.hero_title }}</h1>
       <p class="im-hero-subtitle">{{ page.hero_subtitle }}</p>
@@ -36,42 +55,33 @@ hero_image: /assets/Swarnil-Singhai.png
       </ul>
 
       <div class="im-hero-actions">
-        <a class="im-btn im-btn-primary" href="{{ '/portfolio/' | relative_url }}"><i class="ph-bold ph-briefcase"></i> See my work</a>
-        {%- if hero_video and hero_video != "" -%}
-        <button class="im-btn im-btn-outline" data-im-video-open aria-label="Watch the intro video"><i class="ph-bold ph-play-circle"></i> Watch</button>
-        {%- else -%}
-        <a class="im-btn im-btn-outline" href="{{ '/about/' | relative_url }}">About me</a>
-        {%- endif -%}
+        <a class="im-btn im-btn-primary" href="{{ '/portfolio/' | relative_url }}"><i class="ph-bold ph-briefcase" aria-hidden="true"></i> See my work</a>
+        <a class="im-btn" href="{{ '/about/' | relative_url }}">About me</a>
+        {% include social-row.html class="im-hero-social" label="Elsewhere" %}
       </div>
 
-      {% include footer-social.html %}
+      {%- comment -%}
+        The newsletter sits WITH the calls to action rather than at the
+        foot of the page: on a personal site it is the one thing a first
+        visit can do that lasts, and the foot is where it goes to die.
+      {%- endcomment -%}
+      {%- assign n = site.footer.newsletter -%}
+      {%- if n.enabled != false -%}
+      <form class="im-hero-subscribe" action="{{ n.action }}" method="post" target="_blank">
+        <label class="im-visually-hidden" for="im-hero-email">Email address</label>
+        <input id="im-hero-email" type="email" name="{{ n.field | default: 'email' }}"
+               placeholder="{{ n.placeholder | default: 'you@example.com' }}" required
+               {% if n.action == nil or n.action == '' %}disabled{% endif %}>
+        <button class="im-btn im-btn-ink" type="submit"
+                {% if n.action == nil or n.action == '' %}disabled title="Set footer.newsletter.action in _config.yml"{% endif %}>
+          <i class="ph-bold ph-envelope-simple" aria-hidden="true"></i> Subscribe
+        </button>
+      </form>
+      {%- endif -%}
     </div>
   </div>
 
-  {%- if hero_video and hero_video != "" -%}
-  <div class="im-videolb" data-im-video-lb aria-hidden="true">
-    <div class="im-videolb-frame">
-      <button class="im-videolb-close" data-im-video-close aria-label="Close video"><i class="ph-bold ph-x"></i></button>
-      <div data-im-video-slot data-video-id="{{ hero_video }}"></div>
-    </div>
-  </div>
-  <script>
-    (function () {
-      var lb = document.querySelector('[data-im-video-lb]');
-      if (!lb) return;
-      var slot = lb.querySelector('[data-im-video-slot]');
-      var id = slot.getAttribute('data-video-id');
-      function open() {
-        slot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1" title="Video" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
-        lb.classList.add('is-open'); lb.setAttribute('aria-hidden', 'false');
-      }
-      function close() { lb.classList.remove('is-open'); lb.setAttribute('aria-hidden', 'true'); slot.innerHTML = ''; }
-      document.querySelectorAll('[data-im-video-open]').forEach(function (b) { b.addEventListener('click', open); });
-      lb.addEventListener('click', function (e) { if (e.target === lb || e.target.closest('[data-im-video-close]')) close(); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-    })();
-  </script>
-  {%- endif -%}
+
 
   {%- comment -%} ── Selected work ── {%- endcomment -%}
   {%- assign work = site.portfolio | sort: "date" | reverse -%}

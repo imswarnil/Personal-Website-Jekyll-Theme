@@ -11,14 +11,8 @@
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
-  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-    <text x="80" y="214" fill="hsl(53 75% 66%)" font-size="24" font-weight="600" letter-spacing="3.2">COLLECTION</text>
-    <rect x="80" y="238" width="56" height="4" rx="2" fill="hsl(53 75% 66%)"/>
-    <text x="80" y="300" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">Podcast</text>
-    <text x="80" y="402" fill="rgb(255 255 255 / 0.66)" font-size="26" font-weight="500">Conversations about engineering, film and making things.</text>
-    <g opacity="0.92">
-      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
-      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">SS</text>
-    </g>
+  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
+    <rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>
   </g>
 </svg>

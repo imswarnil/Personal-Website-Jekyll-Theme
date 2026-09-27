@@ -17,11 +17,13 @@
 // island bar, so the page still feels like part of the site.
 // ======================================================================
 
+// Tall enough to be an opening, short enough that the first job is on the
+// same screen: a CV that makes a recruiter scroll before they see a single
+// role has spent its best moment on a photograph.
 .im-rhero {
   display: grid;
   align-content: center;
-  min-height: calc(100svh - var(--im-space-6));
-  padding-block: var(--im-space-6);
+  padding-block: clamp(2rem, 5vh, 3.5rem);
 }
 
 .im-rhero-grid {
@@ -43,7 +45,7 @@
   justify-self: center;
 
   @include mq($bp-lg) {
-    width: min(38vw, calc(100svh - 12rem), 30rem);
+    width: min(30vw, 22rem);
   }
 }
 

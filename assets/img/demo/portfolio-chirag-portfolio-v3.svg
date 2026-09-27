@@ -11,14 +11,8 @@
   <rect width="1200" height="675" fill="url(#bg)"/>
   <rect width="1200" height="675" fill="url(#p)"/>
   <rect width="1200" height="675" fill="url(#glow)"/>
-  <g font-family="Geist, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif">
-    <text x="80" y="214" fill="hsl(213 75% 66%)" font-size="24" font-weight="600" letter-spacing="3.2">PROJECT</text>
-    <rect x="80" y="238" width="56" height="4" rx="2" fill="hsl(213 75% 66%)"/>
-    <text x="80" y="300" fill="#fff" font-size="66" font-weight="600" letter-spacing="-1.6">Chirag Portfolio v3</text>
-    <text x="80" y="402" fill="rgb(255 255 255 / 0.66)" font-size="26" font-weight="500">SCSS  ·  2025  ·  web · performance</text>
-    <g opacity="0.92">
-      <circle cx="1094" cy="108" r="46" fill="rgb(255 255 255 / 0.1)" stroke="rgb(255 255 255 / 0.28)"/>
-      <text x="1094" y="122" text-anchor="middle" fill="#fff" font-size="32" font-weight="600" letter-spacing="0.5">SS</text>
-    </g>
+  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+     stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
+    <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/>
   </g>
 </svg>
