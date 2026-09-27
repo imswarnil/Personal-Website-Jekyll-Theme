@@ -358,3 +358,83 @@ a.card {
   }
   textarea { resize: vertical; min-height: 8rem; }
 }
+
+// ---- A folded code block (components/code.html) -------------------------
+// The point is made in the prose and the proof is one click away, rather
+// than four screens of scrolling between them. A <details>, so it is open
+// to find-in-page and needs no script.
+.im-codefold {
+  margin: var(--im-space-5) 0;
+  overflow: hidden;
+  border-radius: var(--im-radius-lg);
+  background: var(--im-code-bg);
+  box-shadow: inset 0 0 0 1px var(--im-code-line);
+  color-scheme: dark;
+}
+
+.im-codefold-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  padding: var(--im-space-3) var(--im-space-4);
+  color: var(--im-code-fg);
+  font-size: var(--im-text-sm);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color var(--im-duration-instant);
+
+  &::-webkit-details-marker { display: none; }
+  &:hover { background: var(--im-code-hover); }
+  &:focus-visible { outline: var(--im-ring-width) solid var(--im-ring); outline-offset: -2px; }
+}
+
+.im-codefold-caret {
+  flex: 0 0 auto;
+  color: var(--im-code-muted);
+  transition: rotate var(--im-duration-fast) var(--im-ease-out);
+}
+.im-codefold[open] .im-codefold-caret { rotate: 90deg; }
+
+.im-codefold-title { font-weight: var(--im-weight-medium); }
+.im-codefold-lang {
+  color: var(--im-code-muted);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  letter-spacing: var(--im-tracking-wide);
+  text-transform: uppercase;
+}
+.im-codefold-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-1);
+  margin-left: auto;
+  flex: 0 0 auto;
+  padding: 0.15rem var(--im-space-2);
+  border: 0;
+  border-radius: var(--im-radius-full);
+  background: transparent;
+  color: var(--im-code-muted);
+  font: inherit;
+  font-size: var(--im-text-xs);
+  cursor: pointer;
+  transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+
+  &:hover { background: var(--im-code-hover); color: var(--im-code-fg); }
+}
+
+.im-codefold-body {
+  border-top: 1px solid var(--im-code-line);
+
+  > pre {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+// On paper a folded block is just a block.
+@media print {
+  .im-codefold { color-scheme: light; }
+  .im-codefold-body { display: block !important; }
+  .im-codefold-copy { display: none; }
+}

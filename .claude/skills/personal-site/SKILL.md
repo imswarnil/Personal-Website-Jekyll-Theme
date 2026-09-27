@@ -123,7 +123,20 @@ window), `prompt` (chat window), `webseries` (portrait poster), `episode`,
 item and the card's body takes the slack — so a new card only has to put
 `flex: 1` on its body and `margin-top: auto` on its foot.
 
-## 6. House style — read before writing CSS
+## 6. Tag pages
+
+`_plugins/tag_pages.rb` writes a page per tag at `/tags/<slug>/`, across
+**every** collection — Jekyll's own `site.tags` only sees posts, which on a
+site that tags films and gear as well would quietly show a third of what
+carries the tag. Tags group by slug, so `Analytics` and `analytics` are one
+subject.
+
+A `_plugins/` generator runs whenever Jekyll is invoked by us, which is what
+`.github/workflows/jekyll.yml` does. It would **not** run under GitHub's
+legacy "build from a branch" Pages mode; there, set `tag_pages: false` and
+the tag links fall back to anchors on `/tags/`.
+
+## 7. House style — read before writing CSS
 
 The theme follows the Im Design System, and it has exactly two interactions:
 
@@ -139,7 +152,7 @@ and a card both lift exactly one pixel and cast one hairline.
 Everything is a `--im-*` custom property; nothing is a literal colour.
 `_sass/im/abstracts/_mixins.scss` holds both interactions, written once.
 
-## 7. The commands
+## 8. The commands
 
 ```bash
 npm run setup     # the browser setup form

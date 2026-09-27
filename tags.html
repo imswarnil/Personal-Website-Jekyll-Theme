@@ -63,7 +63,7 @@ ad_rails: false
 <section class="im-collection im-page im-tagpage">
   {% include utility/collection-head.html
      title="Tags"
-     desc="Every subject on the site, and everything filed under it — across all five collections."
+     desc="Every subject on the site, and everything filed under it. Each one has a page of its own."
      icon="hash"
      count=pairs.size
      count_label="tags" %}
@@ -74,7 +74,7 @@ ad_rails: false
       {%- for row in stats -%}
       {%- assign bits = row | split: "::" -%}
       <li>
-        <a href="#t-{{ bits[0] }}">
+        <a href="/tags/{{ bits[0] }}/">
           <span class="im-tagcloud-hash" aria-hidden="true">#</span>{{ bits[1] }}
           <span class="im-tagcloud-count">{{ bits[2] }}</span>
         </a>
@@ -89,7 +89,7 @@ ad_rails: false
     {%- assign sl = bits[0] -%}
     <section class="im-tagsec im-reveal" id="t-{{ sl }}">
       <h2 class="im-tagsec-title">
-        <span class="im-tagsec-hash" aria-hidden="true">#</span>{{ bits[1] }}
+        <a href="/tags/{{ sl }}/"><span class="im-tagsec-hash" aria-hidden="true">#</span>{{ bits[1] }}</a>
         <span class="im-tagsec-count">{{ bits[2] }} {% if bits[2] == "1" %}entry{% else %}entries{% endif %}</span>
       </h2>
       <ul class="im-tagrows">

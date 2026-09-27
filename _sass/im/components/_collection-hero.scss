@@ -321,3 +321,7 @@
 // A bare card's hover panel bleeds a whole rem; between two rules that
 // reads as a smear rather than as a fill.
 .im-cards:is([data-view="list"], [data-view="simple"]) [class$="card"] { --im-card-bleed: 0.5rem; }
+
+// A tag page's title wears its hash the way a chip does — quiet, and in
+// the tag hue rather than the ink.
+.im-collhero-hash { color: var(--im-c-this, var(--im-accent)); }

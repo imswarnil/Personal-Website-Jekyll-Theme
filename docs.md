@@ -163,6 +163,33 @@ site. Turn the switch on with `hero: { views: true }`.
 
 Cards in a row are always the same height, whatever they carry.
 
+### Tags
+
+Every tag gets a page of its own at `/tags/<tag>/`, listing everything that
+carries it **from every collection** — a film, a trip and a post under one
+subject — with chips at the top to jump to a kind. `/tags/` is the index of
+all of them. Tags are grouped by their slug, so `Analytics` and `analytics`
+are one subject rather than two.
+
+The pages are written by `_plugins/tag_pages.rb`, which runs because the
+workflow invokes Jekyll itself. If you ever switch to GitHub's legacy
+"build from a branch" mode, set `tag_pages: false` — the tag links then fall
+back to anchors on `/tags/`, which work either way.
+
+### A folded code block
+
+For a long block a reader may not need:
+
+```liquid
+{% raw %}{% include components/code.html
+   title="The whole config"
+   lang="yaml"
+   code="…" %}{% endraw %}
+```
+
+It is a `<details>`, so it is open to find-in-page, it prints open, and it
+needs no JavaScript. Add `open=true` to start it unfolded.
+
 ## Making it yours
 
 **One colour.** `accent_color` in `_config.yml` sets the accent, and every

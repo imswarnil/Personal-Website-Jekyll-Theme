@@ -51,7 +51,7 @@
     <div class="im-collbar-filters">
       {%- for t in coll_tags limit: 14 -%}
       {%- assign n = docs | where_exp: "d", "d.tags contains t" | size -%}
-      <a class="im-tag" href="{{ '/tags/' | relative_url }}#t-{{ t | slugify }}">{{ t }} <small>{{ n }}</small></a>
+      <a class="im-tag" href="/tags/{{ t | slugify }}/">{{ t }} <small>{{ n }}</small></a>
       {%- endfor -%}
     </div>
     {%- endif -%}

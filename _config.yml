@@ -874,6 +874,11 @@ resume:
 permalink: pretty
 excerpt_separator: <!-- more -->
 
+# Per-tag pages at /tags/<slug>/, written by _plugins/tag_pages.rb across
+# every collection. `false` turns them off; the tag links then fall back to
+# the anchors on /tags/, which work either way.
+tag_pages: true
+
 plugins:
   - jekyll-sitemap
   - jekyll-mentions

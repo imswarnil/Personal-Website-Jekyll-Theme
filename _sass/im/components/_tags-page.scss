@@ -151,3 +151,10 @@
   .im-tagrow-desc { display: none; }
   .im-tagrow-meta > time { display: none; }
 }
+
+// The section headings on the index link through to the tag's own page.
+.im-tagsec-title > a {
+  color: inherit;
+  text-decoration: none;
+  &:hover { color: var(--im-accent); }
+}
