@@ -802,6 +802,14 @@ defaults:
       type: "pages"
     values:
       layout: page                        # standalone pages → page
+  # A lesson is inside a course, not inside a site menu: it drops the site
+  # header and carries its own bar instead — which course, how far through,
+  # and the way back. See _includes/single/coursebar.html.
+  - scope:
+      path: ""
+      type: "lessons"
+    values:
+      chrome: false
 
 # Resume content (global)
 resume:

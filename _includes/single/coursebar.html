@@ -16,7 +16,16 @@
   {%- endif -%}
 {%- endfor -%}
 {%- assign done = page.lesson | times: 100 | divided_by: all.size -%}
-<div class="im-coursebar im-no-print">
+<div class="im-coursebar im-coursebar-solo im-no-print">
+  {%- comment -%}
+    This bar IS the page's navigation — the site header is not rendered on
+    a lesson (`chrome: false`). So the first thing in it is the way out.
+  {%- endcomment -%}
+  <a class="im-coursebar-back" href="{{ parent.url | default: '/courses/' | relative_url }}">
+    <i class="ph-bold ph-arrow-left" aria-hidden="true"></i>
+    <span class="im-coursebar-back-label">Back to course</span>
+  </a>
+
   <a class="im-coursebar-course" href="{{ parent.url | default: '/courses/' | relative_url }}">
     <i class="ph-bold ph-graduation-cap" aria-hidden="true"></i>
     <span>{{ parent.title | default: "Course" }}</span>

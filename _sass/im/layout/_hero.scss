@@ -191,29 +191,39 @@
 .im-hero-social a { width: 2.25rem; height: 2.25rem; }
 
 // The newsletter, with the calls to action.
+// Quiet at rest, full contrast on approach: the buttons above it are the
+// page's actual calls to action, and a second loud thing beside them is
+// one loud thing wasted. It comes up when someone reaches for it.
 .im-hero-subscribe {
   display: flex;
   flex-wrap: wrap;
   gap: var(--im-space-2);
-  margin-top: var(--im-space-4);
-  max-width: 26rem;
+  margin-top: var(--im-space-5);
+  max-width: 24rem;
+  opacity: 0.62;
+  transition: opacity var(--im-duration-base) var(--im-ease-out);
+
+  &:hover,
+  &:focus-within { opacity: 1; }
 
   input {
-    flex: 1 1 11rem;
+    flex: 1 1 10rem;
     min-width: 0;
     width: auto;
-    min-height: 2.5rem;
-    padding: 0 var(--im-space-4);
+    min-height: 2rem;
+    padding: 0 var(--im-space-3);
     border: 0;
     border-radius: var(--im-radius-full);
     box-shadow: inset 0 0 0 1px var(--im-line);
     background: transparent;
     color: var(--im-ink);
-    font-size: var(--im-text-sm);
+    font-size: var(--im-text-xs);
 
     &::placeholder { color: var(--im-faint); }
     &:disabled { opacity: var(--im-opacity-disabled); }
   }
+
+  .im-btn { --im-btn-bg: transparent; box-shadow: inset 0 0 0 1px var(--im-line); }
 }
 
 .im-hero-media {

@@ -683,6 +683,10 @@
 .im-coursebar {
   position: sticky;
   top: calc(var(--im-navbar-height) + var(--im-space-2));
+
+  // On a lesson there is no site header above it, so it takes the top
+  // itself — the bar IS the page's navigation there.
+  &.im-coursebar-solo { top: var(--im-space-2); margin-top: var(--im-space-3); }
   z-index: var(--im-z-sticky);
   display: flex;
   align-items: center;
@@ -730,6 +734,19 @@
   > span { display: block; height: 100%; border-radius: inherit; background: var(--im-c-courses); }
 }
 .im-coursebar-count { color: var(--im-muted); font-family: var(--im-font-mono); font-size: var(--im-text-xs); white-space: nowrap; }
+.im-coursebar-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  min-height: 2rem;
+  padding-inline: var(--im-space-3);
+  border-radius: var(--im-radius-full);
+  color: var(--im-ink);
+  font-weight: var(--im-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  @include im-hover-fill;
+}
 .im-coursebar-move { display: flex; align-items: center; gap: var(--im-space-1); margin-left: auto; }
 .im-coursebar-btn {
   display: inline-flex;
@@ -746,7 +763,11 @@
 }
 .im-coursebar-next { background: var(--im-ink); color: var(--im-canvas); &:hover { background: var(--im-accent); color: var(--im-on-accent); } }
 
+// What goes as the bar narrows, in the order it stops earning room: the
+// course's name (the back button already says where you are going), then
+// the word on the back button, then the word on Next.
+@include mq-down($bp-lg) { .im-coursebar-course { display: none; } }
 @include mq-down($bp-sm) {
-  .im-coursebar-course > span { display: none; }
+  .im-coursebar-back-label { display: none; }
   .im-coursebar-next > span { display: none; }
 }
