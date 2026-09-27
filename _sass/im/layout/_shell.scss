@@ -44,10 +44,20 @@
 // READING — prose, centred on the reading measure, nothing beside it. A
 // post and a snippet are read, not scanned, and a column of widgets beside
 // 44rem of type is a second thing competing for the same attention.
+// READING — prose on the reading measure. With a rail beside it the shell
+// takes the room for both; on its own it stays narrow and centred.
 .im-shell.is-reading {
   max-width: calc(var(--im-content) + var(--im-gutter) * 2);
 
   .im-article { max-width: none; }
+
+  &.has-sidebar {
+    @include mq($bp-lg) {
+      max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
+      grid-template-columns: minmax(0, var(--im-content)) var(--im-sidebar);
+      justify-content: center;
+    }
+  }
 }
 
 // WIDE — the full fluid container, for a page whose subject is a PICTURE:
@@ -57,6 +67,10 @@
   max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
 
   .im-article { max-width: none; }
+
+  // With a rail, the prose stops setting its own measure — the column it
+  // is in is already the right width.
+  &.has-sidebar .im-prose { max-width: none; }
   .im-prose,
   .im-post-header,
   .im-tags,

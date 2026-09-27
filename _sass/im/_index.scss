@@ -15,6 +15,8 @@
 // from the original flat layout — only the paths moved.
 // ======================================================================
 
+@import "base/fonts";                     // the typefaces, served from this repo
+@import "base/icons";                     // the icon set (generated; npm run icons)
 @import "abstracts/config";              // build-time maps / breakpoints / colour ramp
 @import "abstracts/mixins";              // the two interactions, written once
 @import "tokens/tokens";                  // canonical scales + :root light theme

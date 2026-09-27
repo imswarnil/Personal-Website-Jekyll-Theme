@@ -92,7 +92,9 @@ h6 { font-size: var(--im-text-h6); line-height: var(--im-leading-h6); }
 blockquote {
   margin: var(--im-space-5) 0;
   padding: 0.25em 0 0.25em var(--im-space-4);
-  border-left: 2px solid var(--im-c-current);
+  // The collection's own hue, which on a post IS the accent — a pull
+  // quote is the one place in prose that earns a colour.
+  border-left: 3px solid var(--im-c-current, var(--im-accent));
   color: var(--im-ink);
   font-weight: var(--im-weight-medium);
 }
@@ -104,9 +106,9 @@ code, kbd, samp, pre { font-feature-settings: "liga" 0; }
   padding: 0.15em 0.4em;
   font-size: 0.875em;
   border-radius: var(--im-radius-sm);
-  background: var(--im-surface);
-  box-shadow: inset 0 0 0 1px var(--im-line);
-  color: var(--im-ink);
+  background: var(--im-accent-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--im-accent) 18%, transparent);
+  color: color-mix(in oklab, var(--im-accent) 62%, var(--im-ink));
 }
 
 // A block of code is DARK in both themes. Code reads best light-on-dark, and

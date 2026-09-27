@@ -80,13 +80,14 @@ accent_color: "#f22f46"
 
 # Web fonts. The design system specifies Geist; Caveat is only used for
 # the handwritten accents on the about page. Remove a URL to drop it.
+# The typefaces are SERVED FROM THIS REPOSITORY (assets/fonts/, declared in
+# _sass/im/base/_fonts.scss). A font from a CDN is a third party on every
+# page load — a DNS lookup, a connection, a request that can be slow,
+# blocked or logged. Leave these lists empty unless you are adding a face
+# you cannot vendor.
 fonts:
-  preconnect_urls:
-    - https://fonts.gstatic.com
-  font_urls:
-    - https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
-    - https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap
-    - https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap
+  preconnect_urls: []
+  font_urls: []
 
 # The header. Drives _includes/header.html — mix and match freely.
 header:
@@ -415,7 +416,7 @@ collections:
       shell: wide
       lead: video
       parts: [breadcrumbs, head, lead, prose, tags, share, ask, comments, author, nav]
-      widgets: [collection, about, subscribe, ad]
+      widgets: [toc, collection, about, subscribe]
   snippets:
     output: true
     title: Snippets
@@ -453,7 +454,7 @@ collections:
       shell: reading
       lead: prompt
       parts: [breadcrumbs, head, lead, prose, tags, share, ask, comments, author, nav]
-      widgets: [collection, about, cta]
+      widgets: [toc, collection, about, cta]
 
   # ── Watch ───────────────────────────────────────────────────────────
   webseries:
@@ -474,7 +475,7 @@ collections:
       shell: wide
       lead: series
       parts: [breadcrumbs, head, lead, prose, episodes, share, ask, comments, author]
-      widgets: [collection, about, subscribe]
+      widgets: [toc, collection, about, subscribe]
   episodes:
     output: true
     title: Episodes
@@ -492,7 +493,7 @@ collections:
       shell: wide
       lead: video
       parts: [breadcrumbs, head, lead, prose, siblings, share, ask, comments, nav]
-      widgets: [collection, about]
+      widgets: [toc, collection, about]
 
   # ── Learn ───────────────────────────────────────────────────────────
   courses:
@@ -515,7 +516,7 @@ collections:
       # No `head`: the course hero already carries the title, the facts and
       # the call to action. Two titles on one page is one title too many.
       parts: [breadcrumbs, lead, prose, lessons, share, ask, author]
-      widgets: [collection, about, cta]
+      widgets: [toc, collection, about, cta]
   lessons:
     output: true
     title: Lessons
@@ -567,7 +568,7 @@ collections:
       shell: aside
       lead: audio
       parts: [breadcrumbs, head, lead, prose, tags, share, ask, comments, author, nav]
-      widgets: [collection, about, subscribe]
+      widgets: [toc, collection, about, subscribe]
 
   # ── Read ────────────────────────────────────────────────────────────
   newsletter:
@@ -588,7 +589,7 @@ collections:
       shell: reading
       lead: none
       parts: [breadcrumbs, head, prose, tags, share, ask, author, nav]
-      widgets: [subscribe, collection, about]
+      widgets: [toc, subscribe, collection, about]
 
   # ── Live ────────────────────────────────────────────────────────────
   travel:
@@ -609,7 +610,7 @@ collections:
       shell: split
       lead: cover
       parts: [breadcrumbs, head-split, prose, tags, share, ask, comments, author, nav]
-      widgets: [details, collection, about]
+      widgets: [details, toc, collection, about]
   uses:
     output: true
     title: Uses
@@ -629,7 +630,7 @@ collections:
       shell: split
       lead: cover
       parts: [breadcrumbs, head, lead, prose, tags, share, ask, author]
-      widgets: [details, collection, about]
+      widgets: [details, toc, collection, about]
   # ── The theme's own manual ──────────────────────────────────────────
   # A collection, so the docs are pages with a nav rather than one very
   # long page. `section:` groups them in the rail and `order:` sorts them.

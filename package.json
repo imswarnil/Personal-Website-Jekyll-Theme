@@ -28,7 +28,8 @@
     "doctor": "node tools/doctor.mjs",
     "check": "node tools/doctor.mjs && bin/build",
     "test": "node tools/test.mjs",
-    "create": "node tools/create/index.mjs"
+    "create": "node tools/create/index.mjs",
+    "icons": "node tools/icons/build.mjs"
   },
   "dependencies": {},
   "devDependencies": {},

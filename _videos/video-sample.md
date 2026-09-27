@@ -2,6 +2,7 @@
 title: "How I cut scenes for speed"
 date: 2025-03-15
 category: video
+progress: 0.42   # how far a viewer got, 0–1; omit and no bar is drawn
 tags: [video, editing]
 cover: /assets/img/demo/videos-how-i-cut-scenes-for-speed.svg
 video_embed: "<iframe width='560' height='315' src='https://www.youtube.com/embed/dQw4w9WgXcQ' title='YouTube video' frameborder='0' allowfullscreen></iframe>"

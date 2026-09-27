@@ -48,7 +48,15 @@ layout: default
   the words on the other, which is none of the four.
 {%- endcomment -%}
 {%- assign shell = page.shell | default: single.shell | default: "aside" -%}
-{%- if shell == "reading" or shell == "wide" or shell == "course" %}{% assign has_sidebar = false %}{% endif -%}
+{%- comment -%}
+  A shell decides WIDTH. Whether anything sits beside the article is a
+  separate question, answered by `single.sidebar` (or the entry's own
+  `sidebar:`) — tying the two together is what quietly removed the
+  contents rail from every collection that wanted a reading measure.
+  The `course` shell is the one exception: its rail is on the left, and
+  two rails is a corridor.
+{%- endcomment -%}
+{%- if shell == "course" %}{% assign has_sidebar = false %}{% endif -%}
 
 {%- assign is_reel = false -%}
 {%- if page.orientation == "portrait" or page.reel %}{% assign is_reel = true %}{% endif -%}

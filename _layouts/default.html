@@ -41,16 +41,13 @@
   {%- if page.layout == 'resume' -%}<script src="{{ '/assets/scripts/resume.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{%- endif -%}
   {%- if page.list_collection or page.collection_view -%}<script src="{{ '/assets/scripts/view.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{%- endif -%}
   {%- comment -%}
-    GSAP + the hero choreography load only on pages that actually have a
-    hero (front matter sets hero_title) — no reason to ship an animation
-    library to a blog post. Both deferred, so they run in document order
-    and hero.js can count on window.gsap being there.
+    The hero's choreography, only on pages that have a hero. It used to
+    pull GSAP from a CDN — 70kB and a third party on the one page every
+    first-time visitor sees, to move six elements. It is the Web
+    Animations API now, and nothing outside this repository is fetched.
   {%- endcomment -%}
   {%- if page.hero_image -%}<script src="{{ '/assets/scripts/hero-media.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{%- endif -%}
-  {%- if page.hero_title -%}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{{ '/assets/scripts/hero.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
-  {%- endif -%}
+  {%- if page.hero_title -%}<script src="{{ '/assets/scripts/hero.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>{%- endif -%}
   <script src="{{ '/assets/scripts/custom.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 </body>
 </html>

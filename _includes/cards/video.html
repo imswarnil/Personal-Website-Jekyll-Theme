@@ -13,7 +13,18 @@
     {%- else -%}{%- include utility/thumb.html item=it size="sm" -%}{%- endif -%}
     <span class="im-vcard-play" aria-hidden="true"><i class="ph-fill ph-play"></i></span>
     {%- if it.duration %}<span class="im-vcard-duration">{{ it.duration }}</span>{% endif -%}
-    <span class="im-vcard-bar" aria-hidden="true"><span></span></span>
+    {%- comment -%}
+      A progress bar that means progress: `progress: 0.4` in front matter
+      is how far through a viewer got. With no value there is nothing to
+      report, so the bar is not drawn — a scrubber that animates on hover
+      and reports nothing is a decoration pretending to be data.
+    {%- endcomment -%}
+    {%- if it.progress -%}
+    <span class="im-vcard-bar" role="progressbar" aria-label="Watched"
+          aria-valuenow="{{ it.progress | times: 100 | round }}" aria-valuemin="0" aria-valuemax="100">
+      <span style="width: {{ it.progress | times: 100 | round }}%"></span>
+    </span>
+    {%- endif -%}
   </a>
   <div class="im-vcard-body">
     <h3 class="im-vcard-title"><a href="{{ it.url | relative_url }}">{{ it.title }}</a></h3>

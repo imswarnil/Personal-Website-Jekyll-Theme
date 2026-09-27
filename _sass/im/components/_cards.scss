@@ -278,10 +278,14 @@
   font-size: var(--im-text-xs); font-weight: var(--im-weight-semibold); font-variant-numeric: tabular-nums;
 }
 // The player's scrubber: a track along the bottom edge with a "played" fill.
+// How far through a viewer got, drawn along the foot of the thumbnail.
+// The width is the DATA — it does not move on hover, because the number
+// does not change when a pointer arrives.
 .im-vcard-bar {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--im-glass-light);
-  > span { display: block; width: 38%; height: 100%; background: var(--im-c-videos); transition: width var(--im-duration-base) var(--im-ease-out); }
-  .im-vcard:is(:hover, :focus-within) & > span { width: 62%; }
+  position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--im-glass-light);
+
+  > span { display: block; height: 100%; background: var(--im-c-videos); }
 }
 .im-vcard-body { @extend %im-cardbody; gap: var(--im-space-2); }
 .im-vcard-title { @extend %im-cardtitle; }
@@ -325,8 +329,8 @@
   i:nth-child(2) { background: #febc2e; }
   i:nth-child(3) { background: #28c840; }
 }
-// The open file reads as one surface with the pane it opens — the tab is
-// the code's own background, not a coloured underline.
+// (The fake tab is gone — see cards/snippet.html. Kept for anyone whose
+// own card markup still uses it.)
 .im-ccard-tab {
   min-width: 0;
   white-space: nowrap;
@@ -341,7 +345,35 @@
   i { color: var(--im-c-snippets); }
 }
 .im-ccard-lang {
-  white-space: nowrap; margin-left: auto; text-transform: uppercase; letter-spacing: var(--im-tracking-wide); color: var(--im-code-muted); }
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-1);
+  white-space: nowrap;
+  font-family: var(--im-font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--im-tracking-wide);
+  color: var(--im-code-muted);
+}
+
+// The one control the card needs: the code, on the clipboard, without
+// opening anything.
+.im-ccard-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-1);
+  margin-left: auto;
+  padding: 0.15rem var(--im-space-2);
+  border: 0;
+  border-radius: var(--im-radius-full);
+  background: transparent;
+  color: var(--im-code-muted);
+  font: inherit;
+  font-size: var(--im-text-xs);
+  cursor: pointer;
+  transition: background-color var(--im-duration-instant), color var(--im-duration-instant);
+
+  &:hover { background: var(--im-code-hover); color: var(--im-code-fg); }
+}
 .im-ccard-editor {
   margin: 0; padding: var(--im-space-3) 0;
   // `white-space: pre` below makes one line of code the min-content width
