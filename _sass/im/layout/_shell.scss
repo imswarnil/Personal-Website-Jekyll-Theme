@@ -324,6 +324,11 @@
 .im-shell.is-course {
   max-width: calc(var(--im-container-wide) + var(--im-gutter) * 2);
 
+  // A lesson has no site header, so its own bar runs the full width of
+  // the window. The shell has to let it: no clipping, and the bar's
+  // negative margins resolve against the viewport.
+  overflow: visible;
+
   .im-article { max-width: none; }
   .im-prose { max-width: var(--im-content); }
 

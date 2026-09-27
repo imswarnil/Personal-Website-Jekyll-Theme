@@ -62,6 +62,18 @@ layout: default
 {%- if page.orientation == "portrait" or page.reel %}{% assign is_reel = true %}{% endif -%}
 {%- if is_reel %}{% assign has_sidebar = false %}{% endif -%}
 
+{%- comment -%}
+  A lesson's bar is the page's ONLY chrome, so it is lifted out of the
+  shell entirely — a full-width element inside a grid column cannot span
+  the window, and a bar that stops at the content's edge on a page with
+  no header above it reads as a stray pill.
+{%- endcomment -%}
+{%- assign parts_rest = parts -%}
+{%- if shell == "course" and page.collection == "lessons" -%}
+  {% include single/coursebar.html %}
+  {%- assign parts_rest = parts | where_exp: "p", "p != 'coursebar'" -%}
+{%- endif -%}
+
 <div class="im-shell is-{{ shell }}{% if has_sidebar %} has-sidebar{% endif %}{% if is_reel %} is-reel{% endif %} im-page is-{{ page.collection }}">
   {%- if shell == "course" -%}
   <aside class="im-shell-rail" aria-label="Contents">
@@ -72,7 +84,7 @@ layout: default
 
   <div class="im-shell-main">
     <article class="im-article">
-      {%- for part in parts -%}
+      {%- for part in parts_rest -%}
         {%- assign part_file = "single/" | append: part | append: ".html" -%}
         {% include {{ part_file }} %}
       {%- endfor -%}

@@ -1,11 +1,12 @@
 ---
 title: "Cut on motion, not on the beat"
 orientation: portrait
-duration: "1:04"
 description: Why matching movement across a cut hides it, and matching the music does not.
-date: 2025-08-06
-video_id: aqz-KE-bpKQ
-progress: 0.42   # how far a viewer got, 0–1; omit and no bar is drawn
+date: 2026-08-06
+duration: "1:04"
+views: "154K"
+progress: 0.0
+cover: /assets/img/demo/videos-cut-on-motion-not-on-the-beat.svg
 tags: [editing, reel]
 ---
 

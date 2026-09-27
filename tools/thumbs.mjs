@@ -107,7 +107,11 @@ const MARKS = {
 };
 const MARK_FALLBACK = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>';
 
-function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
+function cover({ title, kicker = '', meta = '', label = 'posts', seed, portrait = false }) {
+  // A reel is shot 9:16, and a portrait card cropped out of a landscape
+  // drawing loses most of the mark. Same art, the frame it belongs in.
+  const W = portrait ? 720 : 1200;
+  const H = portrait ? 1280 : 675;
   const hue = collectionHue(H, label);
   const s = Math.max(S, 0.4);
   // Tinted charcoal, not a slab of colour: a cover has to sit behind a
@@ -121,7 +125,7 @@ function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
   const pattern = PATTERNS[hash(seed ?? title) % PATTERNS.length](ink);
   const mark = MARKS[label] || MARK_FALLBACK;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="${esc(title)}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(title)}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="${bgA}"/><stop offset="1" stop-color="${bgB}"/>
@@ -131,10 +135,10 @@ function cover({ title, kicker = '', meta = '', label = 'posts', seed }) {
     </radialGradient>
     ${pattern}
   </defs>
-  <rect width="1200" height="675" fill="url(#bg)"/>
-  <rect width="1200" height="675" fill="url(#p)"/>
-  <rect width="1200" height="675" fill="url(#glow)"/>
-  <g transform="translate(480 218) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
+  <rect width="${W}" height="${H}" fill="url(#bg)"/>
+  <rect width="${W}" height="${H}" fill="url(#p)"/>
+  <rect width="${W}" height="${H}" fill="url(#glow)"/>
+  <g transform="translate(${W / 2 - 120} ${H / 2 - 120}) scale(10)" fill="none" stroke="#fff" stroke-opacity="0.85"
      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" color="#fff">
     ${mark}
   </g>
@@ -189,6 +193,7 @@ for (const label of Object.keys(cfg.collections || {})) {
     const body = cover({
       title: fm.title || name,
       kicker: fm.kind || singular,
+      portrait: fm.orientation === 'portrait' || fm.reel === true,
       meta: [fm.lang, fm.model, fm.duration, fm.year, (fm.tags || []).slice(0, 2).join(' · ')].filter(Boolean).join('  ·  '),
       label,
       seed: `${label}/${name}`,

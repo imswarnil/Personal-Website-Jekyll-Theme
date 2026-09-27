@@ -86,6 +86,56 @@
 }
 .im-pattern-none { display: none; }
 
+// ---- The collection's mark, drawn -------------------------------------
+// Large, on the right, in the collection's own hue — and it DRAWS: the
+// strokes run on as the page loads. It is the same shape the cards and
+// the covers carry, so a listing and the things on it read as one
+// collection before a word has been read.
+//
+// The dash length is one number for every mark rather than a measured
+// path length per icon: these are small, similar drawings, and 260 is
+// comfortably longer than the longest of them, so each one completes.
+.im-collhero-mark {
+  position: absolute;
+  top: 50%;
+  right: clamp(-2rem, -2vw, 0rem);
+  translate: 0 -50%;
+  z-index: -1;
+  width: clamp(14rem, 30%, 26rem);
+  height: auto;
+  // Some marks fill a shape (a play triangle); on the hero everything is
+  // a line, because a fill cannot be drawn on.
+  fill: none !important;
+  * { fill: none !important; }
+  stroke: var(--im-c-this, var(--im-accent));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.16;
+  pointer-events: none;
+
+  // Half off the edge: a mark that fits inside the box is an illustration,
+  // one that runs past it is part of the surface.
+  @include mq($bp-md) { right: clamp(-6rem, -4vw, -2rem); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .im-collhero-mark * {
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    animation: im-draw 1.6s var(--im-ease-out) forwards;
+  }
+  // Each stroke follows the one before it, so the shape assembles rather
+  // than appearing all at once.
+  .im-collhero-mark * :nth-child(1) { animation-delay: 0ms; }
+  .im-collhero-mark > *:nth-child(2) { animation-delay: 160ms; }
+  .im-collhero-mark > *:nth-child(3) { animation-delay: 320ms; }
+  .im-collhero-mark > * > *:nth-child(2) { animation-delay: 160ms; }
+  .im-collhero-mark > * > *:nth-child(3) { animation-delay: 320ms; }
+  .im-collhero-mark > * > *:nth-child(4) { animation-delay: 480ms; }
+}
+
+@keyframes im-draw { to { stroke-dashoffset: 0; } }
+
 // ---- The words --------------------------------------------------------
 .im-collhero-full > :not(.im-collhero-art):not(.im-collhero-film) {
   width: 100%;

@@ -8,8 +8,14 @@
 {%- assign snip = it.excerpt | default: it.description -%}
 <article class="im-vcard" style="--im-c-this: var(--im-c-{{ it.collection }}, var(--im-accent));">
   <a class="im-vcard-screen" href="{{ it.url | relative_url }}" aria-label="Watch: {{ it.title | escape }}">
-    {%- if it.video_id -%}<img src="https://i.ytimg.com/vi/{{ it.video_id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
-    {%- elsif cover and cover != "" -%}<img src="{{ cover | relative_url }}" alt="" loading="lazy" width="1200" height="675">
+    {%- comment -%}
+      The entry's own picture first, then YouTube's, then the drawn one.
+      A remote thumbnail is a request to someone else that fails offline,
+      in a preview build, and behind a strict network — so it is the
+      fallback, not the default.
+    {%- endcomment -%}
+    {%- if cover and cover != "" -%}<img src="{{ cover | relative_url }}" alt="" loading="lazy" width="1200" height="675">
+    {%- elsif it.video_id -%}<img src="https://i.ytimg.com/vi/{{ it.video_id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
     {%- else -%}{%- include utility/thumb.html item=it size="sm" -%}{%- endif -%}
     <span class="im-vcard-play" aria-hidden="true"><i class="ph-fill ph-play"></i></span>
     {%- if it.duration %}<span class="im-vcard-duration">{{ it.duration }}</span>{% endif -%}
@@ -31,7 +37,8 @@
     <div class="im-vcard-meta">
       <img src="{{ site.avatarurl | relative_url }}" alt="" width="24" height="24" loading="lazy">
       <span>{{ it.channel | default: site.author | default: site.title }}</span>
-      {%- if it.date %}<span class="im-dot">·</span><time datetime="{{ it.date | date_to_xmlschema }}">{{ it.date | date: "%b %-d, %Y" }}</time>{% endif -%}
+      {%- if it.views %}<span class="im-dot">·</span><span>{{ it.views }} views</span>{% endif -%}
+      {%- if it.date %}<span class="im-dot">·</span><time datetime="{{ it.date | date_to_xmlschema }}">{{ it.date | date: "%b %Y" }}</time>{% endif -%}
     </div>
     {%- if snip %}<p class="im-vcard-excerpt">{{ snip | strip_html | truncate: 110 }}</p>{% endif -%}
     <div class="im-vcard-foot">

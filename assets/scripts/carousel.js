@@ -13,6 +13,9 @@
     if (!track) return;
 
     var slides = [].slice.call(root.querySelectorAll("[data-carousel-slide]"));
+    // A shelf has no dots and pages by however many cards are on screen;
+    // a figure carousel has dots and pages one slide at a time.
+    var isShelf = root.classList.contains("im-shelf-wrap");
     var dots = [].slice.call(root.querySelectorAll("[data-carousel-dot]"));
     var prev = root.querySelector("[data-carousel-prev]");
     var next = root.querySelector("[data-carousel-next]");
@@ -21,6 +24,13 @@
     var current = 0;
 
     function go(i) {
+      if (isShelf) {
+        // Page by the visible width, less one card, so the card at the
+        // edge stays on screen as an anchor.
+        var step = Math.max(track.clientWidth - 160, 240);
+        track.scrollBy({ left: i > current ? step : -step, behavior: "smooth" });
+        return;
+      }
       current = Math.max(0, Math.min(slides.length - 1, i));
       track.scrollTo({ left: slides[current].offsetLeft - track.offsetLeft, behavior: "smooth" });
     }
@@ -37,6 +47,13 @@
       for (var j = 0; j < dots.length; j++) {
         dots[j].classList.toggle("is-current", j === current);
         dots[j].setAttribute("aria-current", j === current ? "true" : "false");
+      }
+      if (isShelf) {
+        // For a shelf the ends are where the scroller actually is, not
+        // which slide index we think is current.
+        if (prev) prev.disabled = track.scrollLeft <= 2;
+        if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+        return;
       }
       if (prev) prev.disabled = current === 0;
       if (next) next.disabled = current === slides.length - 1;

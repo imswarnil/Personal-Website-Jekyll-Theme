@@ -31,6 +31,19 @@
   </span>
   {%- else -%}
   <span class="im-collhero-art im-pattern-{{ h.pattern | default: 'rules' }}" aria-hidden="true"></span>
+
+  {%- comment -%}
+    The collection's own mark, drawn large on the right — and DRAWN: the
+    strokes run on as the page loads, which is the one thing on a listing
+    page that says "this is a place" before you have read a word of it.
+    It is the same shape the cards and the covers use, so the page and
+    the things on it are recognisably one collection.
+
+    Under prefers-reduced-motion the line is simply already complete.
+  {%- endcomment -%}
+  <svg class="im-collhero-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    {% include utility/mark.html collection=c.label stroke="0.55" %}
+  </svg>
   {%- endif -%}
 
   <div class="im-collhero-copy">

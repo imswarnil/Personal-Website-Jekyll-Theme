@@ -7,6 +7,11 @@
   shapes on purpose: at the size a card shows them, detail is noise.
 
   Params: collection (label), stroke (width, default 1.6)
+
+  A few marks fill a shape (a play triangle, a dot). That is right on a
+  cover, where the mark is solid — but a filled shape cannot be DRAWN, so
+  the hero's animated copy passes a thin stroke and the CSS overrides the
+  fill to none for the whole group.
 {%- endcomment -%}
 {%- assign w = include.stroke | default: "1.6" -%}
 <g fill="none" stroke="currentColor" stroke-width="{{ w }}" stroke-linecap="round" stroke-linejoin="round">

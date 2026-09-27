@@ -86,3 +86,65 @@
   box-shadow: inset 0 0 0 1px var(--im-line);
 }
 .im-sg-swatch-name { font-weight: var(--im-weight-medium); color: var(--im-ink); font-size: var(--im-text-sm); }
+
+// ---- The numbered path on /docs/ --------------------------------------
+// Five steps in the order someone actually walks them. A numbered list
+// rather than a grid of cards, because these are sequential and a grid
+// says "pick one".
+.im-steps {
+  display: grid;
+  gap: var(--im-space-6);
+  margin: var(--im-space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+.im-step {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: var(--im-space-4);
+  align-items: start;
+
+  @include mq($bp-md) { grid-template-columns: 3rem minmax(0, 1fr); gap: var(--im-space-5); }
+}
+.im-step-n {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--im-radius-full);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-sm);
+  @include im-collection-tint;
+
+  @include mq($bp-md) { width: 3rem; height: 3rem; font-size: var(--im-text-base); }
+}
+.im-step-body {
+  min-width: 0;
+  max-width: 62ch;
+
+  > * + * { margin-top: var(--im-space-3); }
+  p { margin: 0; color: var(--im-body); }
+  pre { margin: 0; }
+}
+.im-step-title {
+  margin: 0;
+  font-size: var(--im-text-h4);
+  line-height: var(--im-leading-h4);
+  letter-spacing: var(--im-tracking-tight);
+}
+.im-step-note { font-size: var(--im-text-sm); color: var(--im-muted); }
+
+// A step's rule runs down from its number to the next one, so the five
+// read as one path rather than five separate things.
+.im-step:not(:last-child) .im-step-n { position: relative; }
+.im-step:not(:last-child) .im-step-n::after {
+  content: "";
+  position: absolute;
+  top: calc(100% + var(--im-space-2));
+  left: 50%;
+  width: 1px;
+  height: calc(var(--im-space-6) + 0.5rem);
+  translate: -50% 0;
+  background: var(--im-line);
+}

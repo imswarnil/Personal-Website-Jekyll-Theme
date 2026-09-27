@@ -683,11 +683,7 @@
 .im-coursebar {
   position: sticky;
   top: calc(var(--im-navbar-height) + var(--im-space-2));
-
-  // On a lesson there is no site header above it, so it takes the top
-  // itself — the bar IS the page's navigation there.
-  &.im-coursebar-solo { top: var(--im-space-2); margin-top: var(--im-space-3); }
-  z-index: var(--im-z-sticky);
+  z-index: var(--im-z-bar);
   display: flex;
   align-items: center;
   gap: var(--im-space-4);
@@ -699,6 +695,33 @@
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
   box-shadow: inset 0 0 0 1px var(--im-line);
   font-size: var(--im-text-sm);
+}
+
+// On a lesson there is no site header at all, so this bar is not a thing
+// under the chrome — it IS the chrome. It runs the full width of the
+// viewport with a hairline under it, the way a real top bar does, rather
+// than floating as a pill in the middle of a page that has nothing above
+// it. An island needs something to be an island IN.
+.im-coursebar-solo {
+  position: sticky;
+  top: 0;
+  z-index: var(--im-z-bar);
+  // Out of the shell's gutter and out of the page's measure, to both
+  // edges of the window.
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  margin-top: 0;
+  margin-bottom: var(--im-space-6);
+  padding-inline: var(--im-gutter);
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--im-line);
+  min-height: var(--im-navbar-height);
+
+  // …and the row inside it keeps the page's measure, so the back button
+  // sits over the content's left edge rather than in the corner of the
+  // screen.
+  > * { position: relative; }
 }
 .im-coursebar-course {
   display: inline-flex;
@@ -771,3 +794,152 @@
   .im-coursebar-back-label { display: none; }
   .im-coursebar-next > span { display: none; }
 }
+
+// ======================================================================
+// /videos/ — the feature, and the shelves
+// ======================================================================
+
+// The newest film, large: picture on one side, the words on the other.
+.im-vfeature {
+  display: grid;
+  gap: var(--im-space-6);
+  margin-bottom: var(--im-section-gap);
+  align-items: center;
+
+  @include mq($bp-lg) {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+  }
+}
+.im-vfeature-screen {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--im-radius-2xl);
+  background: var(--im-surface);
+  isolation: isolate;
+
+  img, .im-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    transition: translate var(--im-duration-fast) var(--im-ease-out), box-shadow var(--im-duration-fast) var(--im-ease-out);
+    &:is(:hover, :focus-visible) { translate: 0 -1px; box-shadow: var(--im-card-hover-shadow); }
+  }
+  &:is(:hover, :focus-visible) .im-vcard-play i { background: var(--im-accent); color: var(--im-on-accent); }
+}
+.im-vfeature-scrim { position: absolute; inset: 0; background: var(--im-media-scrim); opacity: 0.55; }
+.im-vfeature-body { min-width: 0; }
+.im-vfeature-title {
+  margin: var(--im-space-2) 0 0;
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
+  line-height: 1.06;
+  letter-spacing: var(--im-tracking-tighter);
+
+  a { color: var(--im-ink); text-decoration: none; }
+  a:hover { color: var(--im-accent); }
+}
+.im-vfeature-text {
+  margin: var(--im-space-3) 0 0;
+  max-width: 48ch;
+  color: var(--im-body);
+  line-height: var(--im-leading-lg);
+  text-wrap: pretty;
+}
+.im-vfeature-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--im-space-2) var(--im-space-4);
+  margin: var(--im-space-4) 0 0;
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  color: var(--im-muted);
+
+  > * + *::before {
+    content: "";
+    display: inline-block;
+    width: 3px; height: 3px;
+    margin-right: var(--im-space-4);
+    border-radius: var(--im-radius-full);
+    background: currentColor;
+    opacity: 0.55;
+    vertical-align: middle;
+  }
+}
+.im-vfeature-actions { display: flex; flex-wrap: wrap; gap: var(--im-space-3); margin: var(--im-space-5) 0 0; }
+
+// ---- A shelf ----------------------------------------------------------
+// One row that scrolls sideways, the way a streaming service shows a
+// category. A scroll container with snap points, so a finger, a trackpad
+// and the arrow keys all work before any script runs.
+.im-shelf { margin-bottom: var(--im-section-gap); }
+
+.im-shelf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--im-space-3);
+  margin-bottom: var(--im-space-4);
+}
+.im-shelf-title {
+  margin: var(--im-space-1) 0 0;
+  font-size: var(--im-text-h2);
+  line-height: var(--im-leading-h2);
+  letter-spacing: var(--im-tracking-tight);
+  text-transform: capitalize;
+}
+
+.im-shelf-wrap { position: relative; }
+
+.im-shelf-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(15rem, 20rem);
+  gap: var(--im-grid-gap);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  // Room for the lift, so a hovered card is not clipped by the scroller.
+  padding-block: 2px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+  &:focus-visible { outline: var(--im-ring-width) solid var(--im-ring); outline-offset: var(--im-ring-offset); }
+
+  // A shelf of reels is narrower and taller: 9:16 wants less width.
+  &.is-portrait { grid-auto-columns: minmax(10rem, 13rem); }
+}
+.im-shelf-item { scroll-snap-align: start; min-width: 0; display: flex; }
+.im-shelf-item > * { flex: 1 1 auto; min-width: 0; }
+
+// A reel in a shelf takes the portrait frame it was shot in.
+.im-shelf-track.is-portrait .im-vcard-screen { aspect-ratio: 9 / 16; }
+
+// The buttons float over the ends, and only where there is a pointer to
+// use them — on a touch screen the finger is the control.
+.im-shelf-btn {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 1;
+  display: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: var(--im-radius-full);
+  background: var(--im-canvas);
+  box-shadow: inset 0 0 0 1px var(--im-line), var(--im-shadow-float);
+  color: var(--im-ink);
+  cursor: pointer;
+  transition: background-color var(--im-duration-instant);
+
+  &:hover { background: var(--im-surface); }
+  &:disabled { opacity: 0; pointer-events: none; }
+
+  @media (hover: hover) { display: grid; }
+}
+.im-shelf-prev { left: calc(var(--im-space-4) * -1); }
+.im-shelf-next { right: calc(var(--im-space-4) * -1); }
