@@ -15,7 +15,7 @@ screenshots:
   - src: /assets/img/demo/portfolio-crm-analytics-academy.svg
     alt: The course index, with lesson cards grouped by module
     caption: The course index — lessons grouped by module
-  - src: /assets/img/demo/posts-guide-lightweight-theming.svg
+  - src: /assets/img/demo/courses-saql-from-scratch.svg
     alt: A lesson page with a runnable SAQL snippet
     caption: A lesson page, with the SAQL you can paste straight into a dataflow
   - src: /assets/img/demo/snippets-til-saql-windowing-for-running-totals.svg

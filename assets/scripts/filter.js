@@ -25,7 +25,15 @@
   var buttons = panel.querySelectorAll('[data-filter-key]');
   var countEl = panel.querySelector('[data-im-filter-count]');
   var clearBtn = panel.querySelector('[data-im-filter-clear]');
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-kind], [data-tags]'));
+  // The "nothing matches" line lives outside the panel, beside the grid.
+  var emptyEl = document.querySelector('[data-im-filter-empty]');
+  var clearAll = document.querySelectorAll('[data-im-filter-clear]');
+  // The grid's OWN children, not every descendant that happens to carry
+  // the attributes — a card's <article> carries them as well, and
+  // matching both counted every entry twice.
+  var cards = Array.prototype.slice.call(grid.children).filter(function (el) {
+    return el.hasAttribute('data-kind') || el.hasAttribute('data-tags');
+  });
   var active = { kind: [], tag: [] };
 
   function readHash() {
@@ -70,8 +78,9 @@
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
-    if (countEl) countEl.textContent = shown + ' of ' + cards.length + ' shown';
+    if (countEl) countEl.textContent = shown + ' of ' + cards.length;
     if (clearBtn) clearBtn.hidden = !(active.kind.length || active.tag.length);
+    if (emptyEl) emptyEl.hidden = shown !== 0;
   }
 
   buttons.forEach(function (b) {
@@ -84,11 +93,11 @@
       apply();
     });
   });
-  if (clearBtn) clearBtn.addEventListener('click', function () {
+  clearAll.forEach(function (b) { b.addEventListener('click', function () {
     active = { kind: [], tag: [] };
     writeHash();
     apply();
-  });
+  }); });
   window.addEventListener('hashchange', function () { readHash(); apply(); });
 
   readHash();

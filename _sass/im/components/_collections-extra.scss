@@ -574,3 +574,179 @@
 
 .is-docs .im-cards { grid-template-columns: minmax(0, 1fr); gap: var(--im-space-2); }
 @include mq($bp-md) { .is-docs .im-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+// ---- A podcast series, on the landing page ----------------------------
+// A podcast is usually more than one show, and a flat list of episodes
+// from two of them is a list nobody can subscribe to. Each series gets
+// its own heading, its own count and its own feed.
+.im-series + .im-series { margin-top: var(--im-section-gap); }
+
+.im-series-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--im-space-3) var(--im-space-4);
+  margin-bottom: var(--im-space-5);
+  padding-bottom: var(--im-space-3);
+  border-bottom: 1px solid var(--im-line);
+}
+.im-series-mark {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  border-radius: var(--im-radius-lg);
+  font-size: var(--im-text-lg);
+  @include im-collection-tint;
+}
+.im-series-id { min-width: 0; flex: 1 1 16rem; }
+.im-series-title {
+  margin: 0;
+  font-size: var(--im-text-h3);
+  line-height: var(--im-leading-h3);
+  letter-spacing: var(--im-tracking-tight);
+}
+.im-series-text { margin: 0.15rem 0 0; color: var(--im-muted); font-size: var(--im-text-sm); }
+.im-series-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-3);
+  margin: 0;
+  margin-left: auto;
+}
+.im-series-count {
+  color: var(--im-muted);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  white-space: nowrap;
+}
+
+// ---- A course's own hero (leads/course.html) --------------------------
+// Full width inside the wide shell, in the collection's colour, with the
+// facts counted from the lessons rather than typed in.
+.im-coursehero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: var(--im-space-7);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: var(--im-radius-2xl);
+  background: var(--im-surface);
+}
+.im-coursehero-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: -1;
+  width: min(55%, 40rem);
+  opacity: 0.45;
+  mask-image: linear-gradient(to left, #000 20%, transparent);
+  -webkit-mask-image: linear-gradient(to left, #000 20%, transparent);
+}
+.im-coursehero-copy { max-width: 46rem; }
+.im-coursehero-title {
+  margin: var(--im-space-3) 0 0;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: var(--im-tracking-tighter);
+}
+.im-coursehero-text {
+  margin: var(--im-space-3) 0 0;
+  max-width: 52ch;
+  font-size: var(--im-text-lg);
+  line-height: var(--im-leading-lg);
+  color: var(--im-body);
+  text-wrap: pretty;
+}
+.im-coursehero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--im-space-4) var(--im-space-7);
+  margin: var(--im-space-5) 0 0;
+
+  > div { display: flex; flex-direction: column-reverse; }
+  dt { font-size: var(--im-text-xs); letter-spacing: var(--im-tracking-wide); text-transform: uppercase; color: var(--im-muted); }
+  dd {
+    margin: 0;
+    font-size: var(--im-text-h3);
+    font-weight: var(--im-weight-semibold);
+    letter-spacing: var(--im-tracking-tight);
+    color: var(--im-ink);
+    font-variant-numeric: tabular-nums;
+  }
+}
+.im-coursehero-actions { margin: var(--im-space-6) 0 0; }
+
+// ---- The bar a lesson wears (single/coursebar.html) -------------------
+// Which course, how far through, and the next one. Sticky and one navbar
+// tall, in the same island shape the site bar takes.
+.im-coursebar {
+  position: sticky;
+  top: calc(var(--im-navbar-height) + var(--im-space-2));
+  z-index: var(--im-z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-4);
+  margin-bottom: var(--im-space-6);
+  padding: var(--im-space-2) var(--im-space-3);
+  border-radius: var(--im-radius-full);
+  background: color-mix(in srgb, var(--im-canvas) 84%, transparent);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+  font-size: var(--im-text-sm);
+}
+.im-coursebar-course {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  min-width: 0;
+  padding-inline: var(--im-space-2);
+  color: var(--im-ink);
+  font-weight: var(--im-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+
+  > i { color: var(--im-c-courses); }
+  &:hover { color: var(--im-accent); }
+  > span { overflow: hidden; text-overflow: ellipsis; }
+}
+.im-coursebar-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--im-space-3);
+  flex: 1 1 6rem;
+  min-width: 0;
+}
+.im-coursebar-bar {
+  display: block;
+  flex: 1 1 auto;
+  height: 0.25rem;
+  min-width: 2rem;
+  border-radius: var(--im-radius-full);
+  background: var(--im-surface-2);
+  overflow: hidden;
+
+  > span { display: block; height: 100%; border-radius: inherit; background: var(--im-c-courses); }
+}
+.im-coursebar-count { color: var(--im-muted); font-family: var(--im-font-mono); font-size: var(--im-text-xs); white-space: nowrap; }
+.im-coursebar-move { display: flex; align-items: center; gap: var(--im-space-1); margin-left: auto; }
+.im-coursebar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--im-space-2);
+  min-height: 2rem;
+  padding-inline: var(--im-space-3);
+  border-radius: var(--im-radius-full);
+  color: var(--im-ink);
+  text-decoration: none;
+  @include im-hover-fill;
+
+  &.is-disabled { opacity: var(--im-opacity-disabled); pointer-events: none; }
+}
+.im-coursebar-next { background: var(--im-ink); color: var(--im-canvas); &:hover { background: var(--im-accent); color: var(--im-on-accent); } }
+
+@include mq-down($bp-sm) {
+  .im-coursebar-course > span { display: none; }
+  .im-coursebar-next > span { display: none; }
+}

@@ -409,6 +409,7 @@ collections:
       pattern: none
       video: "aqz-KE-bpKQ"
       views: true
+      full: true              # edge to edge: the film wants every pixel
     image: "/assets/img/covers/videos.svg"
     single:
       shell: wide
@@ -510,8 +511,10 @@ collections:
     image: "/assets/img/covers/courses.svg"
     single:
       shell: wide
-      lead: cover
-      parts: [breadcrumbs, head, lead, prose, lessons, share, ask, author]
+      lead: course
+      # No `head`: the course hero already carries the title, the facts and
+      # the call to action. Two titles on one page is one title too many.
+      parts: [breadcrumbs, lead, prose, lessons, share, ask, author]
       widgets: [collection, about, cta]
   lessons:
     output: true
@@ -529,7 +532,7 @@ collections:
     single:
       shell: course
       lead: none
-      parts: [breadcrumbs, head, toc-mobile, prose, share, ask, nav]
+      parts: [coursebar, head, toc-mobile, prose, share, ask, nav]
       widgets: [toc, collection]
 
   # ── Listen ──────────────────────────────────────────────────────────
@@ -544,6 +547,19 @@ collections:
     schema: PodcastEpisode
     style: compact
     card: podcast
+    # A podcast is usually more than one show. An episode names its series
+    # with `series:`; the landing page groups by it, and each series gets
+    # its own RSS feed at /podcast/<series>/feed.xml so a player can
+    # subscribe to one without getting the others.
+    series:
+      - slug: the-long-cut
+        title: The Long Cut
+        description: "Conversations about making things — engineering, film, and the overlap."
+        icon: microphone-stage
+      - slug: field-notes
+        title: Field Notes
+        description: "Short solo episodes, recorded wherever the trip happened to be."
+        icon: map-trifold
     hero:
       pattern: rings
     image: "/assets/img/covers/podcast.svg"
@@ -1058,6 +1074,12 @@ favicons:                            # size: path
   180:  "/assets/logos/logo@180px.png"
   512:  "/assets/logos/logo@512px.png"
   1024: "/assets/logos/logo@1024px.png"
+
+# NOTE on caching: the theme's own CSS and JS carry `?v=<build time>` in
+# the templates that load them. A deploy that changes a script therefore
+# changes its URL, instead of leaving a returning reader on the old file
+# until their cache expires. Nothing to configure — Liquid does not run in
+# this file, so the stamp lives where it is used.
 
 css_inline: false                    # true = inline all CSS into <head>
 

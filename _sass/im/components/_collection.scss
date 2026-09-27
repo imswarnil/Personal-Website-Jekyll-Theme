@@ -89,6 +89,9 @@
     min-width: 0;
     margin: 0;
   }
+  // `display: flex` above beats the user-agent's `[hidden] { display: none }`,
+  // which would leave a filtered-out card on screen. Say it again, louder.
+  > [hidden] { display: none; }
   > * > * {
     flex: 1 1 auto;
     min-width: 0;

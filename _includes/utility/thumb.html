@@ -5,12 +5,13 @@
   entry did not provide one. Nothing is fetched and nothing is built: an
   inline SVG, made from the entry's collection.
 
-  It carries NO TITLE. The title is already under the card, in real type
-  that wraps, reflows and can be selected — setting it again inside a
-  picture means it is set twice, at a size nobody chose, and clipped the
-  moment the card is narrower than the artwork. What the picture says
-  instead is WHAT KIND of thing this is: the collection's colour, its
-  pattern, and its mark.
+  It is a SOLID GROUND and a MARK, and nothing else. No title — that is
+  already under the card in real type that wraps and can be selected, and
+  setting it again inside a picture means it is set twice, at a size
+  nobody chose, clipped the moment the card is narrower than the artwork.
+  No gradient, no pattern, no corner glow either: three treatments
+  competing on a picture whose whole job is to say what KIND of thing
+  this is. The colour says the collection; the mark says the rest.
 
   The file-based twin is tools/thumbs.mjs (`npm run thumbs`), which draws
   the same picture as a real .svg for the cases that need a URL.
@@ -20,27 +21,11 @@
 {%- endcomment -%}
 {%- assign it = include.item -%}
 {%- assign label = it.collection | default: "pages" -%}
-{%- comment -%} The pattern varies by title length — a cheap, stable hash, so
-    the same entry always gets the same art and neighbours rarely match. {%- endcomment -%}
-{%- assign v = it.title | size | modulo: 5 -%}
-{%- assign uid = it.url | default: it.title | slugify -%}
-<svg class="im-thumb im-thumb--v{{ v }}" viewBox="0 0 1200 675" role="img"
+<svg class="im-thumb" viewBox="0 0 1200 675" role="img"
      aria-label="{{ it.title | escape }}" preserveAspectRatio="xMidYMid slice"
      style="--im-c-this: var(--im-c-{{ label }}, var(--im-accent));">
-  <defs>
-    <pattern id="th-dots-{{ uid }}" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.7" fill="currentColor"/></pattern>
-    <pattern id="th-grid-{{ uid }}" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="currentColor" stroke-width="1"/></pattern>
-    <pattern id="th-diag-{{ uid }}" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M-2 24L24-2" stroke="currentColor" stroke-width="1.2"/></pattern>
-    <pattern id="th-rings-{{ uid }}" width="120" height="120" patternUnits="userSpaceOnUse"><circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="60" cy="60" r="20" fill="none" stroke="currentColor" stroke-width="1"/></pattern>
-    <pattern id="th-wave-{{ uid }}" width="60" height="30" patternUnits="userSpaceOnUse"><path d="M0 22q15-18 30 0t30 0" fill="none" stroke="currentColor" stroke-width="1.2"/></pattern>
-    <radialGradient id="th-glow-{{ uid }}" cx="82%" cy="14%" r="70%">
-      <stop class="im-thumb-glow-a" offset="0"/><stop class="im-thumb-glow-b" offset="1"/>
-    </radialGradient>
-  </defs>
 
   <rect class="im-thumb-bg" width="1200" height="675"/>
-  <rect class="im-thumb-pattern" width="1200" height="675" fill="url(#th-{% case v %}{% when 0 %}dots{% when 1 %}grid{% when 2 %}diag{% when 3 %}rings{% else %}wave{% endcase %}-{{ uid }})"/>
-  <rect class="im-thumb-glow" width="1200" height="675" fill="url(#th-glow-{{ uid }})"/>
 
   {%- comment -%} The mark, centred, on a 24-unit grid scaled to 240. {%- endcomment -%}
   <g class="im-thumb-icon" transform="translate(480 218) scale(10)">

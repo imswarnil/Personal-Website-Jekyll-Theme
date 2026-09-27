@@ -42,7 +42,7 @@
   {% if site.css_inline == true %}
     {% include site-styles.html %}
   {% else %}
-    <link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/styles.css' | relative_url }}?v={{ site.time | date: '%s' }}">
   {% endif %}
 
   {%- if site.adsense and site.adsense.enabled and site.adsense.client -%}

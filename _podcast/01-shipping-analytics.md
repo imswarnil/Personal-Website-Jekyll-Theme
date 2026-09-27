@@ -1,5 +1,6 @@
 ---
 title: "Shipping analytics people actually open"
+series: the-long-cut
 episode: 1
 duration: "42:16"
 guest: "a RevOps lead"

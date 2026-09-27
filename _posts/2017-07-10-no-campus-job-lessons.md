@@ -6,7 +6,6 @@ title: "I Didn’t Get a Job in College. Now What?—A Cinematic Guide From Mahr
 description: "If campus placements didn’t work out, here’s a practical, no-nonsense path—from staying in Mahroni and doing B.T.C., to taking pre-employment tests, to chasing Bangalore walk-ins, to building a YouTube career without going broke."
 category: Job & Career
 tags: [first job, freshers, bangalore, btc, government teacher, elitmus, cocubes, amcat, off-campus, portfolio, youtube, india]
-image: /assets/img/demo/posts-i-didnt-get-a-job-in-college-now-what-a-cinematic-guide-from-mahroni-to-.svg
 author: "Raja Swarnil Singhai"
 reading_time: 9
 date: 2017-07-10

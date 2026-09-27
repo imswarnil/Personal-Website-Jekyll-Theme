@@ -25,22 +25,12 @@
   color: color-mix(in oklab, #fff 62%, var(--im-c-this, var(--im-accent)));
 }
 
+// A solid ground in the collection's colour: dark enough that the white
+// mark reads, saturated enough that two collections never look alike.
 .im-thumb-bg {
-  fill: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 28%, #101014);
+  fill: color-mix(in oklab, var(--im-c-this, var(--im-accent)) 34%, #101014);
 }
-.im-thumb-pattern { opacity: 0.14; }
-.im-thumb--v1 .im-thumb-pattern,
-.im-thumb--v3 .im-thumb-pattern { opacity: 0.2; }
 
-// One soft light in the top-right corner, the same one the file-based
-// covers have. It is the only thing that keeps a flat field from reading
-// as a placeholder.
-.im-thumb-glow-a { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0.5; }
-.im-thumb-glow-b { stop-color: var(--im-c-this, var(--im-accent)); stop-opacity: 0; }
-
-// The collection's mark, centred. It is the only thing on the cover
-// besides colour, so it carries the whole message: what KIND of thing
-// this is. Quiet enough to sit under a title without competing with it.
 .im-thumb-icon {
   color: var(--im-on-media);
   opacity: 0.85;

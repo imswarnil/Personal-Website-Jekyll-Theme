@@ -11,8 +11,16 @@
 // meets the grid everything else sits on.
 // ======================================================================
 
+// An ISLAND, like the top bar it sits under: inset from the page edge,
+// rounded, and standing clear of the bar above it. A band that runs edge
+// to edge fights the navbar for the same line — two full-width surfaces
+// stacked is one surface too many, and the page loses its top corner.
+//
+// `hero: { full: true }` on a collection puts it back to a full-bleed
+// band, for the one case that earns it: a hero with a film behind it,
+// where the picture wants every pixel.
 .im-collhero {
-  --im-collhero-bleed: var(--im-gutter);
+  --im-collhero-pad: clamp(2rem, 5vw, 3.5rem);
 
   position: relative;
   isolation: isolate;
@@ -21,10 +29,21 @@
   // an auto track would grow to fit and push the words off a phone.
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(1.5rem, 4vh, 2.5rem);
-  margin: calc(var(--im-space-5) * -1) calc(var(--im-collhero-bleed) * -1) var(--im-space-7);
-  padding: clamp(2.5rem, 8vh, 6rem) var(--im-collhero-bleed) 0;
+  margin-block: var(--im-space-4) var(--im-space-7);
+  padding: var(--im-collhero-pad) var(--im-collhero-pad) 0;
   overflow: hidden;
+  border-radius: var(--im-radius-2xl);
   background: var(--im-surface);
+}
+
+// FULL — edge to edge, for a hero whose picture wants every pixel.
+.im-collhero-full {
+  --im-collhero-bleed: var(--im-gutter);
+
+  margin-inline: calc(var(--im-collhero-bleed) * -1);
+  margin-block: calc(var(--im-space-5) * -1) var(--im-space-7);
+  padding: clamp(2.5rem, 8vh, 6rem) var(--im-collhero-bleed) 0;
+  border-radius: 0;
 }
 
 // ---- What is behind it ------------------------------------------------
@@ -68,7 +87,7 @@
 .im-pattern-none { display: none; }
 
 // ---- The words --------------------------------------------------------
-.im-collhero > :not(.im-collhero-art):not(.im-collhero-film) {
+.im-collhero-full > :not(.im-collhero-art):not(.im-collhero-film) {
   width: 100%;
   max-width: var(--im-container-wide);
   margin-inline: auto;
@@ -153,9 +172,13 @@
   display: flex;
   align-items: center;
   gap: var(--im-space-4);
-  padding-block: var(--im-space-3);
+  // Out to the island's own edges, so the rule above it reads as the foot
+  // of the surface rather than as a line drawn inside it.
+  margin-inline: calc(var(--im-collhero-pad, 0px) * -1);
+  padding: var(--im-space-3) var(--im-collhero-pad, 0);
   border-top: 1px solid var(--im-line);
 }
+.im-collhero-full .im-collhero-bar { margin-inline: 0; padding-inline: 0; }
 
 // The chips SCROLL sideways rather than wrapping: a collection with forty
 // topics would otherwise push the first entry below the fold.
@@ -325,3 +348,36 @@
 // A tag page's title wears its hash the way a chip does — quiet, and in
 // the tag hue rather than the ink.
 .im-collhero-hash { color: var(--im-c-this, var(--im-accent)); }
+
+// A filtering bar carries a count and a clear, so the chips do not have
+// to explain themselves.
+.im-collbar-count {
+  flex: none;
+  color: var(--im-muted);
+  font-family: var(--im-font-mono);
+  font-size: var(--im-text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.im-tag-clear {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--im-muted);
+}
+button.im-tag { border: 0; font-family: inherit; cursor: pointer; }
+button.im-tag[aria-pressed="true"] {
+  background: var(--im-current-bg);
+  color: var(--im-current-fg);
+  font-weight: var(--im-current-weight);
+  box-shadow: none;
+}
+
+.im-feed-empty {
+  margin: var(--im-space-6) 0;
+  padding: clamp(2rem, 6vw, 3.5rem) var(--im-space-5);
+  border-radius: var(--im-radius-xl);
+  box-shadow: inset 0 0 0 1px var(--im-line);
+  color: var(--im-muted);
+  text-align: center;
+}

@@ -24,7 +24,7 @@
 {%- for d in docs -%}{%- for t in d.tags -%}{%- assign tagblob = tagblob | append: t | append: "|" -%}{%- endfor -%}{%- endfor -%}
 {%- assign coll_tags = tagblob | split: "|" | uniq | sort_natural -%}
 
-<header class="im-collhero im-reveal" style="--im-c-this: var(--im-c-{{ c.label }}, var(--im-accent));">
+<header class="im-collhero{% if h.full %} im-collhero-full{% endif %} im-reveal" style="--im-c-this: var(--im-c-{{ c.label }}, var(--im-accent));">
   {%- if bg and bg != "" -%}
   <span class="im-collhero-film" aria-hidden="true">
     <iframe src="https://www.youtube.com/embed/{{ bg }}?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist={{ bg }}&amp;controls=0&amp;playsinline=1" title="" tabindex="-1" allow="autoplay; encrypted-media"></iframe>
@@ -45,9 +45,39 @@
     </p>
   </div>
 
-  {%- if include.views or include.tags -%}
-  <div class="im-collhero-bar">
-    {%- if include.tags and coll_tags.size > 0 -%}
+  {%- if include.views or include.tags or include.filters -%}
+  <div class="im-collhero-bar"{% if include.filters %} data-im-filter{% endif %}>
+    {%- if include.filters -%}
+    {%- comment -%}
+      Filtering, in the bar rather than in a column of its own: a rail of
+      chips down the left takes a quarter of the page from the work it is
+      there to show. These are buttons, wired to assets/scripts/filter.js,
+      and the state lives in the URL hash so a filtered view can be sent
+      to someone.
+    {%- endcomment -%}
+    {%- capture kinds_raw -%}{%- for d in docs -%}{{ d.kind | default: "project" }}|{%- endfor -%}{%- endcapture -%}
+    {%- assign kinds = kinds_raw | split: "|" | uniq | sort -%}
+    <div class="im-collbar-filters">
+      <button class="im-tag im-tag-clear" type="button" data-im-filter-clear hidden>
+        <i class="ph-bold ph-x" aria-hidden="true"></i> Clear
+      </button>
+      {%- for k in kinds -%}{%- if k != "" -%}
+        {%- assign n = 0 -%}
+        {%- for d in docs -%}{%- assign dk = d.kind | default: "project" -%}{%- if dk == k -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        <button class="im-tag" type="button" data-filter-key="kind" data-filter-value="{{ k }}" aria-pressed="false">{{ k }} <small>{{ n }}</small></button>
+      {%- endif -%}{%- endfor -%}
+      {%- for t in coll_tags limit: 12 -%}
+        {%- assign ts = t | slugify -%}
+        {%- comment -%} A tag that repeats a kind adds a second chip that does the same thing. {%- endcomment -%}
+        {%- unless kinds contains ts -%}
+        {%- assign n = docs | where_exp: "d", "d.tags contains t" | size -%}
+        <button class="im-tag" type="button" data-filter-key="tag" data-filter-value="{{ ts }}" aria-pressed="false">{{ t }} <small>{{ n }}</small></button>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+    <span class="im-collbar-count" data-im-filter-count>{{ docs.size }} of {{ docs.size }}</span>
+
+    {%- elsif include.tags and coll_tags.size > 0 -%}
     <div class="im-collbar-filters">
       {%- for t in coll_tags limit: 14 -%}
       {%- assign n = docs | where_exp: "d", "d.tags contains t" | size -%}

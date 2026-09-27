@@ -3,7 +3,6 @@ title: "Why I build cinematic, fast web"
 date: 2025-06-02
 category: blog
 tags: [craft, web]
-image: /assets/img/demo/posts-why-i-build-cinematic-fast-web.svg
 excerpt: "Speed and story aren't opposites — here's how I hold both."
 timeline: true
 timeline_note: "Wrote about reconciling performance and cinematic storytelling in everyday builds."

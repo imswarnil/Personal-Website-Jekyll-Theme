@@ -29,4 +29,4 @@ collection_view: true      # loads the view switch; see _layouts/default.html
   </ul>
   {%- endif -%}
 </section>
-<script src="{{ '/assets/scripts/filter.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/scripts/filter.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

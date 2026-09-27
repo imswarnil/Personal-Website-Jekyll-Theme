@@ -193,6 +193,10 @@ for (const label of Object.keys(cfg.collections || {})) {
       label,
       seed: `${label}/${name}`,
     });
+    // Posts draw their cover inline instead — a file adds nothing when
+    // the art is the collection's colour and mark, and a file has to be
+    // redrawn every time the accent changes. See utility/thumb.html.
+    if (label === 'posts') continue;
     if (write(`assets/img/demo/${label}-${name}.svg`, body)) made++;
   }
 }
